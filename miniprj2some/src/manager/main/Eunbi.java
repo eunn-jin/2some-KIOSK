@@ -4,7 +4,7 @@ public class Eunbi {
 
 	public static void main(String[] args) {
 
-			System.out.println("°íÀººñ");
+			System.out.println("ê³ ì€ë¹„");
 			
 	}
 
