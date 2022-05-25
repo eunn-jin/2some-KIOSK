@@ -1,4 +1,4 @@
-package user.main;
+package user.info;
 
 import java.sql.Connection;
 import common.util.InputUtil;
