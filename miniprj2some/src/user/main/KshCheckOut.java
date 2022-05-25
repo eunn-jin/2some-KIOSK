@@ -1,4 +1,4 @@
-package user.main;
+	package user.main;
 
 public class KshCheckOut {
 	
@@ -8,6 +8,10 @@ public class KshCheckOut {
 //		2. '주문아이템' (+ 추가옵션) 테이블 , 쿠폰+쿠폰종류 테이블(쿠폰액면가)에서 데이터 보여주기
 //	-결제할 금액 입력받고 결제완료 메세지 띄우기
 //	-메뉴판보기 페이지로 돌아가기
+	
+	public void show() {
+		
+	}
 	
 	
 }

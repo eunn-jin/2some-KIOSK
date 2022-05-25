@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class KshOrder {
 	
@@ -15,7 +16,7 @@ public class KshOrder {
 	
 	public void showCart() {
 		
-		System.out.println(" ========== 주문 내역 ========== ");
+		System.out.println(" ================== 주문 내역 ================== ");
 		System.out.println("");
 		
 		
@@ -25,30 +26,45 @@ public class KshOrder {
 		String id = "C##KH";
 		String pwd = "KH";
 		
-		Connection conn = null;
-		//2.
-		PreparedStatement pstmt = null;
+		String sql = "SELECT MN_NAME , PRICE , ITEM_NUM , ITEM_PRICE"
+				+ " FROM MENU M "
+				+ "JOIN ORDER_ITEM O "
+				+ "ON M.MN_IDX = O.MN_IDX";
 		ResultSet rs = null;
-		String sql = "SELECT MN_NAME, ITEM_NUM, PRICE, ITEM_PRICE "
-				+ "FROM MENU N"
-				+ "JOIN ORDER_ITEM O"
-				+ "ON N.MN_IDX = O.MN_IDX";
 		try {
 			Class.forName(driver);
-			conn = DriverManager.getConnection(url,id,pwd);
-			pstmt = conn.prepareStatement(sql);
+			Connection conn = DriverManager.getConnection(url, id, pwd);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String mname = rs.getString("MN_NAME");
+				int qty = rs.getInt("ITEM_NUM");
+				int price = rs.getInt("PRICE");
+				int tprice = rs.getInt("ITEM_PRICE");
+				System.out.println("메뉴명 : " + mname + "수량 : " + qty + "가격 : " + price + "총 가격 :" + tprice);
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		
+		System.out.println("");
+		System.out.println("===============================================");
+		System.out.println("결제하시려면 \"Y\", 메뉴를 다시 고르시려면 \"N\"을 입력해주세요");
 		
-		System.out.println(rs);
-		
+		Scanner sc = new Scanner(System.in);
+		String proceed = sc.nextLine();
+		if(proceed.equalsIgnoreCase("Y")) {
+			KshCheckOut co = new KshCheckOut();
+			co.show();
+			inputOrder();
+		}else {
+			//'메뉴'로 돌아가기
+		}
 	}
 	
 	public void inputOrder() {
 		
 	}
-	
+
 }
