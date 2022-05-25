@@ -14,8 +14,6 @@ public class ManagerMain {
 		System.out.println("2. 로그인");
 		
 		int n = InputUtil.inputInt();
-		String str = InputUtil.inputStr();
-		
 		
 		switch(n) {
 		case 1 : new ManagerLogin().join(); break;
