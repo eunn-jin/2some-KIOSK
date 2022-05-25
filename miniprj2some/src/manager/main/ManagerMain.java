@@ -1,7 +1,7 @@
 package manager.main;
 
+import common.util.InputUtil;
 import manager.main.ManagerLogin;
-import manager.main.MyUtil;
 
 public class ManagerMain {
 
@@ -13,7 +13,9 @@ public class ManagerMain {
 		System.out.println("1. 회원가입");
 		System.out.println("2. 로그인");
 		
-		int n = MyUtil.scInt();
+		int n = InputUtil.inputInt();
+		String str = InputUtil.inputStr();
+		
 		
 		switch(n) {
 		case 1 : new ManagerLogin().join(); break;
