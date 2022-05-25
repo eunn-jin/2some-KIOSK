@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import common.db.OracleDB;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Customer {
@@ -99,6 +101,7 @@ public class Customer {
 		
 		int cnt = 0;
 		boolean bl = true;
+		String phoneCheck = "\\d{3}-\\d{4}-\\d{4}";
 		
 		System.out.println("2some 포인트맴버쉽 회원가입 페이지입니다.");
 		sleepThread();
@@ -117,22 +120,16 @@ public class Customer {
 		
 		//전화번호 유효성 검사 (db 접속 필요 x)
 		
-		System.out.println(phone);
-		
-		String s = phone.substring(8, 9);
-		String s2 = phone.substring(3,4);
-		System.out.println(s);
-		System.out.println(s2);
-		
 		
 		if(phone.length() != 13) {
 			System.out.println("전화번호는 대쉬(-) 포함 13자리를 입력하여야 합니다.");
 			return false;
-		}else if (phone.substring(3,4) != "-" || phone.substring(8,9) != "-") 
-		{
-		System.out.println("OOO-OOOO-OOOO와 같은 형태로 작성해주시길 바랍니다.");
-		return false;
-		}
+		} 
+//		else if (phone.substring(3,4) != "-" || phone.substring(8,9) != "-") 
+//		{
+//		System.out.println("OOO-OOOO-OOOO와 같은 형태로 작성해주시길 바랍니다.");
+//		return false;
+//		}
 			
 		//1. db접속
 		
@@ -158,7 +155,7 @@ public class Customer {
 				= "INSERT INTO CUSTOMER(NUM,NAME,PHONE)"
 					+ "VALUES(?,?,?)";
 				PreparedStatement pstmt2 = conn.prepareCall(sqlInsert);
-				pstmt2.setInt(1, 6);
+				pstmt2.setInt(1, 2);
 				pstmt2.setString(2, name);
 				pstmt2.setString(3, phone);
 				int result = pstmt2.executeUpdate();
@@ -214,6 +211,16 @@ public class Customer {
 	public static void sleepThread() {
 		try {Thread.currentThread().sleep(1000);} catch (InterruptedException e) {System.out.println("sleep 중 예외 발생!!");}
 	}
+	
+	public static boolean validPhoneNumber(String number) {
+        Pattern pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
+        Matcher matcher = pattern.matcher(number);
+        if (matcher.matches()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 	
 }
 	
