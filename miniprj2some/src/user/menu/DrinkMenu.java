@@ -19,20 +19,21 @@ public class DrinkMenu {
 		Connection conn = OracleDB.getOracleConnection();
 		
 		
-		List<String> list = new ArrayList<String>();
-		List<String> list2 = new ArrayList<String>();
-		List<String> list3 = new ArrayList<String>();
-		List<String> list4 = new ArrayList<String>();
-		List<String> list5 = new ArrayList<String>();
+//		List<String> list = new ArrayList<String>();
+//		List<String> list2 = new ArrayList<String>();
+//		List<String> list3 = new ArrayList<String>();
+//		List<String> list4 = new ArrayList<String>();
+//		List<String> list5 = new ArrayList<String>();
+//		
+//		list.add(" 커피");
+//		list.add(" 프라푸치노");
+//		list.add(" 블렌디드");
+//		list.add(" 티바나");
+//		
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.println(i+1 + ":" + list.get(i));
+//		}
 		
-		list.add(" 커피");
-		list.add(" 프라푸치노");
-		list.add(" 블렌디드");
-		list.add(" 티바나");
-		
-		for(int i=0; i<list.size(); i++) {
-			System.out.println(i+1 + ":" + list.get(i));
-		}
 		System.out.println();
 		System.out.println("===================================");
 		System.out.println();
@@ -53,9 +54,9 @@ public class DrinkMenu {
 //			list2.add(" 카푸치노 - 5000원");
 //			list2.add(" 에스프레소 - 4000원");
 			
-			for(int i=0; i<list2.size(); i++) {
-				System.out.println(i+1 + ":" + list2.get(i));
-			}
+//			for(int i=0; i<list2.size(); i++) {
+//				System.out.println(i+1 + ":" + list2.get(i));
+//			}
 			
 			System.out.println();
 			System.out.println("===================================");
@@ -75,9 +76,9 @@ public class DrinkMenu {
 //			list3.add(" 카라멜 프라푸치노 - 5700원");
 //			list3.add(" 바닐라 크림 프라푸치노 - 5100원");
 			
-			for(int i=0; i<list3.size(); i++) {
-				System.out.println(i+1 + ":" + list3.get(i));
-			}
+//			for(int i=0; i<list3.size(); i++) {
+//				System.out.println(i+1 + ":" + list3.get(i));
+//			}
 			
 			System.out.println();
 			System.out.println("===================================");
@@ -96,9 +97,9 @@ public class DrinkMenu {
 //			list4.add(" 피치 & 레몬 블렌디드 - 6300원");
 //			list4.add(" 딸기 딜라이트 요거트 블렌디드 - 6300원");
 			
-			for(int i=0; i<list4.size(); i++) {
-				System.out.println(i+1 + ":" + list4.get(i));
-			}
+//			for(int i=0; i<list4.size(); i++) {
+//				System.out.println(i+1 + ":" + list4.get(i));
+//			}
 			
 			System.out.println();
 			System.out.println("===================================");
@@ -116,10 +117,10 @@ public class DrinkMenu {
 //			list5.add(" 민트 블렌드 티 - 4500원");
 //			list5.add(" 히비스커스 블렌드 티 - 4500원");
 			
-			for(int i=0; i<list5.size(); i++) {
-				System.out.println(i+1 + ":" + list5.get(i));
-			}
-			
+//			for(int i=0; i<list5.size(); i++) {
+//				System.out.println(i+1 + ":" + list5.get(i));
+//			}
+//			
 			System.out.println();
 			System.out.println("===================================");
 //			tt.tevanadetail();
