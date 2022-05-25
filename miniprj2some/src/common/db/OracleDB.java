@@ -35,7 +35,6 @@ public class OracleDB {
 		String pwd = "KH";
 		
 		Connection conn = null;
-		//OracleDriver 등록
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, id, pwd);
