@@ -1,17 +1,17 @@
 package user.main;
 
 import java.sql.Connection;
+import common.util.InputUtil;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import common.db.OracleDB;
 
 
 public class Customer {
 	
-public static Scanner sc = new Scanner(System.in);
 	
 	public static boolean login() {
 		
@@ -36,13 +36,13 @@ public static Scanner sc = new Scanner(System.in);
 		while(bl) {
 		
 		System.out.print("이름 : ");
-		String name = sc.nextLine();
+		String name = InputUtil.sc.nextLine();
 		System.out.print("전화번호 : ");
-		String phone = sc.nextLine();
+		String phone = InputUtil.sc.nextLine();
 		
 		//DB 연결 얻기 
 		
-		Connection conn = OracleDB.getOracleConnection();
+		Connection conn = common.db.OracleDB.getOracleConnection();
 		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
 		String sql = "SELECT PHONE FROM CUSTOMER WHERE NAME = ? ";
@@ -69,9 +69,9 @@ public static Scanner sc = new Scanner(System.in);
 						}  catch (SQLException e) {
 							System.out.println("SQL에서 예외 발생");
 						} finally {
-							close(conn);
-							close(pstmt);
-							close(rs);
+							OracleDB.close(conn);
+							OracleDB.close(pstmt);
+							OracleDB.close(rs);
 						}
 					
 					System.out.println("현재 가지고 계신 스탬프는" + rs + "개 입니다.");
@@ -81,9 +81,9 @@ public static Scanner sc = new Scanner(System.in);
 		} catch (SQLException e) {
 			System.out.println("SQL에서 예외 발생");
 		} finally {
-			close(conn);
-			close(pstmt);
-			close(rs);
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
 		}
 		
 		
@@ -115,9 +115,9 @@ public static Scanner sc = new Scanner(System.in);
 		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리를 차례대로 입력해주시길 바랍니다.");
 		sleepThread();
 		System.out.print("이름 : ");
-		String name = sc.nextLine();
+		String name = InputUtil.sc.nextLine();
 		System.out.print("전화번호 : ");
-		String phone = sc.nextLine();
+		String phone = InputUtil.sc.nextLine();
 		
 		//전화번호 유효성 검사 (db 접속 필요 x)
 		
@@ -132,7 +132,7 @@ public static Scanner sc = new Scanner(System.in);
 			
 		//1. db접속
 		
-		Connection conn = OracleDB.getOracleConnection();
+		Connection conn = common.db.OracleDB.getOracleConnection();
 		
 		//2. db에서 현재 전화번호와 일치하는 전화번호 조회
 		
@@ -167,9 +167,9 @@ public static Scanner sc = new Scanner(System.in);
 			} catch (SQLException e) {
 				System.out.println("SQL 예외 발생");
 			} finally {
-				close(conn);
-				close(pstmt);
-				close(rs);
+				OracleDB.close(conn);
+				OracleDB.close(pstmt);
+				OracleDB.close(rs);
 			}
 			
 			System.out.println("회원가입에 실패하였습니다.");
@@ -179,48 +179,9 @@ public static Scanner sc = new Scanner(System.in);
 
 	
 	
-	
-	public static int scInt() {
-		
-		int n = sc.nextInt();
-		sc.nextLine(); //엔터키 제거 목적
-		return n;
-	}
-	
 	public static void sleepThread() {
 		try {Thread.currentThread().sleep(1000);} catch (InterruptedException e) {System.out.println("sleep 중 예외 발생!!");}
 	}
 	
-	public static Connection getOracleConnection() {
-		
-		//사전 준비
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "C##KH";
-		String pwd = "KH";
-		
-		//드라이버 등록
-		
-		Connection conn = null;
-		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url, id, pwd);
-		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println("커넥션 가져오기 실패");
-		}
-		return conn;
-	}
-	
-	public static void close(Connection conn) {
-		if(conn != null) try {conn.close();} catch (SQLException e) {e.printStackTrace();}
-	}
-	
-	public static void close(Statement stmt) {
-		if (stmt != null) try {stmt.close();} catch (SQLException e) {e.printStackTrace();}
-	} //PreparedStatement는 Statement를 상속하고 있으므로 Statement만 해도 괜찮다.
-	
-	public static void close(ResultSet rs) {
-		if (rs != null) try {rs.close();} catch (SQLException e) {e.printStackTrace();}
-	}
 }
-
+	
