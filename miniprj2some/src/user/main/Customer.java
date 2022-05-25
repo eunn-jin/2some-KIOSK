@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class SangeonClass {
+public class Customer {
 	
 public static Scanner sc = new Scanner(System.in);
 	
@@ -59,7 +59,22 @@ public static Scanner sc = new Scanner(System.in);
 				
 				if(dbPhone.equals(phone)) {
 					System.out.println("로그인 성공하였습니다.");
-					System.out.println("포인트 사용/적립 페이지로 이동합니다.");
+					String stemp = "SELECT STEMP FROM CUSTOMER NAME = ? ";
+					
+					try {
+						pstmt = conn.prepareStatement(stemp);
+						pstmt.setString(1, name);
+						rs = pstmt.executeQuery();
+						
+						}  catch (SQLException e) {
+							System.out.println("SQL에서 예외 발생");
+						} finally {
+							close(conn);
+							close(pstmt);
+							close(rs);
+						}
+					
+					System.out.println("현재 가지고 계신 스탬프는" + rs + "개 입니다.");
 //					sleepThread();
 				}
 			}
