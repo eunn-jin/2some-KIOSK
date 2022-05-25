@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import common.db.OracleDB;
+import common.util.InputUtil;
+import manager.menu.MenuManager;
+
 public class KshOrder {
 	
 //	1. 디비접근	
@@ -21,19 +25,20 @@ public class KshOrder {
 		
 		
 		//1.
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "C##KH";
-		String pwd = "KH";
+//		String driver = "oracle.jdbc.driver.OracleDriver";
+//		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//		String id = "C##KH";
+//		String pwd = "KH";
 		
 		String sql = "SELECT MN_NAME , PRICE , ITEM_NUM , ITEM_PRICE"
 				+ " FROM MENU M "
 				+ "JOIN ORDER_ITEM O "
 				+ "ON M.MN_IDX = O.MN_IDX";
 		ResultSet rs = null;
+		Connection conn = OracleDB.getOracleConnection();
 		try {
-			Class.forName(driver);
-			Connection conn = DriverManager.getConnection(url, id, pwd);
+//			Class.forName(driver);
+//			Connection conn = DriverManager.getConnection(url, id, pwd);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -44,7 +49,7 @@ public class KshOrder {
 				int tprice = rs.getInt("ITEM_PRICE");
 				System.out.println("메뉴명 : " + mname + "수량 : " + qty + "가격 : " + price + "총 가격 :" + tprice);
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -52,19 +57,32 @@ public class KshOrder {
 		System.out.println("===============================================");
 		System.out.println("결제하시려면 \"Y\", 메뉴를 다시 고르시려면 \"N\"을 입력해주세요");
 		
-		Scanner sc = new Scanner(System.in);
-		String proceed = sc.nextLine();
-		if(proceed.equalsIgnoreCase("Y")) {
+		
+		String checkYn = InputUtil.sc.nextLine();
+		if(checkYn.equalsIgnoreCase("Y")) {
 			KshCheckOut co = new KshCheckOut();
 			co.show();
 			inputOrder();
 		}else {
 			//'메뉴'로 돌아가기
+			MenuManager manager = new MenuManager();
+			manager.showCategory();
 		}
 	}
 	
 	public void inputOrder() {
 		
+		String sql = "INSERT INTO ORDER(ORDER_NO, ORDER_DATE, U_NUM, TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE) "
+				+ "VALUES(?, ?, ?, ?, ?, ?)";
+		
+		Connection conn = OracleDB.getOracleConnection();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 
 	}
 
 }
