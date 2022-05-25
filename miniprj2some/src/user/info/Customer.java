@@ -63,6 +63,8 @@ public class Customer {
 				if(dbPhone.equals(phone)) {
 					System.out.println("로그인 성공하였습니다.");
 					
+					join();
+					
 //					sleepThread();
 				}
 			}
