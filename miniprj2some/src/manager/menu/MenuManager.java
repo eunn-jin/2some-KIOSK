@@ -88,7 +88,6 @@ public class MenuManager {
 			OracleDB.close(rs);
 		}
 		
-	//db, util 클래스 추가 후 수정
 		
 	}
 	
