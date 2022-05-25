@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.util.InputUtil;
 import manager.menu.OracleDB;
 import user.menu.MyUtil;
 
@@ -29,7 +30,7 @@ public class UserMain {
 		System.out.println();
 		System.out.println("카테고리를 선택하세요.");
 		System.out.print("카테고리 번호 : ");
-		int categoryNum = MyUtil.scInt();
+		int categoryNum = InputUtil.inputInt();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
