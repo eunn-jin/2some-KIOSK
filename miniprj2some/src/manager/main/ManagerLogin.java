@@ -45,7 +45,7 @@ public class ManagerLogin {
 			OracleDB.close(rs);
 		}
 		
-		System.out.println("로그인 실패!!!");
+		System.out.println("아이디/ 비밀번호 오류가 발생했습니다. 다시 입력하세요!");
 		return false;
 		
 	}
@@ -59,13 +59,13 @@ public class ManagerLogin {
 		String pwd = InputUtil.sc.nextLine();
 		System.out.print("이름 :");
 		String name = InputUtil.sc.nextLine();
-		System.out.println("성별 :");
+		System.out.print("성별 :");
 		String gender = InputUtil.sc.nextLine();
-		System.out.println("생년월일 :");
+		System.out.print("생년월일 :");
 		String birth = InputUtil.sc.nextLine();
-		System.out.println("전화번호 :");
+		System.out.print("전화번호 :");
 		String phone = InputUtil.sc.nextLine();
-		System.out.println("이메일 :");
+		System.out.print("이메일 :");
 		String email = InputUtil.sc.nextLine();
 		
 		if(pwd.length() < 4) {
@@ -88,17 +88,16 @@ public class ManagerLogin {
 			
 			String sqlInsert
 			= "INSERT INTO LOGIN(NO,ID,PWD,NAME,GENDER,BIRTH,PHONE,EMAIL)"
-					+ "VALUES(?,?,?,?,?,?,?,?)";
+					+ "VALUES(LOGIN_NO_SEQ.NEXTVAL,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sqlInsert);
-			pstmt2.setInt(1, 8);
-			pstmt2.setString(2, id);
-			pstmt2.setString(3, pwd);
-			pstmt2.setString(4, name);
-			pstmt2.setString(5, gender);
-			pstmt2.setString(6, birth);
-			pstmt2.setString(7, phone);
-			pstmt2.setString(8, email);
+			pstmt2.setString(1, id);
+			pstmt2.setString(2, pwd);
+			pstmt2.setString(3, name);
+			pstmt2.setString(4, gender);
+			pstmt2.setString(5, birth);
+			pstmt2.setString(6, phone);
+			pstmt2.setString(7, email);
 			int result = pstmt2.executeUpdate();
 			
 			if(result == 1) {
