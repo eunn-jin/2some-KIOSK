@@ -5,7 +5,7 @@ import manager.main.ManagerLogin;
 
 public class ManagerMain {
 
-	public static void main(String[] args) {
+	public static void Managermain() {
 
 		System.out.println("=====관리자=====");
 		

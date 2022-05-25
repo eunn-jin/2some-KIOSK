@@ -9,7 +9,7 @@ import user.menu.MyUtil;
 
 public class UserMain {
 
-	public static void main(String[] args) {
+	public static void Usermain() {
 		System.out.println("여기는 사용자 부분..!");
 		
 		

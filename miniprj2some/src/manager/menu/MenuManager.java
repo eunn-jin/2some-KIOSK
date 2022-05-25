@@ -13,13 +13,7 @@ public class MenuManager {
 	
 	public int categoryNum;
 	public int menuNum;	
-	
-	public static void main(String[] args) {
 		
-	
-	}
-	
-	
 	public void showCategory() {
 		System.out.println("=============================");
 		System.out.println("           메뉴 관리 ");

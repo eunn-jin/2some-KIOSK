@@ -6,17 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import manager.main.OracleDB;
-import manager.main.MyUtil;
+import common.db.OracleDB;
+import common.util.InputUtil;
 
 public class ManagerLogin {
 	
 	public boolean login() {
 		System.out.println("=====로그인=====");
 		System.out.print("아이디 :");
-		String id = MyUtil.sc.nextLine();
+		String id = InputUtil.sc.nextLine();
 		System.out.print("패스워드 :");
-		String pwd = MyUtil.sc.nextLine();
+		String pwd = InputUtil.sc.nextLine();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
@@ -54,19 +54,19 @@ public class ManagerLogin {
 	public boolean join() {
 		System.out.println("=====회원가입=====");
 		System.out.print("아이디 :");
-		String id = MyUtil.sc.nextLine();
+		String id = InputUtil.sc.nextLine();
 		System.out.print("비밀번호 :");
-		String pwd = MyUtil.sc.nextLine();
+		String pwd = InputUtil.sc.nextLine();
 		System.out.print("이름 :");
-		String name = MyUtil.sc.nextLine();
+		String name = InputUtil.sc.nextLine();
 		System.out.println("성별 :");
-		String gender = MyUtil.sc.nextLine();
+		String gender = InputUtil.sc.nextLine();
 		System.out.println("생년월일 :");
-		String birth = MyUtil.sc.nextLine();
+		String birth = InputUtil.sc.nextLine();
 		System.out.println("전화번호 :");
-		String phone = MyUtil.sc.nextLine();
+		String phone = InputUtil.sc.nextLine();
 		System.out.println("이메일 :");
-		String email = MyUtil.sc.nextLine();
+		String email = InputUtil.sc.nextLine();
 		
 		if(pwd.length() < 4) {
 			System.out.println("비밀번호는 4글자 이상이어야 됩니다.");
