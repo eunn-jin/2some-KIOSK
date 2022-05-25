@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.db.OracleDB;
 import common.util.InputUtil;
-import manager.menu.OracleDB;
-import user.menu.MyUtil;
 
 public class UserMain {
 

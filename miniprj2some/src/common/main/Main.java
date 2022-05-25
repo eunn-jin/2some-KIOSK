@@ -2,6 +2,7 @@ package common.main;
 
 import common.util.InputUtil;
 import manager.main.ManagerMain;
+import user.main.UserMain;
 
 public class Main {
 
@@ -15,7 +16,7 @@ public class Main {
 			
 		switch(n) {
 			case 1 : ManagerMain.Managermain(); break;
-			case 2 :  break;
+			case 2 : UserMain.Usermain(); break;
 			default : System.out.println("번호를 잘못 입력하셨습니다.");
 		}
 	}

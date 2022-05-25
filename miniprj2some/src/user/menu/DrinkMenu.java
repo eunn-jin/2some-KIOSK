@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import manager.menu.OracleDB;
+import common.db.OracleDB;
+import common.util.InputUtil;
+
 
 public class DrinkMenu {
 
@@ -39,7 +41,7 @@ public class DrinkMenu {
 		// 음료 한가지 고르게 하기
 		
 		while(true) {
-			int num = MyUtil.scInt();
+			int num = InputUtil.inputInt();
 			
 			switch(num) {
 		case 1: // 에스프레소
@@ -58,9 +60,9 @@ public class DrinkMenu {
 			System.out.println();
 			System.out.println("===================================");
 			// 디테일 보여주기 - 설명 / 영양성분
-			cd.coffeedetail();
-			cd.cfodetailll();
-			cfo.coffeeoption();
+//			cd.coffeedetail();
+//			cd.cfodetailll();
+//			cfo.coffeeoption();
 			break; 
 		
 		
@@ -79,9 +81,9 @@ public class DrinkMenu {
 			
 			System.out.println();
 			System.out.println("===================================");
-			pp.purapuccinodetail();
-			pp.ppccinodetail();		
-			dfo.drinkoption();
+//			pp.purapuccinodetail();
+//			pp.ppccinodetail();		
+//			dfo.drinkoption();
 			break; 
 		
 		
@@ -100,9 +102,9 @@ public class DrinkMenu {
 			
 			System.out.println();
 			System.out.println("===================================");
-			bb.blendeddetail();
-			bb.bbdetail();
-			dfo.drinkoption();
+//			bb.blendeddetail();
+//			bb.bbdetail();
+//			dfo.drinkoption();
 			break; 
 			
 		case 4: // 티바나
@@ -120,9 +122,9 @@ public class DrinkMenu {
 			
 			System.out.println();
 			System.out.println("===================================");
-			tt.tevanadetail();
-			tt.tvdetail();
-			cfo.coffeeoption();
+//			tt.tevanadetail();
+//			tt.tvdetail();
+//			cfo.coffeeoption();
 			break; 
 			
 		default:
