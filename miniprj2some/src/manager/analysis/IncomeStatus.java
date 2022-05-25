@@ -3,6 +3,7 @@ package manager.analysis;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
@@ -27,17 +28,31 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 	}
 	
 	public void getDayIncome() {
-		System.out.println("원하시는 일을 입력하세요. (ex. 5/16)");
-		int day = InputUtil.inputInt();
+		System.out.println("원하시는 일을 입력하세요. (ex. 22/5/16)");
+		String day = InputUtil.inputStr();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT SUM(TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE) "
-				+ "FROM ORDER"
+		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE "
+				+ "FROM ORDER_GROUP "
 				+ "WHERE ORDER_DATE = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
+		int sum_price = 0;
+        try {
+        	pstmt = conn.prepareStatement(sql);
+        	pstmt.setString(1, day);
+			rs = pstmt.executeQuery();
+
+	        while(rs.next()) {
+//	        	System.out.println(rs.getString(1));
+	        	sum_price += Integer.parseInt(rs.getString(1));
+	        }
+	        System.out.println("총 매출 :"+ sum_price);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void getMonthIncome() {
@@ -46,11 +61,26 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT SUM(TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE) "
-				+ "FROM ORDER"
-				+ "WHERE ORDER_DATE = ?";
+		String sql = "SELECT TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE "
+				+ "FROM ORDER_GROUP "
+				+ "WHERE EXTRACT(MONTH FROM ORDER_DATE) = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
+		int sum_price = 0;
+        try {
+        	pstmt = conn.prepareStatement(sql);
+        	pstmt.setInt(1, month);
+			rs = pstmt.executeQuery();
+
+	        while(rs.next()) {
+//	        	System.out.println(rs.getString(1));
+	        	sum_price += Integer.parseInt(rs.getString(1));
+	        }
+	        System.out.println("총 매출 :"+ sum_price);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void getPeriodIncome() {
