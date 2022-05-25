@@ -12,6 +12,9 @@ import common.db.OracleDB;
 
 public class Customer {
 	
+	private String name = "";
+	private String phone = "";
+	
 	
 	public static boolean login() {
 		
