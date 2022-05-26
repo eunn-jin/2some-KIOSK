@@ -79,7 +79,7 @@ public class MenuManager {
 			if(this.menuNum == 00) {
 				plus(); //메뉴추가 페이지로 이동
 			} else {
-				update(this.menuNum);//해당 메뉴 수정 페이지로 이동
+				showDetail(this.menuNum);//해당 메뉴 수정 페이지로 이동
 			}
 			
 			
@@ -177,11 +177,18 @@ public class MenuManager {
 				pstmt.setInt(11, nat);
 				int r = pstmt.executeUpdate();
 				
+				
+				if(r == 1 ) {
 				System.out.println();
 				System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
 				System.out.println();
 				
 				showMenu(this.categoryNum);
+				} else {
+					System.out.println();
+					System.out.println("   [ 메뉴 등록이 실패하였습니다 ]   ");
+					System.out.println();
+				}
 				
 			} catch (SQLException e) {
 				System.out.println("SQL 예외 발생 - showMenu");
@@ -198,7 +205,7 @@ public class MenuManager {
 	}
 	
 	
-	public void update(int menuNum) {
+	public void showDetail(int menuNum) {
 		//이 안에 삭제도 존재 - 00번으로 ㄱㄱ
 		this.menuNum = menuNum;
 		System.out.println("-----------메뉴 수정-----------");
@@ -247,22 +254,17 @@ public class MenuManager {
 				   System.out.print("수정할 정보 번호 입력 : ");
 				   this.detailNum = InputUtil.inputInt();
 				   
+				   if(this.detailNum == 9999) {
+						delete();
+					} else if(this.detailNum > 0 && this.detailNum < 11) {
+						update(this.detailNum);
+					} else {
+						System.out.println("올바른 번호를 입력하시오");
+					}
+						
 		   }
 			
-			if(this.detailNum == 9999) {
-				delete();
-			}
-			
-			String sqlUpdate = "";
-			pstmt = conn.prepareStatement(sqlUpdate);
-			int r = pstmt.executeUpdate();
-			
-			switch(this.detailNum) {
-//			case 1 : pstmt.setString(1, 수정값을 담은 변수); break;
-			}
-//////////////////////////////////////////////0525
-			
-			
+		
 		} catch (SQLException e) {
 			System.out.println("SQL 예외 발생 - showMenu");
 			e.printStackTrace();
@@ -273,18 +275,62 @@ public class MenuManager {
 			OracleDB.close(rs);
 		}
 		
-		//수정할 상세 번호 입력받고
-		//수정..
-		//어쩌고..
+		
+	}
+	
+	
+	public void update(int detailNum) {
+		this.detailNum = detailNum;
+		
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "UPDATE MENU SET ? = ? "
+				+ "WHERE MN_IDX = ?";
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			
+			
+			if(this.detailNum == 1) {
+				pstmt = conn.prepareStatement(sql);
+				System.out.print("1. 상품 명 : ");
+				String mName = InputUtil.inputStr();
+				String mn = "MN_NAME";
+				pstmt.setString(1, "mn");
+				pstmt.setString(2, mName); 
+				pstmt.setInt(3, this.menuNum);
+				int r = pstmt.executeUpdate();
+				showDetail(this.menuNum);
+			}	
+/////////////////하는중임
+		
+		} catch (SQLException e) {
+			System.out.println("SQL 예외 발생 - showMenu");
+			e.printStackTrace();
+			
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+		}
+		
+		
+		
+	
+		
+		
+		
 		
 		
 		
 		
 	}
 	
-	
-	
-	
+		
+		
+		
 	
 	public void delete() {
 		
