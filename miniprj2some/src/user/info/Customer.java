@@ -15,8 +15,8 @@ import common.util.InputUtil;
 
 public class Customer {
 	
-	private String name = "";
-	private String phone = "";
+	 private String name = "";
+	 private String phone = "";
 	
 	
 	public static boolean login() {
@@ -48,11 +48,13 @@ public class Customer {
 		
 		Connection conn = common.db.OracleDB.getOracleConnection();
 		
+		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
 		String sql = "SELECT PHONE FROM CUSTOMER WHERE NAME = ? ";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
@@ -167,6 +169,7 @@ public class Customer {
 				pstmt2.setString(1, name);
 				pstmt2.setString(2, phone);
 				int result = pstmt2.executeUpdate();
+				
 				
 				if (result ==1 ) {
 					System.out.println("회원가입에 성공하였습니다.");
