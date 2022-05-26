@@ -33,23 +33,17 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE "
+		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
 				+ "WHERE ORDER_DATE = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		int sum_price = 0;
         try {
         	pstmt = conn.prepareStatement(sql);
         	pstmt.setString(1, day);
 			rs = pstmt.executeQuery();
-
-	        while(rs.next()) {
-//	        	System.out.println(rs.getString(1));
-	        	sum_price += Integer.parseInt(rs.getString(1));
-	        }
-	        System.out.println("총 매출 :"+ sum_price + " 원\n");
+			Outputform(rs);
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
 		} finally {
@@ -65,22 +59,17 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE "
+		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
 				+ "WHERE EXTRACT(MONTH FROM ORDER_DATE) = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		int sum_price = 0;
         try {
         	pstmt = conn.prepareStatement(sql);
         	pstmt.setInt(1, month);
 			rs = pstmt.executeQuery();
-
-	        while(rs.next()) {
-	        	sum_price += Integer.parseInt(rs.getString(1));
-	        }
-	        System.out.println("총 매출 :"+ sum_price + " 원\n");
+			Outputform(rs);
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
 		} finally {
@@ -99,29 +88,36 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE "
+		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
 				+ "WHERE ORDER_DATE BETWEEN TO_DATE(?) AND TO_DATE(?)";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		int sum_price = 0;
         try {
         	pstmt = conn.prepareStatement(sql);
         	pstmt.setString(1, start);
         	pstmt.setString(2, end);
 			rs = pstmt.executeQuery();
-
-	        while(rs.next()) {
-	        	sum_price += Integer.parseInt(rs.getString(1));
-	        }
-	        System.out.println("총 매출 :"+ sum_price + " 원\n");
+			Outputform(rs);
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
 		} finally {
 			OracleDB.close(conn);
 			OracleDB.close(pstmt);
 			OracleDB.close(rs);
+		}
+	}
+	
+	private void Outputform(ResultSet rs) {
+		int sum_price = 0;
+		try {
+			while(rs.next()) {
+				sum_price += Integer.parseInt(rs.getString("PRICE"));
+			}
+			System.out.println("총 매출 :"+ sum_price + " 원\n");
+		} catch (NumberFormatException | SQLException e) {
+			System.out.println("Outputform함수에서 에러발생!");
 		}
 	}
 	
