@@ -52,6 +52,10 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 	        System.out.println("총 매출 :"+ sum_price + " 원\n");
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
 		}
 	}
 	
@@ -79,6 +83,10 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 	        System.out.println("총 매출 :"+ sum_price + " 원\n");
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
 		}
 	}
 	
@@ -110,8 +118,11 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 	        System.out.println("총 매출 :"+ sum_price + " 원\n");
 		} catch (SQLException e) {
 			System.out.println("입력이 잘못되었습니다.\n");
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
 		}
-		
 	}
 	
 	public void getList() {
