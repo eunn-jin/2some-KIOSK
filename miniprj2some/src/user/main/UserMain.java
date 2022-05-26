@@ -9,6 +9,7 @@ import java.util.List;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+import user.menu.CategoryMenu;
 import user.menu.DrinkMenu;
 
 public class UserMain {
@@ -16,6 +17,9 @@ public class UserMain {
 			
 	public static void Usermain() {
 		
+		// 환영인사 추가..? (자유)
+		CategoryMenu cm = new CategoryMenu();
+		cm.showCategory();
 		
 		
 //		System.out.println("카테고리를 선택하세요.");
