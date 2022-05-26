@@ -10,7 +10,6 @@ import java.util.List;
 import common.db.OracleDB;
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
-import user.menu.DrinkMenu;
 
 public class UserMain {
 
