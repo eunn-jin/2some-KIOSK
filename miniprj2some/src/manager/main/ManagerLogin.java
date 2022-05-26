@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
@@ -20,7 +21,7 @@ public class ManagerLogin {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT PWD FROM LOGIN WHERE UPPER(ID) = UPPER(?)";
+		String sql = "SELECT PWD FROM LOGIN WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -47,6 +48,7 @@ public class ManagerLogin {
 		
 		System.out.println("아이디/ 비밀번호 오류가 발생했습니다. 다시 입력하세요!");
 		return false;
+		//로그인 실패시 다시 로그인창으로 되돌아가도록 하기
 		
 	}
 	
@@ -69,7 +71,7 @@ public class ManagerLogin {
 		String email = InputUtil.sc.nextLine();
 		
 		if(pwd.length() < 4) {
-			System.out.println("비밀번호는 4글자 이상이어야 됩니다.");
+			System.out.println("회원가입 실패... 비밀번호는 4글자 이상이어야 됩니다.");
 			return false;
 		}
 		
@@ -113,5 +115,43 @@ public class ManagerLogin {
 		return false;
 		
 	}
+	
+	public boolean logout() {
+		System.out.println("=====로그아웃=====");
+		System.out.print("이름 : ");
+		String name = InputUtil.sc.nextLine();
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "SELECT * FROM LOGIN WHERE NAME = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String dbname = rs.getString("name");
+				if(dbname.equalsIgnoreCase(name)) {
+					System.out.println("로그아웃 되었습니다!");
+					return true;
+				//로그아웃 했을때 메인에서 회원가입,로그인 화면뜨게하기
+				}
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 예외 발생!");
+		}finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
+		}
+		
+		return false;
+		
+	}
+	
 
 }

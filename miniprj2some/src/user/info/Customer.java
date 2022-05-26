@@ -15,8 +15,8 @@ import common.util.InputUtil;
 
 public class Customer {
 	
-	private String name = "";
-	private String phone = "";
+	 private String name = "";
+	 private String phone = "";
 	
 	
 	public static boolean login() {
@@ -40,19 +40,21 @@ public class Customer {
 		while(bl) {
 		
 		System.out.print("이름 : ");
-		String name = InputUtil.sc.nextLine();
+		String name = InputUtil.sc.nextLine().trim();
 		System.out.print("전화번호 : ");
-		String phone = InputUtil.sc.nextLine();
+		String phone = InputUtil.sc.nextLine().trim();
 		
 		//DB 연결 얻기 
 		
 		Connection conn = common.db.OracleDB.getOracleConnection();
+		
 		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
 		String sql = "SELECT PHONE FROM CUSTOMER WHERE NAME = ? ";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
@@ -64,6 +66,7 @@ public class Customer {
 				if(dbPhone.equals(phone)) {
 					System.out.println("로그인 성공하였습니다.");
 					
+					return true;
 //					while(true) {
 //					join();
 //					}
@@ -114,9 +117,9 @@ public class Customer {
 		
 		while(bl) {
 		System.out.print("이름 : ");
-		String name = InputUtil.sc.nextLine();
+		String name = InputUtil.sc.nextLine().trim();
 		System.out.print("전화번호 : ");
-		String phone = InputUtil.sc.nextLine();
+		String phone = InputUtil.sc.nextLine().trim();
 		
 		//전화번호 유효성 검사 (db 접속 필요 x)
 		
@@ -126,15 +129,17 @@ public class Customer {
 			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
 			return false;
 		} 
-		
 		else if (validPhoneNumber(phone) == false ) {
-			System.out.println("OOO-OOOO-OOOO와 같은 형태로 작성해주시길 바랍니다.");
+			System.out.println("010-OOOO-OOOO와 같은 형태로 작성해주시길 바랍니다.");
 			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
 			return false;
 		}
-		
 		if(name.length() > 4 || name.length() < 2) {
 			System.out.println("고객님의 성함 2~4자리를 입력하여 주시길 바랍니다.");
+			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
+			return false;
+		} else if (validName(name) == false ) {
+			System.out.println("성함은 한글이름으로 적어주시길 바랍니다.");
 			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
 			return false;
 		}
@@ -168,6 +173,7 @@ public class Customer {
 				pstmt2.setString(2, phone);
 				int result = pstmt2.executeUpdate();
 				
+				
 				if (result ==1 ) {
 					System.out.println("회원가입에 성공하였습니다.");
 					sleepThread();
@@ -180,13 +186,25 @@ public class Customer {
 						sleepThread();
 						System.out.println("1번을 선택하셨습니다.");
 						sleepThread();
-						System.out.println("고객님의 생년월일 8자리를 입력해 주시길 바랍니다.");
+						System.out.println("슬래쉬(/)를 포함하여 고객님의 생일 8자리를 입력하여 주시길 바랍니다.");
+						System.out.println("예시 : 1996/07/30");
 						System.out.print("생년월일 : " );
-						String birth = InputUtil.sc.nextLine();
+						String birth = InputUtil.sc.nextLine().trim();
+						
+						if(birth.length() != 10) {
+							sleepThread();
+							System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
+							
+							return false;
+						} else if(validationDate(birth) == false) {
+							sleepThread();
+							System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
+							return false;
+						}
 						
 //						UPDATE CUSTOMER SET BIRTH = '19960730' WHERE PHONE = '010-8602-4278';
 						String sqlInsert2
-						= "UPDATE CUSTOMER SET BIRTH = ?"
+						= "UPDATE CUSTOMER SET BIRTH = TO_DATE(?,'YYYY/MM/DD')"
 							+ "WHERE PHONE = ?";
 						PreparedStatement pstmt3 = conn.prepareStatement(sqlInsert2);
 						pstmt3.setString(1, birth);
@@ -196,7 +214,7 @@ public class Customer {
 						if (result2 ==1 ) {
 							System.out.println("고객님의 생년월일을 입력을 완료했습니다..");
 							sleepThread();
-							System.out.println("로그인 화면으로 이동합니다.");
+							System.out.println("로그인 페이지으로 이동합니다.");
 							sleepThread();
 							login();
 						}
@@ -205,14 +223,14 @@ public class Customer {
 						sleepThread();
 						System.out.println("다음번에 다시 시도해주시길 바랍니다.");
 						sleepThread();
-						System.out.println("로그인 화면으로 이동합니다.");
+						System.out.println("로그인 페이지으로 이동합니다.");
 						sleepThread();
 						login();
 						
 					}
 					
 					else { 
-						System.out.println("로그인 화면으로 이동합니다.");
+						System.out.println("로그인 페이지으로 이동합니다.");
 						sleepThread();
 						login();
 					}
@@ -220,12 +238,14 @@ public class Customer {
 				
 			} catch (SQLException e) {
 				System.out.println("죄송합니다. 서버와 연결이 끊겼습니다.");
+				System.out.println("입력하신 정보가 옳바른 것인지 확인 부탁드립니다.");
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
 				OracleDB.close(rs);
 			}
 			
+			sleepThread2();
 			System.out.println("회원가입에 실패하였습니다. 계속 시도하시려면 1번, 바로 결제하시려면 2번을 선택해주세요.");
 			sleepThread();
 			System.out.println("1번 : 계속 시도, 2번 : 바로 결제");
@@ -269,7 +289,7 @@ public class Customer {
 	}
 	
 	public static boolean validPhoneNumber(String number) {
-        Pattern pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
+        Pattern pattern = Pattern.compile("010-\\d{4}-\\d{4}");
         Matcher matcher = pattern.matcher(number);
         if (matcher.matches()) {
             return true;
@@ -278,15 +298,27 @@ public class Customer {
         }
     }
 	
-	public  boolean  validationDate(String checkDate){
+	public  static boolean  validationDate(String checkDate){
 		
 		try{
-		  SimpleDateFormat  dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+		  SimpleDateFormat  dateFormat = new  SimpleDateFormat("yyyy/MM/dd");
 		  dateFormat.setLenient(false);
 		  dateFormat.parse(checkDate);
 		  return  true;
 		   }catch (ParseException  e){return  false;}
 		}
+	
+	public static boolean validName(String checkName) {
+		
+		Pattern pattern = Pattern.compile("^[ㄱ-ㅎ가-힣]*$");
+        Matcher matcher = pattern.matcher(checkName);
+        if (matcher.matches()) {
+            return true;
+        } else {
+            return false;
+        }
+
+	}
 	
 }
 	
