@@ -214,7 +214,7 @@ public class Customer {
 						if (result2 ==1 ) {
 							System.out.println("고객님의 생년월일을 입력을 완료했습니다..");
 							sleepThread();
-							System.out.println("로그인 화면으로 이동합니다.");
+							System.out.println("로그인 페이지으로 이동합니다.");
 							sleepThread();
 							login();
 						}
@@ -223,14 +223,14 @@ public class Customer {
 						sleepThread();
 						System.out.println("다음번에 다시 시도해주시길 바랍니다.");
 						sleepThread();
-						System.out.println("로그인 화면으로 이동합니다.");
+						System.out.println("로그인 페이지으로 이동합니다.");
 						sleepThread();
 						login();
 						
 					}
 					
 					else { 
-						System.out.println("로그인 화면으로 이동합니다.");
+						System.out.println("로그인 페이지으로 이동합니다.");
 						sleepThread();
 						login();
 					}
