@@ -20,19 +20,17 @@ public class OracleDB {
 		String url = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(path))){
 				driver = br.readLine();
-				System.out.println(driver);
+//				System.out.println(driver);
 				url = br.readLine();
-				System.out.println(url);
+//				System.out.println(url);
 		} catch (FileNotFoundException e1) {
 			System.out.println("파일을 찾을수 없습니다.");
 		} catch (IOException e1) {
 			System.out.println("IO 예외가 발생했습니다.");
 		}
 		
-//		driver = "oracle.jdbc.driver.OracleDriver";
-//		url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-		String id = "C##KH";
-		String pwd = "KH";
+		String id = "C##2SOME";
+		String pwd = "2SOME";
 		
 		Connection conn = null;
 		try {
