@@ -22,13 +22,13 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 				case 2: getMonthIncome(); getList(); break;
 				case 3: getPeriodIncome(); getList(); break;
 				case 0: loopflag = false; break;
-				default: System.out.println("잘못입력하셨습니다. 정확한 번호를 입력하세요.");
+				default: System.out.println("잘못입력하셨습니다. 정확한 번호를 입력하세요.\n");
 			}
 		}
 	}
 	
 	public void getDayIncome() {
-		System.out.println("원하시는 일을 입력하세요. (ex. 22/5/16)");
+		System.out.println("\n원하시는 일을 입력하세요. (ex. YY/MM/DD)");
 		String day = InputUtil.inputStr();
 		
 		Connection conn = OracleDB.getOracleConnection();
@@ -49,14 +49,14 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 //	        	System.out.println(rs.getString(1));
 	        	sum_price += Integer.parseInt(rs.getString(1));
 	        }
-	        System.out.println("총 매출 :"+ sum_price);
+	        System.out.println("총 매출 :"+ sum_price + " 원\n");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("입력이 잘못되었습니다.\n");
 		}
 	}
 	
 	public void getMonthIncome() {
-		System.out.println("원하시는 월을 입력하세요. (ex. 6월)");
+		System.out.println("\n원하시는 월을 입력하세요. (ex. MM)");
 		int month = InputUtil.inputInt();
 		
 		Connection conn = OracleDB.getOracleConnection();
@@ -74,17 +74,43 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 			rs = pstmt.executeQuery();
 
 	        while(rs.next()) {
-//	        	System.out.println(rs.getString(1));
 	        	sum_price += Integer.parseInt(rs.getString(1));
 	        }
-	        System.out.println("총 매출 :"+ sum_price);
+	        System.out.println("총 매출 :"+ sum_price + " 원\n");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("입력이 잘못되었습니다.\n");
 		}
 	}
 	
 	public void getPeriodIncome() {
-		System.out.println("원하시는 기간을 입력하세요. (ex. MM/DD-MM/DD)");
+		System.out.println("\n원하시는 기간을 입력하세요. (ex. 시작일:YY/MM/DD, 마지막일:YY/MM/DD)");
+		System.out.print("시작일: ");
+		String start = InputUtil.inputStr();
+		System.out.print("마지막일: ");
+		String end = InputUtil.inputStr();
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "SELECT TOTAL_PRICE, USE_POINT, DISCOUNT_PRICE "
+				+ "FROM ORDER_GROUP "
+				+ "WHERE ORDER_DATE BETWEEN TO_DATE(?) AND TO_DATE(?)";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int sum_price = 0;
+        try {
+        	pstmt = conn.prepareStatement(sql);
+        	pstmt.setString(1, start);
+        	pstmt.setString(2, end);
+			rs = pstmt.executeQuery();
+
+	        while(rs.next()) {
+	        	sum_price += Integer.parseInt(rs.getString(1));
+	        }
+	        System.out.println("총 매출 :"+ sum_price + " 원\n");
+		} catch (SQLException e) {
+			System.out.println("입력이 잘못되었습니다.\n");
+		}
 		
 	}
 	
