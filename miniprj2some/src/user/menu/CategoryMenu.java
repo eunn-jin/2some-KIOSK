@@ -25,13 +25,15 @@ public class CategoryMenu {
 			rs = pstmt.executeQuery();
 
 			System.out.println("==========[ 카 테 고 리 ]===========");
+			System.out.println();
 
-			// 나중에 공부할 때 보기 쉬우라고 주석 달았음. 혹시나 까먹을까봐 (혼자 주절주절..)
-			// rs.getInt(1): 첫번째인 CATEGORY_IDX가 쫘르륵. // rs.getString(2): 두번째인 CATEGORY_NAME이 쫘르륵.
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + ". " + rs.getString(2));    
 			}
 
+			System.out.println();
+			System.out.println("===================================");
+			System.out.println();
 			System.out.println("카테고리 번호를 선택하세요 ");
 
 			int categoryNum = InputUtil.inputInt();
@@ -54,9 +56,7 @@ public class CategoryMenu {
 
 		Connection conn = OracleDB.getOracleConnection();
 
-		// menu 테이블에서 mn_idx, mn_name을 조회할거임. category_idx가 ?인 부분 중에서.
-		// ? 에 들어가는 부분은 밑에 있는 try문 안에 있는 pstmt2.setInt(1, categoryNum);에서 해결할거임.
-		String sql2 = "select mn_idx, mn_name from menu where category_idx = ? ";
+		String sql2 = "SELECT MN_IDX, MN_NAME FROM MENU WHERE CATEGORY_IDX = ? ";
 
 		PreparedStatement pstmt2 = null;
 		ResultSet rs2 = null;
@@ -64,24 +64,25 @@ public class CategoryMenu {
 		try {
 			pstmt2 = conn.prepareStatement(sql2);
 			
-			// where category_idx = ? -> where 뒤에 category_idx 한개(1)만 있으니까 1 쓴거임. 물음표 자리에 아까 입력받은 categoryNum이 들어감.
 			pstmt2.setInt(1, categoryNum);   
 
 			rs2 = pstmt2.executeQuery();
 			
-			System.out.println("==========[ 메 뉴 ]===========");
+			System.out.println("=============[ 메 뉴 ]==============");
 			System.out.println("메뉴를 선택하세요.");
+			System.out.println();
 
 			while (rs2.next()) {
 				System.out.println(rs2.getInt(1) + ". " + rs2.getString(2));
 			}
 
 			System.out.println();
+			System.out.println("===================================");
+			System.out.println();
 			System.out.println("메뉴 번호를 입력해주세요.");
 			
 			int menuNum = InputUtil.inputInt();
 			
-			// 아까 입력받은 categoryNum이 3이 아닌 경우만! -> 1: DRINK, 2: FOOD만 해당.
 			boolean isFood = (categoryNum != 3);
 			
 			// 디테일 메소드 연결
@@ -101,15 +102,14 @@ public class CategoryMenu {
 
 		Connection conn = OracleDB.getOracleConnection();
 
-		String sql2 = "select DETAIL, CAL, CAFFEINE, CARBOHYDRATE, SUGAR, FAT, PROTEIN, NATRIUM from menu where mn_idx = ? ";
-
+		String sql2 = "SELECT DETAIL, CAL, CAFFEINE, CARBOHYDRATE, SUGAR, FAT, PROTEIN, NATRIUM FROM MENU WHERE MN_IDX = ? ";
+		
 		PreparedStatement pstmt2 = null;
 		ResultSet rs2 = null;
 
 		try {
 			pstmt2 = conn.prepareStatement(sql2);
 			
-			// where mn_idx = ? -> where 뒤에 mn_idx 한개(1)만 있으니까 1 쓴거임. 물음표 자리에 아까 입력받은 menuNum이 들어감.
 			pstmt2.setInt(1, menuNum);
 
 			rs2 = pstmt2.executeQuery();
@@ -118,8 +118,6 @@ public class CategoryMenu {
 				System.out.println("-----------[ 제 품 정 보 ]----------");
 				System.out.println(rs2.getString(1));
 				
-//				CAL, CAFFEINE, CARBOHYDRATE, SUGAR, FAT, PROTEIN, NATRIUM
-//				칼로리, 카페인, 탄수화물. 당류. 지방, 단백질, 나트륨
 				
 				if(isFood) {
 					System.out.println("----------------------------------");
@@ -148,5 +146,11 @@ public class CategoryMenu {
 			OracleDB.close(rs2);
 		}
 	}
+	
+	
+	
+	
+	
+	
 
 }
