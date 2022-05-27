@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import common.db.OracleDB;
 import common.util.InputUtil;
 
-public class KshCheckOut {
+public class CheckOut {
 	
-	KshOrder ko = new KshOrder();
+	Order ko = new Order();
 	
 //	- 메뉴명, 수량, 추가옵션, 가격, 할인가격(쿠폰), 총합 금액 (vat 포함) 보여주기 
 //		1. 디비접근
@@ -50,7 +50,7 @@ public class KshCheckOut {
 		System.out.println(" ------------------------------------------- ");
 		System.out.print(String.format("%30s", "최종 결제금액") + " : ");
 		
-		KshOrder ko = new KshOrder();
+		Order ko = new Order();
 		System.out.println(String.format("%,7d", tPrice - ko.getCouval()) + " 원");
 		System.out.println(" ");
 		 
@@ -60,9 +60,13 @@ public class KshCheckOut {
 	
 	public int showDiscount() {
 		
-		KshOrder ko = new KshOrder();
+		Order ko = new Order();
 		
-		System.out.print(String.format("%30s", "할인 금액") + " : ");
+		System.out.print(String.format("%30s", "(쿠폰 할인)") + " : ");
+		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.print(String.format("%30s", "(스탬프 할인)") + " : ");
+		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.print(String.format("%30s", "총 할인 금액") + " : ");
 		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
 		return 0;
 		
@@ -70,7 +74,7 @@ public class KshCheckOut {
 	
 	public int getTotalPrice() {
 		
-		KshOrder ko = new KshOrder();
+		Order ko = new Order();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
@@ -101,7 +105,7 @@ public class KshCheckOut {
 		System.out.printf("\n");
 		
 		String proceed =  InputUtil.inputStr();
-			if(proceed.equalsIgnoreCase("y")) {
+			if("y".equalsIgnoreCase(proceed)) {
 				System.out.println("계산하시려면 결제금액을 입력해주세요.");
 			
 			}else {
@@ -111,11 +115,12 @@ public class KshCheckOut {
 		int tPrice = InputUtil.inputInt();
 			
 			if(tPrice == (getTotalPrice()-ko.getCouval())) {
-				System.out.println("계산이 완료되었습니다. 안녕히 가세요~");
+				System.out.println("계산이 완료되었습니다.");
 			}else {
 				System.out.println("다시 입력해주세요");
 			}
 			
+			collectStamp();
 			inputOrder();
 	}
 	
@@ -158,4 +163,12 @@ public class KshCheckOut {
 		}
 	
 	}
+	
+	public void collectStamp() {
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		
+	}
+	
 }
