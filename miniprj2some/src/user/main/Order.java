@@ -9,6 +9,7 @@ import java.sql.Statement;
 import common.db.OracleDB;
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
+import user.stamp.Stamp;
 
 public class Order {
 	
@@ -65,6 +66,33 @@ public static void showCart() {
 			getSum();
 			
 	}
+	
+	public void getItemPrice() {
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sqlPrice = "SELECT ITEM_PRICE FROM ORDER_ITEM";
+		
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				pstmt = conn.prepareStatement(sqlPrice);
+				rs = pstmt.executeQuery();
+				
+				int idx = 0;
+				
+				while(rs.next()) {
+					int price = rs.getInt("ITEM_PRICE");
+//					arr[idx] = price;
+//					idx++;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+				
+	}
+
 
 	public static void getSum() {
 		
@@ -104,43 +132,43 @@ public static void showCart() {
 		System.out.println("");
 		System.out.println("[1. 쿠폰 조회] [2. 스탬프 조회] [3. 계산] [4. 메뉴 다시 선택]");
 		
-		int chooseNo = InputUtil.inputInt();
+		int chooseNo = InputUtil.inputInt();	
 		
 		switch(chooseNo) {
 		case 1 : /*쿠폰조회 메소드*/ break;
-		case 2 : /*스탬프조회 메소드*/ break;
-		case 3 : CheckOut co = new CheckOut(); co.confirmOrder(); break;
+		case 2 : Stamp.showCustomersStamp(); break;
+		case 3 : CheckOut.confirmOrder(); break;
 		case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
 			default : System.out.println("다시 입력해주세요.");
 		}
 		
 	}
 	
-	public int getCouval() {
-		
-		int cVal = 0;
-		Connection conn = OracleDB.getOracleConnection();
-		
-		String sql = "SELECT VAL FROM COUVAR";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				cVal = rs.getInt("VAL");
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			OracleDB.close(conn);
-			OracleDB.close(pstmt);
-			OracleDB.close(rs);
-		}
-		return cVal;
-	}
+//	public int getCouval() {
+//		
+//		int cVal = 0;
+//		Connection conn = OracleDB.getOracleConnection();
+//		
+//		String sql = "SELECT VALUE FROM COU_VAR";
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			rs = pstmt.executeQuery();
+//			
+//			if(rs.next()) {
+//				cVal = rs.getInt("VALUE");
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			OracleDB.close(conn);
+//			OracleDB.close(pstmt);
+//			OracleDB.close(rs);
+//		}
+//		return cVal;
+//	}
 	
 
 	
