@@ -1,13 +1,5 @@
 package user.main;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import common.db.OracleDB;
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
 
@@ -16,9 +8,20 @@ public class UserMain {
 		
 		System.out.println("\n====== 사용자 프로그램에 접속하셨습니다 ======");
 		
-		CategoryMenu cm = new CategoryMenu();
-		cm.showCategory();
+		System.out.println("1. 메뉴보기");
+		System.out.println("0. 종료하기");
+		
+		boolean isexit = false;
+		while(!isexit) {
+			System.out.print("선택 : ");
+			int n = InputUtil.inputInt();
+			
+			switch(n) {
+				case 1 : new CategoryMenu().showCategory(); break;
+				case 0 : isexit = true; break;
+				default : System.out.println("번호를 잘못 입력하셨습니다.");
+			}
+		}  
 		
 	}
-
-}//class
+}
