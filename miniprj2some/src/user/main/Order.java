@@ -1,16 +1,13 @@
 package user.main;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
-import manager.menu.MenuManager;
 import user.menu.CategoryMenu;
 
 public class Order {

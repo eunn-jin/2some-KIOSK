@@ -44,7 +44,7 @@ public class MembershipHub {
 		case 0 : whatIsStamp(); break;
 		case 1 : System.out.println("내 정보 조회를 선택하셨습니다."); Stamp.showCustomersStamp(); break;
 		case 2 : System.out.println("스탬프 사용을 선택하셨습니다."); Stamp.useStamp(); break;
-		case 3 : System.out.println("바로결제를 선택하셨습니다."); user.main.Order.confirmOrder(); break;
+		case 3 : System.out.println("바로결제를 선택하셨습니다."); user.main.CheckOut.confirmOrder(); break;
 		case 4 : System.out.println("뒤로가기를 선택하셨습니다."); CustomerHub.plaitLoginJoin(); break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
 		}
