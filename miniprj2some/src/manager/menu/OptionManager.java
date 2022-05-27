@@ -109,24 +109,30 @@ public class OptionManager {
 				+ "WHERE M.MN_IDX = ?"
 				+ "ORDER BY ROWNUM"; 
 		
+			
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, menuNum);
 			rs = pstmt.executeQuery();
 			
-			int mIdx = rs.getInt("MN_IDX");
-			System.out.println("----------" +  mIdx + "----------");	
+			String opName = null;
+			System.out.println("-------현재 존재하는 옵션-------");
 			while(rs.next()) {
 				int rownum = rs.getInt("ROWNUM");
-			   String opName = rs.getString("ADI_OPT_NAME AS");
-			   System.out.println(rownum + ". " + opName);
-		   }
-			System.out.println();
+				 opName = rs.getString("옵션명");
+			    System.out.println(rownum + ". " + opName);
+		    }
 			System.out.println("----------------------------");
-			System.out.println("[옵션수정] 번호를 입력하시오");
-			System.out.println("[뒤로가기] 1111 을 입력하시오");
+			
+			
+			
+			System.out.println("[옵션추가]");
+			System.out.println("현재 존재하지 않는 옵션 번호를 선택하시오");
+			System.out.println("[옵션삭제]");
+			System.out.println("현재 존재하는 옵션 번호를 선택하시오");
 			System.out.print("입력 : ");		
 			int optionNum = InputUtil.sc.nextInt();
 			System.out.println();
@@ -143,20 +149,14 @@ public class OptionManager {
 			OracleDB.close(rs);
 		}
 		
+
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	}
+	
+	
+	public void plus(int categoryNum, int optionNum) {
 		
 		
 		
@@ -168,9 +168,9 @@ public class OptionManager {
 	}
 	
 	
-	
-	
-	
+	public void delete() {
+		
+	}
 	
 
 }
