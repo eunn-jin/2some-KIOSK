@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import user.stamp.MembershipHub;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
@@ -20,11 +21,25 @@ public class Customer {
 	 private String birthDay = "";
 	 public static int loginCustomerNo = 0;
 	 public static int keepStamp =0;
+	 public static String customersName = "";
 	
 	public static boolean login() {
 		
 		int cnt = 0;
 		boolean bl = true;
+		
+		
+		if (loginCustomerNo != 0) {
+			sleepThread();
+			
+			System.out.println("");
+			System.out.println("이미 접속한 계정입니다.");
+			System.out.println(customersName + "님의 마이 멤버쉽 페이지로 이동합니다.");
+			System.out.println("");
+			sleepThread2();
+			
+			MembershipHub.plaitCustomersStamp();
+		}
 		
 		sleepThread();
 		
@@ -75,7 +90,7 @@ public class Customer {
 		
 		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
-		String sql = "SELECT NO, PHONE, STAMP FROM CUSTOMER WHERE NAME = ? AND BIRTH = ? ";
+		String sql = "SELECT NO, PHONE, STAMP, NAME FROM CUSTOMER WHERE NAME = ? AND BIRTH = ? ";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -90,11 +105,13 @@ public class Customer {
 				String dbPhone = rs.getString("PHONE");
 				int dbNo = rs.getInt("NO");
 				int dbStamp = rs.getInt("STAMP");
+				String dbName = rs.getString("NAME");
 				
 				if(dbPhone.equals(phone)) {
 					
 					loginCustomerNo = dbNo;
 					keepStamp = dbStamp;
+					customersName = dbName;
 					sleepThread();
 					
 					System.out.println("");

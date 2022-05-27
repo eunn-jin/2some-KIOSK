@@ -45,7 +45,8 @@ public class Stamp {
 			Timestamp enroll = rs.getTimestamp("ENROLL");
 			
 			System.out.println("");
-			System.out.println("======고객정보=====");
+			System.out.println("======"+Customer.customersName+"님의 정보======");
+			System.out.println("");
 			System.out.print("이름 : ");
 			System.out.println(name);
 			System.out.print("전화번호 : ");
@@ -56,6 +57,7 @@ public class Stamp {
 			System.out.println(birth);
 			System.out.print("가입일자 : ");
 			System.out.println(enroll);
+			System.out.println("=====================");
 			
 			}
 			
@@ -83,7 +85,7 @@ public class Stamp {
 			Customer.sleepThread();
 			System.out.println("죄송합니다. 고객님의 스탬프는 " + Customer.keepStamp + "개 입니다.");
 			System.out.println("해당 기능은 스탬프를 10개 이상 가지고 있을 때 사용 가능합니다.");
-			Customer.sleepThread();
+			Customer.sleepThread2();
 			System.out.println("마이 멤버쉽 페이지로 이동합니다..");
 			return;
 		}
