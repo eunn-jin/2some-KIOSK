@@ -14,8 +14,6 @@ import common.util.InputUtil;
 
 public class MenuManager {
 	
-	//뒤로가기 제외하고 완성 (꼼꼼하게 test 필요)
-	
 	
 	//카테고리 보여줌
 	public void showCategory() {
@@ -29,17 +27,20 @@ public class MenuManager {
 		System.out.println();
 		System.out.println("카테고리를 선택하시오");
 		System.out.print("카테고리 번호 : ");
-		int categoryNum = InputUtil.sc.nextInt();
+		int categoryNum = InputUtil.inputInt();
 		System.out.println();
 		System.out.println("----------------------------");
 		System.out.println();
-				
-		if(categoryNum == 0) {
+		
+		if(categoryNum > 0 && categoryNum < 4) {
+			showMenu(categoryNum);
+		} else if(categoryNum == 0) {
 			//뒤로가기
 		} else if(categoryNum != 1 && categoryNum != 2 && categoryNum != 3) {
 			System.out.println("올바른 번호를 입력하시오");
+			showCategory();
 		}
-		showMenu(categoryNum);
+		
 	}
 	
 
@@ -72,17 +73,19 @@ public class MenuManager {
 			System.out.println("----------------------------");
 			System.out.println("[메뉴추가] 00 을 입력하시오");
 			System.out.println("[메뉴수정] 메뉴 번호를 입력하시오");
-			System.out.print("입력 : ");
-			
+			System.out.println("[뒤로가기] 1111 을 입력하시오");
+			System.out.print("입력 : ");		
 			int menuNum = InputUtil.sc.nextInt();
 			System.out.println();
 			System.out.println();
 			
 			if(menuNum == 00) {
 				plus(categoryNum, menuNum); //메뉴추가 페이지로 이동
+			} else if(menuNum == 1111) {
+				showCategory();
 			} else if(mnIdxSet.contains(menuNum)){
 				showDetail(menuNum, categoryNum);//해당 메뉴 수정 페이지로 이동
-			} else {
+			}  else {
 				System.out.print("메뉴 번호를 다시 입력하세요");
 				showMenu(categoryNum);
 			}
@@ -104,8 +107,8 @@ public class MenuManager {
 		
 		System.out.println("---------- 메뉴 추가 ----------");		
 		System.out.println();
-		InputUtil.inputStr();
 		System.out.print("1. 상품 명 : ");
+		InputUtil.sc.nextLine();
 		String mName = InputUtil.inputStr();
 		System.out.print("2. 가격 : ");
 		int mPrice = InputUtil.inputInt();
@@ -128,9 +131,17 @@ public class MenuManager {
 				pstmt.setString(4, mDetail);
 				int r = pstmt.executeUpdate();
 				
-				System.out.println();
-				System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
-				System.out.println();
+				if(r == 1 ) {
+					System.out.println();
+					System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
+					System.out.println();
+					
+					
+				} else {
+					System.out.println();
+					System.out.println("   [ 메뉴 등록이 실패하였습니다 ]   ");
+					System.out.println();
+				}
 				
 				showMenu(categoryNum);
 				
@@ -178,16 +189,17 @@ public class MenuManager {
 				int r = pstmt.executeUpdate();
 				
 				if(r == 1 ) {
-				System.out.println();
-				System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
-				System.out.println();
-				
-				showMenu(categoryNum);
+					System.out.println();
+					System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
+					System.out.println();
+					
+
 				} else {
 					System.out.println();
 					System.out.println("   [ 메뉴 등록이 실패하였습니다 ]   ");
 					System.out.println();
 				}
+				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
 				System.out.println("SQL 예외 발생 - plus");
@@ -199,6 +211,7 @@ public class MenuManager {
 			
 		} else {
 				System.out.println("올바른 번호를 입력하시오");
+				plus(categoryNum, menuNum);
 		}
 		
 	}
@@ -249,6 +262,7 @@ public class MenuManager {
 				   System.out.println("10. 나트륨 : " + nat);
 			   }
 			   System.out.println("9999. 상품 삭제");
+			   System.out.println("[뒤로가기] 0 을 입력하시오");
 			   
 			   System.out.print("수정할 정보 번호 입력 : ");
 			   int detailNum = InputUtil.inputInt();
@@ -257,8 +271,11 @@ public class MenuManager {
 					delete(categoryNum, menuNum, detailNum);
 				} else if(detailNum > 0 && detailNum < 11) {
 					update(categoryNum, menuNum, detailNum);
+				} else if (detailNum == 0) {
+					showMenu(categoryNum);
 				} else {
 					System.out.println("올바른 번호를 입력하시오");
+					showDetail(menuNum, categoryNum);
 				}
 						
 			}
