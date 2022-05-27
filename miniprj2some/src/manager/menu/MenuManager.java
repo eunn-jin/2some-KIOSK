@@ -11,6 +11,7 @@ import common.db.OracleDB;
 import common.util.InputUtil;
 
 
+// MenuManager 객체 생성하고 showCategory 메소드만 호출하면 메뉴관리 돌아감
 
 public class MenuManager {
 	
@@ -120,8 +121,8 @@ public class MenuManager {
 		
 		//1, 2번 카테고리는 아래 상세 포함 insert
 		if(categoryNum == 3) {
-			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL"
-					+ "VALUES(MENU_IDX_SEQ,?,?,?,?)";
+			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL "
+					+ "VALUES(MENU_IDX_SEQ.NEXTVAL,?,?,?,?)";
 		
 			try {
 				pstmt = conn.prepareStatement(sql);
@@ -131,18 +132,15 @@ public class MenuManager {
 				pstmt.setString(4, mDetail);
 				int r = pstmt.executeUpdate();
 				
-				if(r == 1 ) {
+				if(r == 1) {
 					System.out.println();
 					System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
 					System.out.println();
-					
-					
 				} else {
 					System.out.println();
 					System.out.println("   [ 메뉴 등록이 실패하였습니다 ]   ");
 					System.out.println();
 				}
-				
 				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
@@ -188,15 +186,13 @@ public class MenuManager {
 				pstmt.setInt(11, nat);
 				int r = pstmt.executeUpdate();
 				
-				if(r == 1 ) {
+				if(r == 1) {
 					System.out.println();
-					System.out.println("   [ 메뉴 등록이 완료되었습니다 ]   ");
+					System.out.println("   [ 메뉴 등록 완료되었습니다 ]   ");
 					System.out.println();
-					
-
 				} else {
 					System.out.println();
-					System.out.println("   [ 메뉴 등록이 실패하였습니다 ]   ");
+					System.out.println("   [ 메뉴 등록 실패하였습니다 ]   ");
 					System.out.println();
 				}
 				showMenu(categoryNum);
