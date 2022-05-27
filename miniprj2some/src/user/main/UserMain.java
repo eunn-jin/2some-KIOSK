@@ -6,13 +6,12 @@ import user.menu.CategoryMenu;
 public class UserMain {
 	public static void userMain() {
 		
-		System.out.println("\n====== 사용자 프로그램에 접속하셨습니다 ======");
-		
-		System.out.println("1. 메뉴보기");
-		System.out.println("0. 종료하기");
-		
 		boolean isexit = false;
 		while(!isexit) {
+			System.out.println("\n====== 사용자 프로그램 메인 화면 ======");
+			System.out.println("1. 메뉴보기");
+			System.out.println("0. 종료하기");
+			
 			System.out.print("선택 : ");
 			int n = InputUtil.inputInt();
 			
