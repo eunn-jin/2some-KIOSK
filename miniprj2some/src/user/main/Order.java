@@ -12,6 +12,7 @@ import common.db.OracleDB;
 import common.util.InputUtil;
 import manager.menu.MenuManager;
 import user.menu.CategoryMenu;
+import user.point.PointHub;
 
 public class Order {
 	
@@ -105,18 +106,18 @@ public void showCart() {
 		System.out.println("");
 		System.out.println(" ============================================= ");
 		System.out.println("");
-		System.out.println("결제하시려면 \"Y\", 메뉴를 다시 고르시려면 \"N\"을 입력해주세요");
+		System.out.println("[1. 쿠폰 조회] [2. 스탬프 조회] [3. 계산] [4. 메뉴 다시 선택]");
 		
-		String checkYn = InputUtil.inputStr();
-		if(checkYn.equalsIgnoreCase("Y")) {
-			CheckOut co = new CheckOut();
-			co.confirmOrder();
-//			inputOrder();
-		}else {
-//			'메뉴'로 돌아가기
-			CategoryMenu cMenu = new CategoryMenu();
-				cMenu.showCategory();
+		int chooseNo = InputUtil.inputInt();
+		
+		switch(chooseNo) {
+		case 1 : /*쿠폰조회 메소드*/ break;
+		case 2 : PointHub.plaitCustomersPoint(); break;
+		case 3 : CheckOut co = new CheckOut(); co.confirmOrder(); break;
+		case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
+			default : System.out.println("다시 입력해주세요.");
 		}
+		
 	}
 	
 	public int getCouval() {
@@ -124,7 +125,7 @@ public void showCart() {
 		int cVal = 0;
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT LPAD(VAL,10,'0') AS V FROM COUVAR";
+		String sql = "SELECT VAL FROM COUVAR";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -132,7 +133,7 @@ public void showCart() {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				cVal = rs.getInt("V");
+				cVal = rs.getInt("VAL");
 			}
 			
 		} catch (SQLException e) {

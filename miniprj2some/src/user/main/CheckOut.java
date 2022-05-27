@@ -62,7 +62,11 @@ public class CheckOut {
 		
 		Order ko = new Order();
 		
-		System.out.print(String.format("%30s", "할인 금액") + " : ");
+		System.out.print(String.format("%30s", "(쿠폰 할인)") + " : ");
+		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.print(String.format("%30s", "(스탬프 할인)") + " : ");
+		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.print(String.format("%30s", "총 할인 금액") + " : ");
 		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
 		return 0;
 		
@@ -101,7 +105,7 @@ public class CheckOut {
 		System.out.printf("\n");
 		
 		String proceed =  InputUtil.inputStr();
-			if(proceed.equalsIgnoreCase("y")) {
+			if("y".equalsIgnoreCase(proceed)) {
 				System.out.println("계산하시려면 결제금액을 입력해주세요.");
 			
 			}else {
@@ -111,11 +115,12 @@ public class CheckOut {
 		int tPrice = InputUtil.inputInt();
 			
 			if(tPrice == (getTotalPrice()-ko.getCouval())) {
-				System.out.println("계산이 완료되었습니다. 안녕히 가세요~");
+				System.out.println("계산이 완료되었습니다.");
 			}else {
 				System.out.println("다시 입력해주세요");
 			}
 			
+			collectStamp();
 			inputOrder();
 	}
 	
@@ -158,4 +163,12 @@ public class CheckOut {
 		}
 	
 	}
+	
+	public void collectStamp() {
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		
+	}
+	
 }
