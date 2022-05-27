@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import user.stamp.MembershipHub;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
@@ -17,26 +18,51 @@ public class Customer {
 	
 	 private String name = "";
 	 private String phone = "";
-	 public static int loginCustomerNo;
+	 private String birthDay = "";
+	 public static int loginCustomerNo = 0;
+	 public static int keepStamp =0;
+	 public static String customersName = "";
 	
 	public static boolean login() {
 		
 		int cnt = 0;
 		boolean bl = true;
 		
+		
+		if (loginCustomerNo != 0) {
+			sleepThread();
+			
+			System.out.println("");
+			System.out.println("이미 접속한 계정입니다.");
+			System.out.println(customersName + "님의 마이 멤버쉽 페이지로 이동합니다.");
+			System.out.println("");
+			sleepThread2();
+			
+			MembershipHub.plaitCustomersStamp();
+		}
+		
 		sleepThread();
 		
-		System.out.println("============");
-		System.out.println("====로그인====");
-		System.out.println("============");
+		System.out.println("");
+		
+		System.out.println("======================");
+		System.out.println("=========로그인=========");
 		
 		sleepThread();
 		
+		System.out.println("");
 		System.out.println("로그인 페이지입니다.");
-		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리를 차례대로 입력해주시길 바랍니다.");
+		
+		sleepThread();
+		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리,");
+		sleepThread();
+		System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8자리(yyyy/mm/dd)를 입력하여 주시길 바랍니다.");
+		sleepThread();
 		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 뒤로가기를 입력하여 주시길 바랍니다.");
 		
 		sleepThread();
+		
+		System.out.println("");
 		
 		
 		while(bl) {
@@ -52,6 +78,9 @@ public class Customer {
 		System.out.print("전화번호 : ");
 		String phone = InputUtil.sc.nextLine().trim();
 		
+		System.out.print("생년월일 : ");
+		String birthDay = InputUtil.sc.nextLine().trim();
+		
 		
 		
 		
@@ -61,7 +90,7 @@ public class Customer {
 		
 		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
-		String sql = "SELECT PHONE FROM CUSTOMER WHERE NAME = ? ";
+		String sql = "SELECT NO, PHONE, STAMP, NAME FROM CUSTOMER WHERE NAME = ? AND BIRTH = ? ";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -69,29 +98,32 @@ public class Customer {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
+			pstmt.setString(2, birthDay);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				String dbPhone = rs.getString(1);
-//				int no = rs.getInt("NO");
+				String dbPhone = rs.getString("PHONE");
+				int dbNo = rs.getInt("NO");
+				int dbStamp = rs.getInt("STAMP");
+				String dbName = rs.getString("NAME");
 				
 				if(dbPhone.equals(phone)) {
 					
-//					loginCustomerNo = no;
-//					System.out.println(loginCustomerNo);
+					loginCustomerNo = dbNo;
+					keepStamp = dbStamp;
+					customersName = dbName;
 					sleepThread();
 					
+					System.out.println("");
+					System.out.println("=======================");
+					System.out.println("");
+					System.out.println("안녕하세요." + name + "님.");
 					System.out.println("로그인 성공하였습니다.");
 					System.out.println("마이 멤버쉽 페이지로 이동합니다.");
-					
+					System.out.println("");
 					sleepThread();
 					
-					user.point.PointHub.plaitCustomersPoint();
-//					while(true) {
-//					join();
-//					}
-					
-//					sleepThread();
+					user.stamp.MembershipHub.plaitCustomersStamp();
 				}
 			}
 		} catch (SQLException e) {
@@ -113,6 +145,7 @@ public class Customer {
 		}
 		
 		System.out.println("로그인에 3회 실패하였습니다.");
+		System.out.println("회원가입 페이지로 이동합니다.");
 		join();
 		return false;
 		
@@ -126,15 +159,24 @@ public class Customer {
 		int cnt = 0;
 		boolean bl = true;
 		
+		System.out.println("");
+		
 		System.out.println("2some 포인트맴버쉽 회원가입 페이지입니다.");
 		sleepThread();
 		System.out.println("고객님을 환영합니다.");
 		sleepThread();
-		System.out.println("====회원가입====");
-		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리를 차례대로 입력해주시길 바랍니다.");
+		System.out.println("");
+		System.out.println("======================");
+		System.out.println("========회원가입========");
+		
+		sleepThread();
+		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리");
+		sleepThread();
+		System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8자리(yyyy/mm/dd)를 차례대로 입력해주시길 바랍니다.");
+		sleepThread();
 		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 뒤로가기를 입력하여 주시길 바랍니다.");
 		sleepThread();
-		
+		System.out.println("");
 		
 		while(bl) {
 		System.out.print("이름 : ");
@@ -147,6 +189,9 @@ public class Customer {
 		
 		System.out.print("전화번호 : ");
 		String phone = InputUtil.sc.nextLine().trim();
+		
+		System.out.print("생년월일 : ");
+		String birthDay = InputUtil.sc.nextLine().trim();
 		
 		//전화번호 유효성 검사 (db 접속 필요 x)
 		
@@ -169,6 +214,18 @@ public class Customer {
 			System.out.println("성함은 한글이름으로 적어주시길 바랍니다.");
 			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
 			return false;
+		} 
+		if(birthDay.length() != 10) {
+			sleepThread();
+			System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
+			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
+			return false;
+			
+		} else if(validationDate(birthDay) == false) {
+			sleepThread();
+			System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
+			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
+			return false;
 		}
 
 			
@@ -181,10 +238,11 @@ public class Customer {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-			String sql = "SELECT * FROM CUSTOMER WHERE PHONE = ?";
+			String sql = "SELECT * FROM CUSTOMER WHERE PHONE = ? AND BIRTH = ?";
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, phone);
+				pstmt.setString(2, birthDay);
 				rs = pstmt.executeQuery();
 				
 				if(rs.next()) {
@@ -193,77 +251,25 @@ public class Customer {
 				}
 				
 				String sqlInsert
-				= "INSERT INTO CUSTOMER(NO,NAME,PHONE)"
-					+ "VALUES(CUSTOMER_NO_SEQ.NEXTVAL,?,?)";
+				= "INSERT INTO CUSTOMER(NO,NAME,PHONE,BIRTH)"
+					+ "VALUES(CUSTOMER_NO_SEQ.NEXTVAL,?,?,?)";
 				PreparedStatement pstmt2 = conn.prepareStatement(sqlInsert);
 				pstmt2.setString(1, name);
 				pstmt2.setString(2, phone);
+				pstmt2.setString(3, birthDay);
 				int result = pstmt2.executeUpdate();
 				
 				
 				if (result ==1 ) {
 					System.out.println("회원가입에 성공하였습니다.");
 					sleepThread();
-					System.out.println("추가로 고객님의 생년월일을 입력하실려면 1번을,");
-					System.out.println("로그인으로 이동하려면 1번을 제외한 키를 입력하시길 바랍니다.");
-					
-					int numnum = InputUtil.inputInt();
-					if(numnum == 1) {
-						
-						sleepThread();
-						System.out.println("1번을 선택하셨습니다.");
-						sleepThread();
-						System.out.println("슬래쉬(/)를 포함하여 고객님의 생일 8자리를 입력하여 주시길 바랍니다.");
-						System.out.println("예시 : 1996/07/30");
-						System.out.print("생년월일 : " );
-						String birth = InputUtil.sc.nextLine().trim();
-						
-						if(birth.length() != 10) {
-							sleepThread();
-							System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
-							
-							return false;
-						} else if(validationDate(birth) == false) {
-							sleepThread();
-							System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
-							return false;
-						}
-						
-//						UPDATE CUSTOMER SET BIRTH = '19960730' WHERE PHONE = '010-8602-4278';
-						String sqlInsert2
-						= "UPDATE CUSTOMER SET BIRTH = TO_DATE(?,'YYYY/MM/DD')"
-							+ "WHERE PHONE = ?";
-						PreparedStatement pstmt3 = conn.prepareStatement(sqlInsert2);
-						pstmt3.setString(1, birth);
-						pstmt3.setString(2, phone);
-						int result2 = pstmt3.executeUpdate();
-						
-						if (result2 ==1 ) {
-							System.out.println("고객님의 생년월일을 입력을 완료했습니다..");
-							sleepThread();
-							System.out.println("로그인 페이지으로 이동합니다.");
-							sleepThread();
-							login();
-						}
-						
-						System.out.println("고객님의 생년월일 입력을 실패하였습니다. ");
-						sleepThread();
-						System.out.println("다음번에 다시 시도해주시길 바랍니다.");
-						sleepThread();
-						System.out.println("로그인 페이지으로 이동합니다.");
-						sleepThread();
-						login();
-						
-					}
-					
-					else { 
-						System.out.println("로그인 페이지으로 이동합니다.");
-						sleepThread();
-						login();
-					}
+					System.out.println("로그인 페이지으로 이동합니다.");
+					sleepThread();
+					login();
 				}
-				
-			} catch (SQLException e) {
+						
+			}
+			 catch (SQLException e) {
 				System.out.println("죄송합니다. 서버와 연결이 끊겼습니다.");
 				System.out.println("입력하신 정보가 옳바른 것인지 확인 부탁드립니다.");
 			} finally {
@@ -272,7 +278,7 @@ public class Customer {
 				OracleDB.close(rs);
 			}
 			
-			sleepThread2();
+			sleepThread();
 			System.out.println("회원가입에 실패하였습니다. 계속 시도하시려면 1번, 바로 결제하시려면 2번을 선택해주세요.");
 			sleepThread();
 			System.out.println("1번 : 계속 시도, 2번 : 바로 결제");
@@ -313,6 +319,10 @@ public class Customer {
 	
 	public static void sleepThread2() {
 		try {Thread.currentThread().sleep(2000);} catch (InterruptedException e) {System.out.println("sleep 중 예외 발생!!");}
+	}
+	
+	public static void sleepThread3() {
+		try {Thread.currentThread().sleep(3000);} catch (InterruptedException e) {System.out.println("sleep 중 예외 발생!!");}
 	}
 	
 	public static boolean validPhoneNumber(String number) {
