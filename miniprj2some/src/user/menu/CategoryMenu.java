@@ -26,6 +26,8 @@ public class CategoryMenu {
 
 			System.out.println("==========[ 카 테 고 리 ]===========");
 
+			// 나중에 공부할 때 보기 쉬우라고 주석 달았음. 혹시나 까먹을까봐 (혼자 주절주절..)
+			// rs.getInt(1): 첫번째인 CATEGORY_IDX가 쫘르륵. // rs.getString(2): 두번째인 CATEGORY_NAME이 쫘르륵.
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + ". " + rs.getString(2));    
 			}
@@ -52,6 +54,8 @@ public class CategoryMenu {
 
 		Connection conn = OracleDB.getOracleConnection();
 
+		// menu 테이블에서 mn_idx, mn_name을 조회할거임. category_idx가 ?인 부분 중에서.
+		// ? 에 들어가는 부분은 밑에 있는 try문 안에 있는 pstmt2.setInt(1, categoryNum);에서 해결할거임.
 		String sql2 = "select mn_idx, mn_name from menu where category_idx = ? ";
 
 		PreparedStatement pstmt2 = null;
@@ -60,6 +64,7 @@ public class CategoryMenu {
 		try {
 			pstmt2 = conn.prepareStatement(sql2);
 			
+			// where category_idx = ? -> where 뒤에 category_idx 한개(1)만 있으니까 1 쓴거임. 물음표 자리에 아까 입력받은 categoryNum이 들어감.
 			pstmt2.setInt(1, categoryNum);   
 
 			rs2 = pstmt2.executeQuery();
@@ -76,6 +81,7 @@ public class CategoryMenu {
 			
 			int menuNum = InputUtil.inputInt();
 			
+			// 아까 입력받은 categoryNum이 3이 아닌 경우만! -> 1: DRINK, 2: FOOD만 해당.
 			boolean isFood = (categoryNum != 3);
 			
 			// 디테일 메소드 연결
@@ -103,6 +109,7 @@ public class CategoryMenu {
 		try {
 			pstmt2 = conn.prepareStatement(sql2);
 			
+			// where mn_idx = ? -> where 뒤에 mn_idx 한개(1)만 있으니까 1 쓴거임. 물음표 자리에 아까 입력받은 menuNum이 들어감.
 			pstmt2.setInt(1, menuNum);
 
 			rs2 = pstmt2.executeQuery();
