@@ -27,11 +27,11 @@ public class MembershipHub {
 		Customer.sleepThread();
 		System.out.println("");
 		System.out.println("==========================");
-		System.out.println("======[0. 스탬프란?  ]======="); //완료
+		System.out.println("======[0. 스탬프란?  ]======="); 
 		System.out.println("======[1.내 정보 조회 ]======");
 		System.out.println("======[2. 스탬프 사용 ]======");
-		System.out.println("======[3. 바로 결제  ]======"); //추후
-		System.out.println("======[4. 뒤로 가기  ]======"); //완료
+		System.out.println("======[3. 바로 결제  ]======"); 
+		System.out.println("======[4. 뒤로 가기  ]======"); 
 		System.out.println("==========================");
 		System.out.println("");
 		
@@ -47,13 +47,10 @@ public class MembershipHub {
 		case 3 : System.out.println("바로결제를 선택하셨습니다."); user.main.CheckOut.confirmOrder(); break;
 		case 4 : System.out.println("뒤로가기를 선택하셨습니다."); CustomerHub.plaitLoginJoin(); break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
-		}
 		
+			}
 		}
-		
 	}
-	
-	
 		public static void whatIsStamp() {
 			
 			Customer.sleepThread();

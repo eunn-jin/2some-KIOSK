@@ -68,19 +68,19 @@ public class Stamp {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
 				OracleDB.close(rs);
-				
-			
 			}
-		
-
 		
 	}
 	
 	public static void useStamp() {
 		
+		
+		//로그인이 된 사용자만 접근가능
 		if(Customer.loginCustomerNo == 0) {
 			System.out.println("비정상적인 접근입니다. 로그인 후 이용해주시길 바랍니다.");
 			CustomerHub.plaitLoginJoin();
+			
+		//스탬프가 10개 미만인 사용자는 접근 불가
 		} else if (Customer.keepStamp < 10) {
 			System.out.println("");
 			Customer.sleepThread();
@@ -91,6 +91,7 @@ public class Stamp {
 			return;
 		}
 		
+		//안내문
 		Customer.sleepThread();
 		System.out.println("");
 		System.out.println("");
@@ -102,39 +103,96 @@ public class Stamp {
 		System.out.println("스탬프는 10개 이상 가지고 있을 때 사용 가능하며,");
 		Customer.sleepThread();
 		System.out.println("스탬프는 사용할 때마다 10개를 차감한 뒤 총 금액에서 1,000원을 할인해드립니다.");
-		System.out.println("");
 		Customer.sleepThread();
 		System.out.println("스탬프 할인은 결제 1회당 1번 사용 가능하므로, 이 점 유의하시길 바랍니다.");
 		Customer.sleepThread();
-		
-		System.out.println("");
 		System.out.println("스탬프를 사용하시려면 1번, 뒤로 가기를 선택하시려면 2번을 눌러주세요.");
 		System.out.println("");
 		
-		int selectUseStamp = common.util.InputUtil.inputInt();
+		//1 입력 시 스탬프 사용, 2 입력 시 뒤로가기(마이 멤버쉽 페이지)
+		int select = common.util.InputUtil.inputInt();
 		
-		if(selectUseStamp == 1) {
-			usingStamp = 1;
-			/*
-			 * 스탬프 사용 및 db 업데이트.
-			 */
-			System.out.println("");
-			Customer.sleepThread();
-			System.out.println("스탬프 사용을 선택하셨습니다.");
-			System.out.println("스탬프 10개를 사용하였습니다.");
-			Customer.sleepThread();
-			System.out.println("총 결제액의 1,000원이 할인되었습니다.");
+		if(select == 1) {
 			
-			Customer.sleepThread();
+			Connection conn = common.db.OracleDB.getOracleConnection();
 			
-			System.out.println("추가 할인을 위해 쿠폰을 사용하시려면 1번, 바로 결제하기를 원하신다면 2번을 눌러주세요.");
-			System.out.println("");
-			InputUtil.inputInt();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 			
+//			UPDATE CUSTOMER SET STAMP =STAMP+1 WHERE NO = 15;
 			
+			//NO를 통해 조회 후 STAMP 10개 차감
+			String sql = "UPDATE CUSTOMER SET STAMP = STAMP-10 WHERE NO = ?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, Customer.loginCustomerNo);
+				int result = pstmt.executeUpdate();
+				
+				if (result == 1 ) {
+					
+					//성공 메시지 출력 시 
+					//스탬프 사용함을 증명
+					usingStamp = 1;
+					
+					System.out.println("");
+					Customer.sleepThread();
+					System.out.println("스탬프 사용을 선택하셨습니다.");
+					System.out.println("스탬프 10개를 사용하였습니다.");
+					Customer.sleepThread();
+					System.out.println("");
+					
+					Customer.sleepThread();
+					System.out.println("총 결제액의 1,000원이 할인되었습니다.");
+					
+					Customer.sleepThread();
+					
+					System.out.println("");
+					System.out.println("추가 할인을 위해 쿠폰을 사용하시려면 1번, 바로 결제하기를 원하신다면 2번을 눌러주세요.");
+					System.out.println("");
+					int qCoupon = InputUtil.inputInt();
+					
+					//1번 선택 시 할인쿠폰 사용, 2번 선택 시 바로 결제창으로 이동
+					if (qCoupon == 1) {
+						
+						Customer.sleepThread();
+						
+						System.out.println("할인쿠폰등록을 선택하셨습니다.");
+						System.out.println("할인쿠폰 허브페이지로 이동합니다.");
+						
+						Customer.sleepThread();
+						
+						user.coupon.CouponHub.accessCouponHub();
+						return;
+						
+					} else if (qCoupon == 2) {
+						
+						System.out.println("바로결제를 선택하셨습니다.");
+						Customer.sleepThread();
+						System.out.println("결제 페이지로 이동합니다.");
+						
+						user.main.CheckOut.confirmOrder();
+						return;
+					}
+					
+				} else {
+					System.out.println("할인적용이 실패하였습니다.");
+					System.out.println("다시 시도하시길 바랍니다.");
+					return;
+				}
+						
+			}
+			 catch (SQLException e) {
+				System.out.println("죄송합니다. 서버와 연결이 끊겼습니다.");
+				System.out.println("입력하신 정보가 옳바른 것인지 확인 부탁드립니다.");
+				return;
+			} finally {
+				OracleDB.close(conn);
+				OracleDB.close(pstmt);
+				OracleDB.close(rs);
+			}
 			
-			
-		} else if (selectUseStamp == 2) {
+			//2번 - 뒤로가기
+		} else if (select == 2) {
 			
 			System.out.println("뒤로가기를 선택하셨습니다.");
 			Customer.sleepThread();
@@ -143,7 +201,6 @@ public class Stamp {
 			return;
 			
 		} else {
-			
 			System.out.println("잘못된 번호입니다. 다시 시도해주시길 바랍니다.");
 			return;
 		}
