@@ -117,7 +117,7 @@ public class ManagerLogin {
 		
 	}
 	
-	public boolean logout() {
+	public boolean logout() {	//이렇게 삭제하면 내가 로그인 한 아이디가 아닌 다른 아이디로 로그아웃도 가능할텐데요...
 		System.out.println("=====로그아웃=====");
 		System.out.print("이름 : ");
 		String name = InputUtil.sc.nextLine();
@@ -149,6 +149,8 @@ public class ManagerLogin {
 			OracleDB.close(pstmt);
 			OracleDB.close(rs);
 		}
+		
+		ManagerMain.successLogin = false;
 		
 		return false;
 		

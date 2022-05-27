@@ -6,9 +6,9 @@ import manager.analysis.ProductRank;
 
 public class ManagerMain {
 
+	public static boolean successLogin = false;
 	public static void managerMain() {
 		
-		boolean successLogin = false;
 		boolean isExit = false;
 		while(!isExit) {
 			System.out.println("\n====== 관리자 프로그램 메인 화면 ======");
@@ -29,8 +29,6 @@ public class ManagerMain {
 			}
 		}  
 	}
-	
-	public static void managerStart() {	}
 	
 	public static void managerHome() {
 		System.out.println("===================");
