@@ -13,7 +13,7 @@ import common.util.InputUtil;
 import manager.menu.MenuManager;
 import user.menu.CategoryMenu;
 
-public class KshOrder {
+public class Order {
 	
 //	1. 디비접근
 	
@@ -109,7 +109,7 @@ public void showCart() {
 		
 		String checkYn = InputUtil.inputStr();
 		if(checkYn.equalsIgnoreCase("Y")) {
-			KshCheckOut co = new KshCheckOut();
+			CheckOut co = new CheckOut();
 			co.confirmOrder();
 //			inputOrder();
 		}else {
