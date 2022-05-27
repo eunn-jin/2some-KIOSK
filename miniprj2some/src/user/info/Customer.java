@@ -34,15 +34,26 @@ public class Customer {
 		
 		System.out.println("로그인 페이지입니다.");
 		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리를 차례대로 입력해주시길 바랍니다.");
+		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 뒤로가기를 입력하여 주시길 바랍니다.");
 		
 		sleepThread();
+		
 		
 		while(bl) {
 		
 		System.out.print("이름 : ");
 		String name = InputUtil.sc.nextLine().trim();
+		
+		if(name.equals("뒤로가기")) {
+			System.out.println("뒤로가기를 입력하셨습니다.");
+			return true;
+		}
+		
 		System.out.print("전화번호 : ");
 		String phone = InputUtil.sc.nextLine().trim();
+		
+		
+		
 		
 		//DB 연결 얻기 
 		
@@ -112,12 +123,19 @@ public class Customer {
 		sleepThread();
 		System.out.println("====회원가입====");
 		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리를 차례대로 입력해주시길 바랍니다.");
+		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 뒤로가기를 입력하여 주시길 바랍니다.");
 		sleepThread();
 		
 		
 		while(bl) {
 		System.out.print("이름 : ");
 		String name = InputUtil.sc.nextLine().trim();
+		
+		if(name.equals("뒤로가기")) {
+			System.out.println("뒤로가기를 입력하셨습니다.");
+			return true;
+		}
+		
 		System.out.print("전화번호 : ");
 		String phone = InputUtil.sc.nextLine().trim();
 		
