@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+import user.info.Customer;
+import user.stamp.Stamp;
 
 public class CheckOut {
 	
@@ -33,11 +35,14 @@ public class CheckOut {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
+				
+				System.out.println(String.format("%30s", "총 가격") + " : ");
+				System.out.println(" ");
 			
 			if(rs.next()) {
 				tPrice = rs.getInt("PRICE");
 				
-				System.out.print(String.format("%30s", "총 가격") + " : ");
+				
 				System.out.println(String.format("%,7d", tPrice) + " 원");
 				System.out.println(" ");
 			}
@@ -51,30 +56,64 @@ public class CheckOut {
 		System.out.print(String.format("%30s", "최종 결제금액") + " : ");
 		
 		Order ko = new Order();
-		System.out.println(String.format("%,7d", tPrice - ko.getCouval()) + " 원");
+		System.out.println(String.format("%,7d", tPrice - getCouval()) + " 원");
 		System.out.println(" ");
 		 
 		proceed();
 		
 	}
 	
+	public static int getCouval() {
+		
+		int cVal = 0;
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "SELECT VALUE FROM COU_VAR";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				cVal = rs.getInt("VALUE");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
+		}
+		return cVal;
+	}
+	
+	public static int getStampValue() {
+		
+		if(Stamp.usingStamp == 1) {
+			return 1000; //스탬프 할인가격,,
+		}else {
+			return 0;
+		}
+		
+	}
+	
 	public static int showDiscount() {
 		
-		Order ko = new Order();
-		
 		System.out.print(String.format("%30s", "(쿠폰 할인)") + " : ");
-		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.println(String.format("%,7d", getCouval()) + " 원");
+		
 		System.out.print(String.format("%30s", "(스탬프 할인)") + " : ");
-		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.println(String.format("%,7d", getStampValue()) + " 원");
+		
 		System.out.print(String.format("%30s", "총 할인 금액") + " : ");
-		System.out.println(String.format("%,7d", ko.getCouval()) + " 원");
+		System.out.println(String.format("%,7d", getCouval() + getStampValue()) + " 원");
 		return 0;
 		
 	}
 	
 	public static int getTotalPrice() {
-		
-		Order ko = new Order();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
@@ -114,13 +153,14 @@ public class CheckOut {
 		
 		int tPrice = InputUtil.inputInt();
 			
-			if(tPrice == (getTotalPrice()-ko.getCouval())) {
+			if(tPrice == (getTotalPrice()-getCouval())) {
 				System.out.println("계산이 완료되었습니다.");
+				collectStamp();
 			}else {
 				System.out.println("다시 입력해주세요");
 			}
 			
-			collectStamp();
+			
 			inputOrder();
 	}
 	
@@ -134,7 +174,7 @@ public class CheckOut {
 		//1)테이블 조인해서 조회
 		//2)조회한 RS 를 다른 곳에 또 담아서 데이터입력(INSERT)를 해야하나??
 		
-		int cpVal = ko.getCouval();
+		int cpVal = getCouval();
 		PreparedStatement pstmt = null;
 		
 		String sqlSelect = "INSERT INTO ORDER_GROUP"
@@ -166,7 +206,32 @@ public class CheckOut {
 	
 	public static void collectStamp() {
 		
-		Connection conn = OracleDB.getOracleConnection();
+		if(Customer.loginCustomerNo == 1) {
+			Connection conn = OracleDB.getOracleConnection();
+			
+			String sql = "UPDATE CUSTOMER SET STAMP = STAMP + 1 WHERE NO = ?";
+			PreparedStatement pstmt = null;
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, Customer.loginCustomerNo);
+				
+				int result = pstmt.executeUpdate();
+				
+				if(result == 1) {
+					System.out.println("스탬프 1 개가 성공적으로 적립되었습니다.");
+				}else {
+					System.out.println("먼가 오류남,,,");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				OracleDB.close(conn);
+				OracleDB.close(pstmt);
+			}
+			
+			
+		}
+		
 		
 		
 	}
