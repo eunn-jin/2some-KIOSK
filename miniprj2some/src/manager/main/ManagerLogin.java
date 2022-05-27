@@ -47,6 +47,7 @@ public class ManagerLogin {
 		}
 		
 		System.out.println("아이디/ 비밀번호 오류가 발생했습니다. 다시 입력하세요!");
+		login();
 		return false;
 		//로그인 실패시 다시 로그인창으로 되돌아가도록 하기
 		
