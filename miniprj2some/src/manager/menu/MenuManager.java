@@ -144,7 +144,7 @@ public class MenuManager {
 				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - plus");
+				System.out.println("SQL 예외 발생 - plus cate 3");
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
@@ -198,7 +198,7 @@ public class MenuManager {
 				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - plus");
+				System.out.println("SQL 예외 발생 - plus cate 1,2");
 				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
