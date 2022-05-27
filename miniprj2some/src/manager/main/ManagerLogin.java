@@ -19,7 +19,7 @@ public class ManagerLogin {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT PWD FROM LOGIN WHERE ID = ?";
+		String sql = "SELECT PWD FROM MANAGER WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -45,12 +45,9 @@ public class ManagerLogin {
 		}
 		
 		System.out.println("아이디/ 비밀번호 오류가 발생했습니다. 다시 입력하세요!");
-		login();
 		return false;
-		//로그인 실패시 다시 로그인창으로 되돌아가도록 하기
 		
 	}
-	
 	
 	public boolean join() {
 		System.out.println("=====회원가입=====");
@@ -60,10 +57,6 @@ public class ManagerLogin {
 		String pwd = InputUtil.sc.nextLine();
 		System.out.print("이름 :");
 		String name = InputUtil.sc.nextLine();
-		System.out.print("성별 :");
-		String gender = InputUtil.sc.nextLine();
-		System.out.print("생년월일 :");
-		String birth = InputUtil.sc.nextLine();
 		System.out.print("전화번호 :");
 		String phone = InputUtil.sc.nextLine();
 		System.out.print("이메일 :");
@@ -77,7 +70,7 @@ public class ManagerLogin {
 		Connection conn = OracleDB.getOracleConnection();
 		
 		try {
-			String sql = "SELECT * FROM LOGIN WHERE ID = ?";
+			String sql = "SELECT * FROM MANAGER WHERE ID = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
@@ -88,17 +81,15 @@ public class ManagerLogin {
 			}
 			
 			String sqlInsert
-			= "INSERT INTO LOGIN(NO,ID,PWD,NAME,GENDER,BIRTH,PHONE,EMAIL)"
-					+ "VALUES(LOGIN_NO_SEQ.NEXTVAL,?,?,?,?,?,?,?)";
+			= "INSERT INTO MANAGER(NO,ID,PWD,NAME,PHONE,EMAIL)"
+					+ "VALUES(MANAGER_NO_SEQ.NEXTVAL,?,?,?,?,?)";
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sqlInsert);
 			pstmt2.setString(1, id);
 			pstmt2.setString(2, pwd);
 			pstmt2.setString(3, name);
-			pstmt2.setString(4, gender);
-			pstmt2.setString(5, birth);
-			pstmt2.setString(6, phone);
-			pstmt2.setString(7, email);
+			pstmt2.setString(4, phone);
+			pstmt2.setString(5, email);
 			int result = pstmt2.executeUpdate();
 			
 			if(result == 1) {
@@ -115,7 +106,7 @@ public class ManagerLogin {
 		
 	}
 	
-	public boolean logout() {	//이렇게 삭제하면 내가 로그인 한 아이디가 아닌 다른 아이디로 로그아웃도 가능할텐데요...
+	public boolean logout() {	
 		System.out.println("=====로그아웃=====");
 		System.out.print("이름 : ");
 		String name = InputUtil.sc.nextLine();
@@ -126,7 +117,7 @@ public class ManagerLogin {
 		ResultSet rs = null;
 		
 		try {
-			String sql = "SELECT * FROM LOGIN WHERE NAME = ?";
+			String sql = "SELECT * FROM MANAGER WHERE NAME = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
@@ -134,9 +125,12 @@ public class ManagerLogin {
 			if(rs.next()) {
 				String dbname = rs.getString("name");
 				if(dbname.equalsIgnoreCase(name)) {
+					String sql2 = "UPDATE MANAGER SET CONNECTION_YN = 'Y' WHERE NAME = ?"
+							+ "VALUES(?)";
+					int result = pstmt.executeUpdate();
 					System.out.println("로그아웃 되었습니다!");
+					ManagerMain.successLogin = true;
 					return true;
-				//로그아웃 했을때 메인에서 회원가입,로그인 화면뜨게하기
 				}
 			}
 			
@@ -149,7 +143,6 @@ public class ManagerLogin {
 		}
 		
 		ManagerMain.successLogin = false;
-		
 		return false;
 		
 	}
