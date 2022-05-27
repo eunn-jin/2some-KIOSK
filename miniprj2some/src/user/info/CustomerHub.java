@@ -36,7 +36,7 @@ public class CustomerHub {
 		switch(a) {
 		case 1 : System.out.println("로그인을 선택하셨습니다."); Customer.login(); break;
 		case 2 : System.out.println("회원가입을 선택하셨습니다."); Customer.join(); break;
-		case 3 : System.out.println("뒤로가기를 선택하셨습니다."); /*뒤로가기*/ break;
+		case 3 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.showCart(); break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
 		}
 		

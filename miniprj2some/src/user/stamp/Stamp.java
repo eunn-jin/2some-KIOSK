@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import common.db.OracleDB;
+import common.util.InputUtil;
 import user.info.Customer;
 import user.info.CustomerHub;
 
@@ -100,7 +101,7 @@ public class Stamp {
 		Customer.sleepThread();
 		System.out.println("스탬프는 10개 이상 가지고 있을 때 사용 가능하며,");
 		Customer.sleepThread();
-		System.out.println("스탬프는 사용할 때마다 10개를 차감한 뒤 총 금액에서 4,000원을 할인해드립니다.");
+		System.out.println("스탬프는 사용할 때마다 10개를 차감한 뒤 총 금액에서 1,000원을 할인해드립니다.");
 		System.out.println("");
 		Customer.sleepThread();
 		System.out.println("스탬프 할인은 결제 1회당 1번 사용 가능하므로, 이 점 유의하시길 바랍니다.");
@@ -122,11 +123,14 @@ public class Stamp {
 			System.out.println("스탬프 사용을 선택하셨습니다.");
 			System.out.println("스탬프 10개를 사용하였습니다.");
 			Customer.sleepThread();
-			System.out.println("총 결제액의 4,000원이 할인되었습니다.");
+			System.out.println("총 결제액의 1,000원이 할인되었습니다.");
 			
 			Customer.sleepThread();
 			
 			System.out.println("추가 할인을 위해 쿠폰을 사용하시려면 1번, 바로 결제하기를 원하신다면 2번을 눌러주세요.");
+			System.out.println("");
+			InputUtil.inputInt();
+			
 			
 			
 			
