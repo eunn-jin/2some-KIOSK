@@ -17,7 +17,7 @@ public class Customer {
 	
 	 private String name = "";
 	 private String phone = "";
-	
+	 public static int loginCustomerNo;
 	
 	public static boolean login() {
 		
@@ -73,11 +73,20 @@ public class Customer {
 			
 			if(rs.next()) {
 				String dbPhone = rs.getString(1);
+//				int no = rs.getInt("NO");
 				
 				if(dbPhone.equals(phone)) {
-					System.out.println("로그인 성공하였습니다.");
 					
-					return true;
+//					loginCustomerNo = no;
+//					System.out.println(loginCustomerNo);
+					sleepThread();
+					
+					System.out.println("로그인 성공하였습니다.");
+					System.out.println("마이 멤버쉽 페이지로 이동합니다.");
+					
+					sleepThread();
+					
+					user.point.PointHub.plaitCustomersPoint();
 //					while(true) {
 //					join();
 //					}
