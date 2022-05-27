@@ -12,7 +12,6 @@ import common.db.OracleDB;
 import common.util.InputUtil;
 import manager.menu.MenuManager;
 import user.menu.CategoryMenu;
-import user.point.PointHub;
 
 public class Order {
 	
@@ -22,7 +21,7 @@ public class Order {
 //	3. '결제하기'로 넘어갈건지, '메뉴'로 돌아갈가 추가주문 할건지 선택
 //	4. '결제하기'로 넘어가면, '주문'테이블에 데이터 추가입력
 	
-public void showCart() {
+public static void showCart() {
 	
 		Connection conn = OracleDB.getOracleConnection();
 		
@@ -70,7 +69,7 @@ public void showCart() {
 			
 	}
 
-	public void getSum() {
+	public static void getSum() {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		Statement stmt = null;
@@ -101,7 +100,7 @@ public void showCart() {
 	}
 	
 	
-	public void choice() {
+	public static void choice() {
 		
 		System.out.println("");
 		System.out.println(" ============================================= ");
@@ -112,7 +111,7 @@ public void showCart() {
 		
 		switch(chooseNo) {
 		case 1 : /*쿠폰조회 메소드*/ break;
-		case 2 : PointHub.plaitCustomersPoint(); break;
+		case 2 : /*스탬프조회 메소드*/ break;
 		case 3 : CheckOut co = new CheckOut(); co.confirmOrder(); break;
 		case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
 			default : System.out.println("다시 입력해주세요.");

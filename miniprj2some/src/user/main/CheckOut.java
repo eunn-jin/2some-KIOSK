@@ -10,7 +10,7 @@ import common.util.InputUtil;
 
 public class CheckOut {
 	
-	Order ko = new Order();
+	static Order ko = new Order();
 	
 //	- 메뉴명, 수량, 추가옵션, 가격, 할인가격(쿠폰), 총합 금액 (vat 포함) 보여주기 
 //		1. 디비접근
@@ -18,7 +18,7 @@ public class CheckOut {
 //	-결제할 금액 입력받고 결제완료 메세지 띄우기
 //	-메뉴판보기 페이지로 돌아가기
 	
-	public void confirmOrder() {
+	public static void confirmOrder() {
 		
 		System.out.println("");
 		System.out.println("");
@@ -58,7 +58,7 @@ public class CheckOut {
 		
 	}
 	
-	public int showDiscount() {
+	public static int showDiscount() {
 		
 		Order ko = new Order();
 		
@@ -72,7 +72,7 @@ public class CheckOut {
 		
 	}
 	
-	public int getTotalPrice() {
+	public static int getTotalPrice() {
 		
 		Order ko = new Order();
 		
@@ -99,7 +99,7 @@ public class CheckOut {
 		
 	}
 	
-	public void proceed() {
+	public static void proceed() {
 		
 		System.out.printf("%30s", "\"Y\" 를 입력하여 계산하기");
 		System.out.printf("\n");
@@ -124,7 +124,7 @@ public class CheckOut {
 			inputOrder();
 	}
 	
-	public void inputOrder() {
+	public static void inputOrder() {
 	
 		Connection conn = OracleDB.getOracleConnection();
 		
@@ -164,7 +164,7 @@ public class CheckOut {
 	
 	}
 	
-	public void collectStamp() {
+	public static void collectStamp() {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
