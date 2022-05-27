@@ -13,8 +13,8 @@ public class Main {
 		System.out.println("2. 유저");
 		System.out.println("0. 종료하기");
 		
-		boolean isexit = false;
-		while(!isexit) {
+		boolean isExit = false;
+		while(!isExit) {
 			System.out.print("선택 : ");
 			int n = InputUtil.inputInt();
 			
@@ -24,7 +24,7 @@ public class Main {
 				case 0 : break;
 				default : System.out.println("번호를 잘못 입력하셨습니다."); continue;
 			}
-			isexit = true;
+			isExit = true;
 		}  
 	}
 
