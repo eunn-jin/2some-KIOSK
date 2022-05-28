@@ -277,11 +277,12 @@ public class Coupon {
 				System.out.println("");
 				Customer.sleepThread(); 
 				
-				System.out.println(" 해당 쿠폰을 사용하시려면 1번, 뒤로 가기를 선택하시려면 2번을 눌러주세요. ");
-				System.out.print("번호 입력 :");
-				int aaa = common.util.InputUtil.inputInt();
+				System.out.println(" 해당 쿠폰을 사용하시려면 사용, 뒤로 가기를 선택하시려면 뒤로가기를 입력해주세요. ");
+				System.out.print("문자 입력 :");
 				
-				if(aaa==1) {
+				String inputStr = common.util.InputUtil.sc.nextLine();
+				
+				if(inputStr.equals("사용")) {
 					
 					String sql2 = "UPDATE COUPON SET USEDATE = SYSTIMESTAMP"
 							+ ", USE_CHECK = 'Y' WHERE NO = ? AND LIMITDATE = ? ";
@@ -309,6 +310,7 @@ public class Coupon {
 						System.out.println("=============================");
 						System.out.println("스탬프 할인/적립을 위하여 로그인을 하시려면 1번,");
 						System.out.println("바로 결제하기를 원하신다면 2번을 눌러주세요.");
+						System.out.println("다른 번호를 입력하시면 쿠폰 페이지로 이동합니다.");
 						System.out.print("번호 입력 :");
 						int qlogin = InputUtil.inputInt();
 						
@@ -345,9 +347,6 @@ public class Coupon {
 							user.main.CheckOut.confirmOrder();
 							return;
 						} else {
-							Customer.sleepThread();
-							System.out.println("잘못된 번호입니다.");
-							Customer.sleepThread();
 							System.out.println("쿠폰 페이지로 이동합니다.");
 							return;
 						}
@@ -358,7 +357,7 @@ public class Coupon {
 					}
 					
 					
-				} else if (aaa==2) {
+				} else if (inputStr.equals("뒤로가기")) {
 					
 					System.out.println("뒤로가기를 선택하셨습니다.");
 					Customer.sleepThread();
@@ -367,7 +366,7 @@ public class Coupon {
 					return;
 					
 				} else {
-					System.out.println("잘못된 번호를 입력하셨습니다.");
+					System.out.println("잘못된 문자를 입력하셨습니다.");
 					System.out.println("다시 한 번 시도하시길 바랍니다.");
 					return;
 				}
