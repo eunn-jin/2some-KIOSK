@@ -37,7 +37,7 @@ public class MembershipHub {
 		
 		System.out.println("사용하시려는 기능의 번호를 입력하시기를 바랍니다.");
 		
-		
+		System.out.print("번호입력 : ");
 		int a = InputUtil.inputInt();
 		
 		switch(a) {

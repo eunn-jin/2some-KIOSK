@@ -20,8 +20,9 @@ public class Customer {
 	 private String phone = "";
 	 private String birthDay = "";
 	 public static int loginCustomerNo = 0;
-	 public static int keepStamp =0;
+	 public static int keepStamp = 0;
 	 public static String customersName = "";
+	 public static String inspectQuit = "";
 	
 	public static boolean login() {
 		
@@ -90,7 +91,7 @@ public class Customer {
 		
 		
 		//해당 이름에 맞는 전화번호 디비에서 조회하기
-		String sql = "SELECT NO, PHONE, STAMP, NAME FROM CUSTOMER WHERE NAME = ? AND BIRTH = ? ";
+		String sql = "SELECT NO, PHONE, STAMP, NAME, QUIT FROM CUSTOMER WHERE NAME = ? AND BIRTH = ? ";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -106,12 +107,28 @@ public class Customer {
 				int dbNo = rs.getInt("NO");
 				int dbStamp = rs.getInt("STAMP");
 				String dbName = rs.getString("NAME");
+				String dbquit = rs.getString("QUIT");
 				
 				if(dbPhone.equals(phone)) {
 					
 					loginCustomerNo = dbNo;
 					keepStamp = dbStamp;
 					customersName = dbName;
+					inspectQuit = dbquit;
+					
+					if(inspectQuit.equals("Y")) {
+						
+						sleepThread();
+						System.out.println("");
+						System.out.println("죄송합니다 고객님. 회원탈퇴처리가 되어있어 로그인 실패하였습니다.");
+						sleepThread();
+						System.out.println("스탬프 적립/사용 등 2SOME만의 멤버쉽 혜택을 받으시려면 다시 회원가입 부탁드립니다.");
+						sleepThread();
+						System.out.println("로그인 허브 페이지로 돌아갑니다..");
+						sleepThread2();
+						
+					}
+					
 					sleepThread();
 					
 					System.out.println("");
@@ -188,6 +205,17 @@ public class Customer {
 		
 		System.out.println("2some 포인트맴버쉽 회원가입 페이지입니다.");
 		sleepThread();
+		if (loginCustomerNo != 0) {
+			sleepThread();
+			
+			System.out.println("");
+			System.out.println("안녕하세요 " + customersName + " 님.");
+			System.out.println("이미 접속중 이시므로" + customersName + "님의 마이 멤버쉽 페이지로 이동합니다.");
+			System.out.println("");
+			sleepThread2();
+			
+			MembershipHub.plaitCustomersStamp();
+		}
 		System.out.println("고객님을 환영합니다.");
 		sleepThread();
 		System.out.println("");

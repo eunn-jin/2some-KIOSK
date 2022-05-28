@@ -91,6 +91,10 @@ public class Stamp {
 			return;
 		}
 		
+		if(usingStamp != 0) {
+			
+		}
+		
 		//안내문
 		Customer.sleepThread();
 		System.out.println("");
@@ -107,6 +111,7 @@ public class Stamp {
 		System.out.println("스탬프 할인은 결제 1회당 1번 사용 가능하므로, 이 점 유의하시길 바랍니다.");
 		Customer.sleepThread();
 		System.out.println("스탬프를 사용하시려면 1번, 뒤로 가기를 선택하시려면 2번을 눌러주세요.");
+		System.out.print("번호입력 : ");
 		System.out.println("");
 		
 		//1 입력 시 스탬프 사용, 2 입력 시 뒤로가기(마이 멤버쉽 페이지)
@@ -147,8 +152,10 @@ public class Stamp {
 					Customer.sleepThread();
 					
 					System.out.println("");
+					System.out.println("=============================");
 					System.out.println("추가 할인을 위해 쿠폰을 사용하시려면 1번, 바로 결제하기를 원하신다면 2번을 눌러주세요.");
 					System.out.println("");
+					System.out.print("번호입력 : ");
 					int qCoupon = InputUtil.inputInt();
 					
 					//1번 선택 시 할인쿠폰 사용, 2번 선택 시 바로 결제창으로 이동
@@ -166,11 +173,18 @@ public class Stamp {
 						
 					} else if (qCoupon == 2) {
 						
+						Customer.sleepThread();
 						System.out.println("바로결제를 선택하셨습니다.");
 						Customer.sleepThread();
 						System.out.println("결제 페이지로 이동합니다.");
 						
 						user.main.CheckOut.confirmOrder();
+						return;
+					} else {
+						Customer.sleepThread();
+						System.out.println("잘못된 번호입니다.");
+						Customer.sleepThread();
+						System.out.println("마이 멤버쉽 페이지로 이동합니다.");
 						return;
 					}
 					
