@@ -36,11 +36,12 @@ public class MenuManager {
 		if(categoryNum > 0 && categoryNum < 4) {
 			showMenu(categoryNum);
 		} else if(categoryNum == 0) {
-			//뒤로가기
+			return;
 		} else if(categoryNum != 1 && categoryNum != 2 && categoryNum != 3) {
 			System.out.println("올바른 번호를 입력하시오");
 			showCategory();
-		}
+		} 
+		
 		
 	}
 	
@@ -121,7 +122,7 @@ public class MenuManager {
 		
 		//1, 2번 카테고리는 아래 상세 포함 insert
 		if(categoryNum == 3) {
-			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL "
+			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL) "
 					+ "VALUES(MENU_IDX_SEQ.NEXTVAL,?,?,?,?)";
 		
 			try {
@@ -145,6 +146,7 @@ public class MenuManager {
 				
 			} catch (SQLException e) {
 				System.out.println("SQL 예외 발생 - plus cate 3");
+				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
