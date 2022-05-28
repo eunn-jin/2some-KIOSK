@@ -16,14 +16,24 @@ public class CustomerHub {
 		
 		boolean bl = true;
 		while(bl = true) {
-			
+		
+		System.out.println("");
+		System.out.print("현재 로그인 상태 : ");
+		if(Customer.loginCustomerNo != 0) {
+			System.out.println(Customer.customersName + "님으로 로그인 되어있습니다.");
+		} else {
+			System.out.println("");
+			System.out.println("로그아웃");
+		}
 		
 		Customer.sleepThread();
 		System.out.println("");
 		System.out.println("============================");
 		System.out.println("=======[1. 로그인  ]==========");
-		System.out.println("=======[2. 회원가입 ]==========");
-		System.out.println("=======[3. 뒤로가기 ]==========");
+		System.out.println("=======[2. 로그아웃 ]==========");
+		System.out.println("=======[3. 회원가입 ]==========");
+		System.out.println("=======[4. 로그아웃 ]==========");
+		System.out.println("=======[5. 뒤로가기 ]==========");
 		System.out.println("============================");
 		System.out.println("");
 		
@@ -35,8 +45,10 @@ public class CustomerHub {
 		
 		switch(a) {
 		case 1 : System.out.println("로그인을 선택하셨습니다."); Customer.login(); break;
-		case 2 : System.out.println("회원가입을 선택하셨습니다."); Customer.join(); break;
-		case 3 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.showCart(); break;
+		case 2 : System.out.println("로그아웃을 선택하셨습니다."); Customer.logout();break;
+		case 3 : System.out.println("회원가입을 선택하셨습니다."); Customer.join(); break;
+		case 4 : System.out.println("로그아웃을 선택하셨습니다."); Customer.quitMember();break;
+		case 5 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.showCart(); break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
 		}
 		

@@ -154,6 +154,31 @@ public class Customer {
 		
 	}
 	
+	
+	public static boolean logout() {
+		
+		
+		/*로그아웃 */
+		
+		
+		
+		return false;
+		
+	}
+	
+	public static boolean quitMember() {
+		
+		
+		
+		/*로그아웃 */
+		
+		
+		
+		return false;
+		
+	}
+	
+	
 	public static boolean join() {
 		
 		int cnt = 0;

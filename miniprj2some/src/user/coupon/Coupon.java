@@ -29,8 +29,8 @@ public class Coupon {
 		
 		
 		Customer.sleepThread();
-		System.out.println("쿠폰정보조회를 위해서 가지고 계신 쿠폰의 쿠폰번호,");
-		System.out.println("그리고 유효기간을 슬래쉬(/)포함하여 8글자(yyyy/mm/dd) 적어주시길 바랍니다.");
+		System.out.println("쿠폰정보조회를 위해서 가지고 계신 쿠폰의 쿠폰번호 및 유효기간을");
+		System.out.println("슬래쉬(/)포함하여 8글자(yyyy/mm/dd) 적어주시길 바랍니다.");
 		Customer.sleepThread();
 		
 		System.out.println("");
@@ -39,6 +39,16 @@ public class Coupon {
 		int couNo = InputUtil.inputInt();
 		System.out.print("유효기간 : ");
 		String limitDay = InputUtil.sc.nextLine().trim();
+		
+		boolean bl = Customer.validationDate(limitDay);
+		if(bl == false) {
+			System.out.println("");
+			System.out.println("================================");
+			Customer.sleepThread();
+			System.out.println("유효기간은 슬래쉬(/)를 포함하여 8글자 (yyyy/mm/dd) 형식으로 입력 바랍니다.");
+			System.out.println("다시 시도해 주시길 바랍니다.");
+			return;
+		}
 	
 		/*유효성 검사*/
 		
@@ -85,10 +95,22 @@ public class Coupon {
 				System.out.println("");
 				Customer.sleepThread2(); // 2초 쓰레드 슬립
 				
+				return;
+			} else {
+				System.out.println("");
+				System.out.println("입력된 쿠폰을 찾을 수 없습니다.");
+				System.out.println("잘 입력되었는지 확인 후 다시 시도해주시길 바랍니다.");
+				Customer.sleepThread();
+				return;
 			}
 			
 			}catch (SQLException e) {
-				System.out.println("왜...?");
+				System.out.println("");
+				System.out.println("서버와의 접속이 실패하였습니다.");
+				System.out.println("입력된 정보가 맞는 정보인지 확인하신 후 다시 시도하시길 바랍니다.");
+				Customer.sleepThread();
+				return;
+				
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
@@ -131,6 +153,16 @@ public class Coupon {
 		
 		System.out.print("유효기간 : ");
 		String limitDay = InputUtil.sc.nextLine().trim();
+		
+		boolean bl = Customer.validationDate(limitDay);
+		if(bl == false) {
+			System.out.println("");
+			System.out.println("================================");
+			Customer.sleepThread();
+			System.out.println("유효기간은 슬래쉬(/)를 포함하여 8글자 (yyyy/mm/dd) 형식으로 입력 바랍니다.");
+			System.out.println("다시 시도해 주시길 바랍니다.");
+			return;
+		}
 		
 		//유효성 검사
 		
