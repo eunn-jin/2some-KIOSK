@@ -33,17 +33,17 @@ public class ManagerMain {
 	}
 	
 	public static void managerHome() {
-		System.out.println("===================");
-		System.out.println("===== 관리자 홈 =====");
-		System.out.println("===================");
-		System.out.println("1. 메뉴 관리하기");
-		System.out.println("2. 메뉴옵션 관리하기");
-		System.out.println("3. 매출현황 확인하기");
-		System.out.println("4. 판매 상품 순위 확인하기");
-		System.out.println("0. 로그아웃");
 		
 		boolean isExit = false;
 		while(!isExit) {
+			System.out.println("===================");
+			System.out.println("===== 관리자 홈 =====");
+			System.out.println("===================");
+			System.out.println("1. 메뉴 관리하기");
+			System.out.println("2. 메뉴옵션 관리하기");
+			System.out.println("3. 매출현황 확인하기");
+			System.out.println("4. 판매 상품 순위 확인하기");
+			System.out.println("0. 로그아웃");
 			System.out.print("선택 : ");
 			int n = InputUtil.inputInt();
 			
