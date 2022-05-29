@@ -36,7 +36,7 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
-				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') = TO_CHAR(?, 'YY/MM/DD')";
+				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') = TO_DATE(?)";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -123,7 +123,7 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
-				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') BETWEEN TO_CHAR(? ,'YY/MM/DD') AND TO_CHAR(? ,'YY/MM/DD')";
+				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') BETWEEN TO_DATE(?) AND TO_DATE(?)";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
