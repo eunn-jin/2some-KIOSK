@@ -90,7 +90,7 @@ public class OptionManager {
 			
 			
 		} catch (SQLException e) {
-			System.out.println("SQL 예외 발생 - showMenu");
+			System.out.println("SQL 예외 발생 - OptionManager.showMenu");
 			e.printStackTrace();
 		} finally {
 			OracleDB.close(conn);
@@ -137,6 +137,11 @@ public class OptionManager {
 		System.out.println("[뒤로가기] 1111 을 입력하시오");
 		showMappingOption(categoryNum, menuNum);
 		List<String> notMappingOptionList = showNotMappingOption(categoryNum, menuNum);
+		if(notMappingOptionList.size() == 0) {
+			System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+			System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+			showMenu(categoryNum);
+		}
 		System.out.println("---------------------------");
 		System.out.print("입력 : ");
 		int optionNum = InputUtil.inputInt();
@@ -169,18 +174,14 @@ public class OptionManager {
 				}
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - plus cate 3");
+				System.out.println("SQL 예외 발생 - OptionManager.plus");
 				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
 			}
 			
-			if(notMappingOptionList.size() == 0) {
-				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
-				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
-				showMenu(categoryNum);
-			}
+			
 			
 			//옵션 추가 후 옵션목록 갱신
 			plus(categoryNum, menuNum);
@@ -196,6 +197,11 @@ public class OptionManager {
 		System.out.println("[뒤로가기] 1111 을 입력하시오");
 		List<String> mappingOptionList = showMappingOption(categoryNum, menuNum);
 		showNotMappingOption(categoryNum, menuNum);
+		if(mappingOptionList.size() == 0) {
+			System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+			System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+			showMenu(categoryNum);
+		}
 		System.out.println("---------------------------");
 		System.out.print("입력 : ");
 		int optionNum = InputUtil.inputInt();
@@ -203,6 +209,8 @@ public class OptionManager {
 		if(optionNum == 1111) {
 			showMenu(categoryNum);
 		}
+		
+		
 		
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
@@ -229,18 +237,14 @@ public class OptionManager {
 				}
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - delete");
+				System.out.println("SQL 예외 발생 - OptionManager.delete");
 				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
 			}
 			
-			if(mappingOptionList.size() == 0) {
-				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
-				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
-				showMenu(categoryNum);
-			}
+			
 			
 			delete(categoryNum, menuNum);
 		
@@ -280,7 +284,7 @@ public class OptionManager {
 			
 
 		} catch (SQLException e) {
-			System.out.println("SQL 예외 발생 - showOption");
+			System.out.println("SQL 예외 발생 - OptionManager.showMappingOption");
 			e.printStackTrace();
 		} finally {
 			OracleDB.close(conn);
@@ -326,7 +330,7 @@ public class OptionManager {
 			
 
 		} catch (SQLException e) {
-			System.out.println("SQL 예외 발생 - choiceOption");
+			System.out.println("SQL 예외 발생 - OptionManager.showNotMappingOption");
 			e.printStackTrace();
 		} finally {
 			OracleDB.close(conn);
