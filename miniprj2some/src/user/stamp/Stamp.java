@@ -81,7 +81,6 @@ public class Stamp {
 		}//스탬프가 10개 미만인 사용자는 접근 불가
 		 else if (Customer.keepStamp < 10) {
 			System.out.println("");
-			Customer.sleepThread();
 			System.out.println("죄송합니다. 고객님의 스탬프는 " + Customer.keepStamp + "개 입니다.");
 			System.out.println("해당 기능은 스탬프를 10개 이상 가지고 있을 때 사용 가능합니다.");
 			Customer.sleepThread2();
@@ -89,9 +88,7 @@ public class Stamp {
 			return;
 		 }else if(Customer.inspectQuit.equals("Y")) {
 			 System.out.println("비정상적인 접근입니다. 고객님께선 탈퇴회원입니다.");
-			 Customer.sleepThread();
 			 System.out.println("해당 서비스를 이용하기 위해서 회원가입 후 로그인 후 사용 부탁드립니다.");
-			 Customer.sleepThread();
 			 System.out.println("감사합니다.");
 			 Customer.sleepThread();
 			 CustomerHub.plaitLoginJoin();
@@ -100,7 +97,6 @@ public class Stamp {
 		
 		if(usingStamp != 0) {
 			System.out.println("");
-			Customer.sleepThread();
 			System.out.println("고객님. 한 결제에 스탬프할인은 한 번만 적용 가능합니다.");
 			System.out.println("이용에 불편을 드려 죄송합니다.");
 			System.out.println("");
@@ -112,19 +108,15 @@ public class Stamp {
 		//안내문
 		Customer.sleepThread();
 		System.out.println("");
-		System.out.println("");
 		System.out.println("========================");
 		System.out.println("");
 		Customer.sleepThread();
 		System.out.println("현재 고객님께서 가지고 계신 스탬프는 " + Customer.keepStamp + "개 입니다.");
-		Customer.sleepThread();
 		System.out.println("스탬프는 10개 이상 가지고 있을 때 사용 가능하며,");
-		Customer.sleepThread();
 		System.out.println("스탬프는 사용할 때마다 10개를 차감한 뒤 총 금액에서 1,000원을 할인해드립니다.");
-		Customer.sleepThread();
 		System.out.println("스탬프 할인은 결제 1회당 1번 사용 가능하므로, 이 점 유의하시길 바랍니다.");
-		Customer.sleepThread();
 		System.out.println("스탬프를 사용하시려면 '사용', 뒤로 가기를 선택하시려면 '뒤로가기'를 눌러주세요.");
+		Customer.sleepThread();
 		System.out.print("번호입력 : ");
 		
 		//1 입력 시 스탬프 사용, 2 입력 시 뒤로가기(마이 멤버쉽 페이지)
@@ -169,7 +161,7 @@ public class Stamp {
 					System.out.println("추가 할인을 위해 쿠폰을 사용하시려면 1번, 바로 결제하기를 원하신다면 2번을 눌러주세요.");
 					System.out.println("다른 번호를 입력하면 마이 멤버쉽 페이지로 돌아갑니다.");
 					System.out.println("");
-					System.out.print("번호입력 : ");
+					System.out.print("입력 : ");
 					int qCoupon = InputUtil.inputInt();
 					
 					//1번 선택 시 할인쿠폰 사용, 2번 선택 시 바로 결제창으로 이동

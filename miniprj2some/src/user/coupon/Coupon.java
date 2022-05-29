@@ -128,7 +128,7 @@ public class Coupon {
 				
 				System.out.println("");
 				System.out.println("쿠폰 페이지로 이동합니다.");
-				Customer.sleepThread2(); // 2초 쓰레드 슬립
+				Customer.sleepThread(); 
 				
 				return;
 				}
@@ -164,7 +164,6 @@ public class Coupon {
 		Customer.sleepThread();
 		
 		System.out.println("할인쿠폰 적용 페이지로 이동하였습니다.");
-		Customer.sleepThread();
 		
 		if(usingCoupon != 0) {
 			System.out.println("");
@@ -173,16 +172,14 @@ public class Coupon {
 			System.out.println("이용에 불편을 드려 죄송합니다.");
 			System.out.println("");
 			System.out.println("장바구니 페이지로 이동합니다.");
-			Customer.sleepThread2();
+			Customer.sleepThread();
 			user.main.Order.showCart();
 		}
 		
 		System.out.println("사용하실 쿠폰의 쿠폰번호와 유효기간을 입력하시면 조회 후 사용 가능합니다.");
-		Customer.sleepThread();
 		System.out.println("유효기간은 슬래쉬(/)를 포함한 8자리 숫자를 전부 입력하셔야 하며");
-		Customer.sleepThread();
 		System.out.println("뒤로가기를 원하시는 고객님께선 쿠폰번호 입력란에 0번을 입력해주시길 바랍니다.");
-		Customer.sleepThread();
+		Customer.sleepThread2();
 		System.out.println("");
 		System.out.println("========================");
 		System.out.println("");
@@ -191,7 +188,6 @@ public class Coupon {
 		
 		if(couNo == 0) {
 			System.out.println("뒤로가기를 선택하셨습니다.");
-			Customer.sleepThread();
 			System.out.println("쿠폰 메인페이지로 이동합니다.");
 			Customer.sleepThread();
 			System.out.println("");
@@ -205,9 +201,9 @@ public class Coupon {
 		if(bl == false) {
 			System.out.println("");
 			System.out.println("================================");
-			Customer.sleepThread();
 			System.out.println("유효기간은 슬래쉬(/)를 포함하여 8글자 (yyyy/mm/dd) 형식으로 입력 바랍니다.");
 			System.out.println("다시 시도해 주시길 바랍니다.");
+			Customer.sleepThread();
 			return;
 		}
 		
@@ -299,10 +295,8 @@ public class Coupon {
 						usingCoupon = 1;
 						
 						System.out.println("");
-						Customer.sleepThread();
 						System.out.println("쿠폰 사용을 선택하셨습니다.");
 						System.out.println(name + "쿠폰 1개를 사용하였습니다.");
-						Customer.sleepThread();
 						System.out.println("총 결제액의" + value + "원이 할인되었습니다.");
 						Customer.sleepThread();
 						
@@ -329,7 +323,6 @@ public class Coupon {
 								user.stamp.MembershipHub.plaitCustomersStamp();
 							
 							} else {
-							Customer.sleepThread();
 							System.out.println("");
 							System.out.println("로그인 허브 페이지로 이동합니다.");
 							Customer.sleepThread();
@@ -339,7 +332,6 @@ public class Coupon {
 							}
 						} else if (qlogin == 2) {
 						
-							Customer.sleepThread();
 							System.out.println("바로결제를 선택하셨습니다.");
 							Customer.sleepThread();
 							System.out.println("결제 페이지로 이동합니다.");
@@ -360,7 +352,6 @@ public class Coupon {
 				} else if (inputStr.equals("뒤로가기")) {
 					
 					System.out.println("뒤로가기를 선택하셨습니다.");
-					Customer.sleepThread();
 					System.out.println("쿠폰 페이지로 이동합니다.");
 					Customer.sleepThread();
 					return;
