@@ -12,10 +12,8 @@ import java.util.Set;
 import common.db.OracleDB;
 import common.util.InputUtil;
 
-// ★뒤로가기랑 잘못된 입력값 예외처리(if로 해야징)
 // ★옵션 삭제 및 추가 진입할때 더이상 삭제하거나 추가할 옵션이 없다면 돌려보내기
 // 여유있으면 카테고리 옵션 매핑 테이블 원복해서 엉뚱한 옵션 막아버리기
-// 테스트 돌려보고 유지보수
 
 public class OptionManager {
 	
@@ -136,12 +134,17 @@ public class OptionManager {
 	
 	public void plus(int categoryNum, int menuNum) { 
 		
-		System.out.println("-[ 추가 ] 할 옵션번호를 입력하시오-\n");
+		System.out.println("[추가] 할 옵션번호를 입력하시오");
+		System.out.println("[뒤로가기] 1111 을 입력하시오");
 		showMappingOption(categoryNum, menuNum);
 		List<String> notMappingOptionList = showNotMappingOption(categoryNum, menuNum);
 		System.out.println("---------------------------");
 		System.out.print("입력 : ");
 		int optionNum = InputUtil.inputInt();
+		
+		if(optionNum == 1111) {
+			showMenu(categoryNum);
+		}
 		
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
@@ -158,11 +161,11 @@ public class OptionManager {
 				
 				if(r == 1) {
 					System.out.println();
-					System.out.println("   [ 옵션 추가가 완료되었습니다 ]   ");
+					System.out.println("   [ 옵션 추가 완료되었습니다 ]   ");
 					System.out.println();
 				} else {
 					System.out.println();
-					System.out.println("   [ 옵션 추가가 실패하였습니다 ]   ");
+					System.out.println("   [ 옵션 추가 실패하였습니다 ]   ");
 					System.out.println();
 				}
 				
@@ -184,12 +187,17 @@ public class OptionManager {
 	
 	public void delete(int categoryNum, int menuNum) {
 		
-		System.out.println("-[ 삭제 ] 할 옵션번호를 입력하시오-\n");
+		System.out.println("[삭제] 할 옵션번호를 입력하시오");
+		System.out.println("[뒤로가기] 1111 을 입력하시오");
 		List<String> mappingOptionList = showMappingOption(categoryNum, menuNum);
 		showNotMappingOption(categoryNum, menuNum);
 		System.out.println("---------------------------");
 		System.out.print("입력 : ");
 		int optionNum = InputUtil.inputInt();
+		
+		if(optionNum == 1111) {
+			showMenu(categoryNum);
+		}
 		
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
@@ -239,7 +247,7 @@ public class OptionManager {
 				+ "FROM MENU M "
 				+ "INNER JOIN MENU_ADDITIONAL_OPTION_MAP MAO ON M.MN_IDX = MAO.MN_IDX "
 				+ "INNER JOIN ADDITIONAL_OPTION AO ON AO.ADI_OPT_NAME = MAO.ADI_OPT_NAME "
-				+ "WHERE M.MN_IDX = ?"
+				+ "WHERE M.MN_IDX = ? "
 				+ "GROUP BY AO.ADI_OPT_NAME";
 		
 			
@@ -260,6 +268,11 @@ public class OptionManager {
 				System.out.println(list.size() + ". " + opName);
 			}
 			
+			if(list.size() == 0) {
+				System.out.println("[ 삭제할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
+			}
 
 		} catch (SQLException e) {
 			System.out.println("SQL 예외 발생 - showOption");
@@ -303,6 +316,12 @@ public class OptionManager {
 				String opName = rs.getString("ADI_OPT_NAME");
 				list.add(opName);
 				System.out.println(list.size() + ". " +  opName);
+			}
+			
+			if(list.size() == 0) {
+				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
 			}
 			
 
