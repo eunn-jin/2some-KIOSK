@@ -94,7 +94,7 @@ public class MenuManager {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("SQL 예외 발생 - showMenu");
+			System.out.println("SQL 예외 발생 - MenuManager.showMenu");
 			e.printStackTrace();
 		} finally {
 			OracleDB.close(conn);
@@ -124,7 +124,7 @@ public class MenuManager {
 		//1, 2번 카테고리는 아래 상세 포함 insert
 		if(categoryNum == 3) {
 			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL) "
-					+ "VALUES(MENU_IDX_SEQ.NEXTVAL,?,?,?,?)";
+					+ "VALUES(MN_IDX_SEQ.NEXTVAL,?,?,?,?)";
 		
 			try {
 				pstmt = conn.prepareStatement(sql);
@@ -146,7 +146,7 @@ public class MenuManager {
 				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - plus cate 3");
+				System.out.println("SQL 예외 발생 - MenuManager.plus");
 				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
@@ -201,7 +201,7 @@ public class MenuManager {
 				showMenu(categoryNum);
 				
 			} catch (SQLException e) {
-				System.out.println("SQL 예외 발생 - plus cate 1,2");
+				System.out.println("SQL 예외 발생 - MenuManager.plus");
 				e.printStackTrace();
 			} finally {
 				OracleDB.close(conn);
