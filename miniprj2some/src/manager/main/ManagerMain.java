@@ -52,7 +52,7 @@ public class ManagerMain {
 				case 2 : new OptionManager().showCategory(); break;
 				case 3 : new IncomeStatus().start(); break;
 				case 4 : new ProductRank().start(); break;
-				case 0 : isExit = true; new ManagerLogin().logout(); break;
+				case 0 : isExit = new ManagerLogin().logout(); break;
 				default : System.out.println("번호를 잘못 입력하셨습니다.");
 			}
 		}

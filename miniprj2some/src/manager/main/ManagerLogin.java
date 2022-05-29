@@ -143,10 +143,9 @@ public class ManagerLogin {
 					int result = pstmt.executeUpdate();
 					if(result == 1) {
 						System.out.println("로그아웃 되었습니다!");
-					}
-					
-					ManagerMain.successLogin = false;
-					return true;
+						ManagerMain.successLogin = false;
+						return true;
+					}					
 				}
 			}
 			
