@@ -12,11 +12,9 @@ import common.db.OracleDB;
 import common.util.InputUtil;
 import user.main.AdditionalOption;
 import user.main.Product;
+import user.main.UserMain;
 
 public class CategoryMenu {
-
-	List<Product> productList = new LinkedList<>();
-	List<AdditionalOption> optionList = new ArrayList<>();
 	
 	// 카테고리 보여주는 메소드
 	public void showCategory() {
@@ -43,11 +41,16 @@ public class CategoryMenu {
 			System.out.println("===================================");
 			System.out.println();
 			System.out.println("카테고리 번호를 선택하세요 ");
+			System.out.println("0. 뒤로가기");
 
 			int categoryNum = InputUtil.inputInt();
 			System.out.println();
 
-			showMenu(categoryNum);
+			if(categoryNum == 0) {
+				return;
+			} else {
+				showMenu(categoryNum);				
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,7 +82,7 @@ public class CategoryMenu {
 
 			System.out.println("=============[ 메 뉴 ]==============");
 			System.out.println("메뉴를 선택하세요.");
-			System.out.println();
+			System.out.println("0. 뒤로가기");
 
 			while (rs2.next()) {
 				System.out.println(rs2.getInt(1) + ". " + rs2.getString(2));
@@ -93,7 +96,11 @@ public class CategoryMenu {
 			int menuNum = InputUtil.inputInt();
 
 			// 디테일 메소드 연결
-			detail(menuNum, categoryNum);
+			if(menuNum == 0) {
+				return;
+			} else {
+				detail(menuNum, categoryNum);				
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -151,15 +158,21 @@ public class CategoryMenu {
 				}
 			} // while문
 
-			int num = 1;
-
-			// 선택한 메뉴가 DRINK일 경우에만 옵션 메서드 호출, 이 외(FOOD, GOODS)에는 바로 장바구니로!
-			if (categoryNum == 1) {
-				showOption(menuNum, price, mnName);
+			System.out.println("해당 제품을 구입하시겠습니까? (Y/ N)");
+			String check = InputUtil.inputStr();
+			
+			if("Y".equals(check)) {
+				// 선택한 메뉴가 DRINK일 경우에만 옵션 메서드 호출, 이 외(FOOD, GOODS)에는 바로 장바구니로!
+				if (categoryNum == 1) {
+					showOption(menuNum, price, mnName);
+				} else {
+					int n = getNum();
+					setProduct(menuNum, n, price, mnName);
+				}				
 			} else {
-				setProduct(menuNum, num, price, mnName);
+				return;
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -168,6 +181,12 @@ public class CategoryMenu {
 			OracleDB.close(rs2);
 		}
 	}
+	
+	public int getNum() {
+		System.out.println("몇 개를 구입하시겠습니까?");
+		return InputUtil.inputInt();
+	}
+	
 
 	// 옵션 선택
 	public void showOption(int menuNum, int price, String mnName) {
@@ -266,7 +285,7 @@ public class CategoryMenu {
 				}
 				
 				AdditionalOption option = new AdditionalOption(optIdx, optionChoiceName);
-				optionList.add(option);
+				UserMain.optionList.add(option);
 				// ****************************************************************************
 
 				// 선택한 옵션 가격을 총액 변수에 저장
@@ -277,8 +296,7 @@ public class CategoryMenu {
 				System.out.println();
 			}// 큰 while문.
 
-			int num = 1;
-
+			int num = getNum();
 			// 장바구니 호출
 			setProduct(menuNum, num, sum, mnName);
 
@@ -302,24 +320,10 @@ public class CategoryMenu {
 		// Product객체를 생성해서 
 		Product product = new Product(mnIdx, num, price, name);
 
-		// linkedlist에 넣어주는 작업 - linkedlist 맨 위쪽에 코드 짜놨음.
-		productList.add(product);
+		// linkedlist에 넣어주는 작업 - linkedlist main에 있음.
+		UserMain.orderlist.add(product);
 		
-		System.out.println();
-		System.out.println();
-		System.out.println("===========[ 장 바 구 니 ]===========");
-		
-		if(optionList.size() > 0) {   // 옵션 선택한 게 있으면 옵션 리스트 출력. 없으면, 출력 x.
-			System.out.println("선택한 옵션 ");
-			for (AdditionalOption o : optionList) {
-				System.out.println(o.toString());
-			}
-		}
-		
-		System.out.println("---------------------------------------");
-		for (Product p : productList) {
-			System.out.println(p.toString());
-		}
+		System.out.println("장바구니에 저장이 완료되었습니다.");
 	}//setProduct
 
 }
