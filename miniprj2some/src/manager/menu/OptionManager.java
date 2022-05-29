@@ -11,9 +11,8 @@ import java.util.Set;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+import manager.main.ManagerMain;
 
-// ★옵션 삭제 및 추가 진입할때 더이상 삭제하거나 추가할 옵션이 없다면 돌려보내기
-// 여유있으면 카테고리 옵션 매핑 테이블 원복해서 엉뚱한 옵션 막아버리기
 
 public class OptionManager {
 	
@@ -35,7 +34,7 @@ public class OptionManager {
 		if(categoryNum > 0 && categoryNum < 4) {
 			showMenu(categoryNum);
 		} else if(categoryNum == 0) {
-			return;
+			ManagerMain.managerHome();
 		} else if(categoryNum != 1 && categoryNum != 2 && categoryNum != 3) {
 			System.out.println("올바른 번호를 입력하시오");
 			showCategory();
@@ -177,6 +176,12 @@ public class OptionManager {
 				OracleDB.close(pstmt);
 			}
 			
+			if(notMappingOptionList.size() == 0) {
+				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
+			}
+			
 			//옵션 추가 후 옵션목록 갱신
 			plus(categoryNum, menuNum);
 		
@@ -202,7 +207,6 @@ public class OptionManager {
 		Connection conn = OracleDB.getOracleConnection();
 		PreparedStatement pstmt = null;
 		
-		//1, 2번 카테고리는 아래 상세 포함 insert
 		
 			String sql = "DELETE FROM MENU_ADDITIONAL_OPTION_MAP "
 					+ "WHERE MN_IDX = ? "
@@ -230,6 +234,12 @@ public class OptionManager {
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
+			}
+			
+			if(mappingOptionList.size() == 0) {
+				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
 			}
 			
 			delete(categoryNum, menuNum);
@@ -268,11 +278,6 @@ public class OptionManager {
 				System.out.println(list.size() + ". " + opName);
 			}
 			
-			if(list.size() == 0) {
-				System.out.println("[ 삭제할 수 있는 추가옵션이 없습니다 ]");
-				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
-				showMenu(categoryNum);
-			}
 
 		} catch (SQLException e) {
 			System.out.println("SQL 예외 발생 - showOption");
@@ -318,11 +323,6 @@ public class OptionManager {
 				System.out.println(list.size() + ". " +  opName);
 			}
 			
-			if(list.size() == 0) {
-				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
-				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
-				showMenu(categoryNum);
-			}
 			
 
 		} catch (SQLException e) {
