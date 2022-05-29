@@ -9,6 +9,7 @@ import java.util.Set;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+import manager.main.ManagerMain;
 
 
 // MenuManager 객체 생성하고 showCategory 메소드만 호출하면 메뉴관리 돌아감
@@ -36,7 +37,7 @@ public class MenuManager {
 		if(categoryNum > 0 && categoryNum < 4) {
 			showMenu(categoryNum);
 		} else if(categoryNum == 0) {
-			return;
+			ManagerMain.managerHome();
 		} else if(categoryNum != 1 && categoryNum != 2 && categoryNum != 3) {
 			System.out.println("올바른 번호를 입력하시오");
 			showCategory();
@@ -171,7 +172,7 @@ public class MenuManager {
 			
 			String sql = "INSERT INTO MENU(MN_IDX, CATEGORY_IDX, MN_NAME, PRICE, DETAIL, CAL, CAFFEINE, CARBOHYDRATE, "
 					+ "SUGAR, FAT, PROTEIN, NATRIUM) "
-					+ "VALUES(MENU_IDX_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "VALUES(MN_IDX_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			try {
 				pstmt = conn.prepareStatement(sql);
