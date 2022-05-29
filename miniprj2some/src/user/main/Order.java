@@ -20,7 +20,7 @@ public class Order {
 //	3. '결제하기'로 넘어갈건지, '메뉴'로 돌아갈가 추가주문 할건지 선택
 //	4. '결제하기'로 넘어가면, '주문'테이블에 데이터 추가입력
 	
-public static void showCart() {
+public static int showCart() {
 	
 		Connection conn = OracleDB.getOracleConnection();
 		
@@ -36,83 +36,16 @@ public static void showCart() {
 		for(Product p : UserMain.orderlist) {
 			System.out.print(String.format("%12s", p.name));
 			System.out.print(String.format("%15d", p.item_num) + " 개");
-			System.out.println(String.format("%10d", p.item_price) + " 원");
+			System.out.println(String.format("%10d", p.item_price*p.item_num) + " 원");
 			
-			sum += p.item_price;
+			sum += (p.item_price*p.item_num);
 		}
 		
 		System.out.println(String.format("%35s", "합계 : ") + String.format("%,7d", sum) + " 원");
-			
-	}
-//	public static void showCart() {
-//		Purchase purchase = new Purchase();
-//		int x = purchase.testShowCart();
-//		System.out.println(x);
-//	}
-	
-	
-	public void getItemPrice() {
-		
-//		Connection conn = OracleDB.getOracleConnection();
-//		
-//		String sqlPrice = "SELECT ITEM_PRICE FROM ORDER_ITEM";
-//		
-//			PreparedStatement pstmt = null;
-//			ResultSet rs = null;
-//			try {
-//				pstmt = conn.prepareStatement(sqlPrice);
-//				rs = pstmt.executeQuery();
-//				
-//				int idx = 0;
-//				
-//				while(rs.next()) {
-//					int price = rs.getInt("ITEM_PRICE");
-//					arr[idx] = price;
-//					idx++;
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			
-		
-		UserMain.orderlist.get(1);
 
-		
-		
-	}
+		return sum;
+}
 
-
-	public static void getSum() {
-		
-		Connection conn = OracleDB.getOracleConnection();
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		String sqlSum = "SELECT ITEM_PRICE FROM ORDER_ITEM";
-		
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sqlSum);
-			if(rs.next()) {
-				int tPrice = rs.getInt("ITEM_PRICE");
-				System.out.println("");
-				
-				System.out.println(" ............................................. ");
-				System.out.println(String.format("%35s", "합계 : ") + String.format("%,7d", tPrice) + " 원");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			OracleDB.close(conn);
-			OracleDB.close(stmt);
-			OracleDB.close(rs);
-		}
-		
-		choice();
-		
-	}
-	
 	
 	public static void choice() {
 		
@@ -132,32 +65,6 @@ public static void showCart() {
 		}
 		
 	}
-	
-//	public int getCouval() {
-//		
-//		int cVal = 0;
-//		Connection conn = OracleDB.getOracleConnection();
-//		
-//		String sql = "SELECT VALUE FROM COU_VAR";
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		try {
-//			pstmt = conn.prepareStatement(sql);
-//			rs = pstmt.executeQuery();
-//			
-//			if(rs.next()) {
-//				cVal = rs.getInt("VALUE");
-//			}
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			OracleDB.close(conn);
-//			OracleDB.close(pstmt);
-//			OracleDB.close(rs);
-//		}
-//		return cVal;
-//	}
 	
 
 	
