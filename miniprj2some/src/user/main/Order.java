@@ -9,6 +9,7 @@ import java.sql.Statement;
 import common.db.OracleDB;
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
+import user.purchase.Purchase;
 import user.stamp.Stamp;
 
 public class Order {
@@ -66,6 +67,12 @@ public static void showCart() {
 			getSum();
 			
 	}
+//	public static void showCart() {
+//		Purchase purchase = new Purchase();
+//		int x = purchase.testShowCart();
+//		System.out.println(x);
+//	}
+	
 	
 	public void getItemPrice() {
 		
