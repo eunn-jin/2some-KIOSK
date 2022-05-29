@@ -162,6 +162,7 @@ public class CheckOut {
 			
 			
 			inputOrder();
+			orderListClear();
 	}
 	
 	public static void inputOrder() {
@@ -229,11 +230,32 @@ public class CheckOut {
 				OracleDB.close(pstmt);
 			}
 			
-			
 		}
 		
-		
-		
 	}
+
+	public static void orderListClear() {
+		
+		Connection conn = OracleDB.getOracleConnection();
+		PreparedStatement pstmt = null;
+		String sqlClear = "DELETE * FROM ORDER_ITEM";
+		try {
+			pstmt = conn.prepareStatement(sqlClear);
+			int result = pstmt.executeUpdate();
+			
+			if(result == 1) {
+				System.out.println("장바구니가 초기화 되었습니다.");
+			}else {
+				System.out.println("초기화 에러,,");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+		}
+	}
+	
+	
 	
 }
