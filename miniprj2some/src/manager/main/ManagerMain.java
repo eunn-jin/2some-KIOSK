@@ -3,6 +3,8 @@ package manager.main;
 import common.util.InputUtil;
 import manager.analysis.IncomeStatus;
 import manager.analysis.ProductRank;
+import manager.menu.MenuManager;
+import manager.menu.OptionManager;
 
 public class ManagerMain {
 
@@ -35,8 +37,9 @@ public class ManagerMain {
 		System.out.println("===== 관리자 홈 =====");
 		System.out.println("===================");
 		System.out.println("1. 메뉴 관리하기");
-		System.out.println("2. 매출현황 확인하기");
-		System.out.println("3. 판매 상품 순위 확인하기");
+		System.out.println("2. 메뉴옵션 관리하기");
+		System.out.println("3. 매출현황 확인하기");
+		System.out.println("4. 판매 상품 순위 확인하기");
 		System.out.println("0. 로그아웃");
 		
 		boolean isExit = false;
@@ -45,9 +48,10 @@ public class ManagerMain {
 			int n = InputUtil.inputInt();
 			
 			switch(n) {
-				case 1 : break;
-				case 2 : new IncomeStatus().start(); break;
-				case 3 : new ProductRank().start(); break;
+				case 1 : new MenuManager().showCategory(); break;
+				case 2 : new OptionManager().showCategory(); break;
+				case 3 : new IncomeStatus().start(); break;
+				case 4 : new ProductRank().start(); break;
 				case 0 : isExit = true; new ManagerLogin().logout(); break;
 				default : System.out.println("번호를 잘못 입력하셨습니다.");
 			}
