@@ -4,11 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+
+// ★옵션 삭제 및 추가 진입할때 더이상 삭제하거나 추가할 옵션이 없다면 돌려보내기
+// 여유있으면 카테고리 옵션 매핑 테이블 원복해서 엉뚱한 옵션 막아버리기
 
 public class OptionManager {
 	
@@ -30,7 +35,7 @@ public class OptionManager {
 		if(categoryNum > 0 && categoryNum < 4) {
 			showMenu(categoryNum);
 		} else if(categoryNum == 0) {
-			//뒤로가기
+			return;
 		} else if(categoryNum != 1 && categoryNum != 2 && categoryNum != 3) {
 			System.out.println("올바른 번호를 입력하시오");
 			showCategory();
@@ -49,6 +54,8 @@ public class OptionManager {
 				+ "INNER JOIN CATEGORY C ON C.CATEGORY_IDX = MENU.CATEGORY_IDX "
 				+ "WHERE C.CATEGORY_IDX = ?"
 				+ "ORDER BY MENU.MN_IDX"; 
+		
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Set<Integer> mnIdxSet = new HashSet<>(); 
@@ -96,50 +103,177 @@ public class OptionManager {
 	
 	
 	public void showOption(int categoryNum, int menuNum) {
-		//메뉴에 맵핑되어있는 추가옵션을 보여주는 method
+
+			
+			System.out.println("----------------------------");
+			System.out.println();
+			System.out.println("[옵션추가] 1 입력");
+			System.out.println("[옵션삭제] 2 입력");
+			System.out.println("[뒤로가기] 1111 입력");
+			System.out.print("입력 : ");		
+			int selectNum = InputUtil.sc.nextInt();
+			System.out.println();
+			System.out.println();
+			
+			if(selectNum == 1) {
+				plus(categoryNum, menuNum);
+			} else if (selectNum == 2) {
+				delete(categoryNum, menuNum);
+			} else if (selectNum == 1111) {
+				showMenu(categoryNum);
+			} else {
+				System.out.println("올바른 번호를 입력하시오");
+				showOption(categoryNum, menuNum);
+			}
+
+		
+	}
+	
+	
+	
+	
+	public void plus(int categoryNum, int menuNum) { 
+		
+		System.out.println("[추가] 할 옵션번호를 입력하시오");
+		System.out.println("[뒤로가기] 1111 을 입력하시오");
+		showMappingOption(categoryNum, menuNum);
+		List<String> notMappingOptionList = showNotMappingOption(categoryNum, menuNum);
+		System.out.println("---------------------------");
+		System.out.print("입력 : ");
+		int optionNum = InputUtil.inputInt();
+		
+		if(optionNum == 1111) {
+			showMenu(categoryNum);
+		}
+		
+		Connection conn = OracleDB.getOracleConnection();
+		PreparedStatement pstmt = null;
+		
+		//1, 2번 카테고리는 아래 상세 포함 insert
+		
+			String sql = "INSERT INTO MENU_ADDITIONAL_OPTION_MAP VALUES (?, ?)";
+		
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, menuNum);
+				pstmt.setString(2, notMappingOptionList.get(optionNum - 1));
+				int r = pstmt.executeUpdate();
+				
+				if(r == 1) {
+					System.out.println();
+					System.out.println("   [ 옵션 추가 완료되었습니다 ]   ");
+					System.out.println();
+				} else {
+					System.out.println();
+					System.out.println("   [ 옵션 추가 실패하였습니다 ]   ");
+					System.out.println();
+				}
+				
+			} catch (SQLException e) {
+				System.out.println("SQL 예외 발생 - plus cate 3");
+				e.printStackTrace();
+			} finally {
+				OracleDB.close(conn);
+				OracleDB.close(pstmt);
+			}
+			
+			//옵션 추가 후 옵션목록 갱신
+			plus(categoryNum, menuNum);
+		
+		
+		
+	}
+	
+	
+	public void delete(int categoryNum, int menuNum) {
+		
+		System.out.println("[삭제] 할 옵션번호를 입력하시오");
+		System.out.println("[뒤로가기] 1111 을 입력하시오");
+		List<String> mappingOptionList = showMappingOption(categoryNum, menuNum);
+		showNotMappingOption(categoryNum, menuNum);
+		System.out.println("---------------------------");
+		System.out.print("입력 : ");
+		int optionNum = InputUtil.inputInt();
+		
+		if(optionNum == 1111) {
+			showMenu(categoryNum);
+		}
+		
+		Connection conn = OracleDB.getOracleConnection();
+		PreparedStatement pstmt = null;
+		
+		//1, 2번 카테고리는 아래 상세 포함 insert
+		
+			String sql = "DELETE FROM MENU_ADDITIONAL_OPTION_MAP "
+					+ "WHERE MN_IDX = ? "
+					+ "AND ADI_OPT_NAME = ?";
+		
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, menuNum);
+				pstmt.setString(2, mappingOptionList.get(optionNum - 1));
+				int r = pstmt.executeUpdate();
+				
+				if(r == 1) {
+					System.out.println();
+					System.out.println("   [ 옵션 삭제 완료되었습니다 ]   ");
+					System.out.println();
+				} else {
+					System.out.println();
+					System.out.println("   [ 옵션 삭제 실패하였습니다 ]   ");
+					System.out.println();
+				}
+				
+			} catch (SQLException e) {
+				System.out.println("SQL 예외 발생 - delete");
+				e.printStackTrace();
+			} finally {
+				OracleDB.close(conn);
+				OracleDB.close(pstmt);
+			}
+			
+			delete(categoryNum, menuNum);
+		
+	}
+	
+	
+	public List<String> showMappingOption(int categoryNum, int menuNum) {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT ROWNUM,"
-				+ "MN_NAME AS 메뉴명 "
-				+ ", AO.ADI_OPT_NAME AS 옵션명 "
+		
+		String sql = "SELECT "
+				+ "AO.ADI_OPT_NAME AS 옵션명 "
 				+ "FROM MENU M "
 				+ "INNER JOIN MENU_ADDITIONAL_OPTION_MAP MAO ON M.MN_IDX = MAO.MN_IDX "
-				+ "INNER JOIN ADDITIONAL_OPTION AO ON AO.ADI_OPT_IDX = MAO.ADI_OPT_IDX "
-				+ "WHERE M.MN_IDX = ?"
-				+ "ORDER BY ROWNUM"; 
+				+ "INNER JOIN ADDITIONAL_OPTION AO ON AO.ADI_OPT_NAME = MAO.ADI_OPT_NAME "
+				+ "WHERE M.MN_IDX = ? "
+				+ "GROUP BY AO.ADI_OPT_NAME";
 		
 			
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+		List<String> list = new ArrayList<String>();
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, menuNum);
 			rs = pstmt.executeQuery();
 			
-			String opName = null;
 			System.out.println("-------현재 존재하는 옵션-------");
+			
 			while(rs.next()) {
-				int rownum = rs.getInt("ROWNUM");
-				 opName = rs.getString("옵션명");
-			    System.out.println(rownum + ". " + opName);
-		    }
-			System.out.println("----------------------------");
+				String opName = rs.getString("옵션명");
+				list.add(opName);
+				System.out.println(list.size() + ". " + opName);
+			}
 			
-			
-			
-			System.out.println("[옵션추가]");
-			System.out.println("현재 존재하지 않는 옵션 번호를 선택하시오");
-			System.out.println("[옵션삭제]");
-			System.out.println("현재 존재하는 옵션 번호를 선택하시오");
-			System.out.print("입력 : ");		
-			int optionNum = InputUtil.sc.nextInt();
-			System.out.println();
-			System.out.println();
-			
+			if(list.size() == 0) {
+				System.out.println("[ 삭제할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
+			}
 
-			
 		} catch (SQLException e) {
 			System.out.println("SQL 예외 발생 - showOption");
 			e.printStackTrace();
@@ -149,28 +283,85 @@ public class OptionManager {
 			OracleDB.close(rs);
 		}
 		
+		return list;
+	}
+	
+	
+	
+	
+	public List<String> showNotMappingOption(int categoryNum, int menuNum) {
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "SELECT  AO.ADI_OPT_NAME "
+				+ "FROM "
+				+ "ADDITIONAL_OPTION AO "
+				+ "WHERE AO.ADI_OPT_NAME NOT IN "
+				+ "      (SELECT ADI_OPT_NAME FROM MENU_ADDITIONAL_OPTION_MAP WHERE MN_IDX = ?) "
+				+ "GROUP BY ADI_OPT_NAME";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, menuNum);
+			rs = pstmt.executeQuery();
+			
+			System.out.println("--------추가 가능한 옵션--------");
 
-		
-		
-		
-	}
-	
-	
-	public void plus(int categoryNum, int optionNum) {
-		
-		
-		
-		
-		
-		
-		
-		
-	}
-	
-	
-	public void delete() {
-		
-	}
-	
+			
+			while(rs.next()) {
+				String opName = rs.getString("ADI_OPT_NAME");
+				list.add(opName);
+				System.out.println(list.size() + ". " +  opName);
+			}
+			
+			if(list.size() == 0) {
+				System.out.println("[ 추가할 수 있는 추가옵션이 없습니다 ]");
+				System.out.println("[ 메뉴 화면으로 이동합니다 ]");
+				showMenu(categoryNum);
+			}
+			
 
+		} catch (SQLException e) {
+			System.out.println("SQL 예외 발생 - choiceOption");
+			e.printStackTrace();
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
+		}
+			
+		
+		return list;
+	}
+	
+	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
