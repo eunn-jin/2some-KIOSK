@@ -27,16 +27,28 @@ public class ManagerLogin {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
-			
+		
 			if(rs.next()) {
-				String dbpwd = rs.getString(1);
+				String dbpwd = rs.getString("PWD");
 				if(dbpwd.equalsIgnoreCase(pwd)) {
-					System.out.println("로그인 성공 !!!");
+					String sql2
+					= "UPDATE MANAGER SET CONNECTION_YN = 'Y' WHERE ID = ?";
+					
+					PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+					pstmt2.setString(1, id);
+					int result = pstmt2.executeUpdate();
+					if(result == 1) {
+						System.out.println("로그인 성공 !!!");
+					}else {
+						System.out.println("로그인 실패 !!!");
+					}
+					ManagerMain.successLogin = true;
 					return true;
 				}
 			}
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("SQL 예외 발생 !!!");
 		}finally {
 			OracleDB.close(conn);
@@ -108,8 +120,8 @@ public class ManagerLogin {
 	
 	public boolean logout() {	
 		System.out.println("=====로그아웃=====");
-		System.out.print("이름 : ");
-		String name = InputUtil.sc.nextLine();
+		System.out.print("아이디 : ");
+		String id = InputUtil.sc.nextLine();
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
@@ -117,18 +129,22 @@ public class ManagerLogin {
 		ResultSet rs = null;
 		
 		try {
-			String sql = "SELECT * FROM MANAGER WHERE NAME = ?";
+			String sql = "SELECT * FROM MANAGER WHERE ID = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				String dbname = rs.getString("name");
-				if(dbname.equalsIgnoreCase(name)) {
-					String sql2 = "UPDATE MANAGER SET CONNECTION_YN = 'Y' WHERE NAME = ?"
-							+ "VALUES(?)";
+				String dbname = rs.getString("id");
+				if(dbname.equalsIgnoreCase(id)) {
+					String sql2 = "UPDATE MANAGER SET CONNECTION_YN = 'N' WHERE ID = ?";
+					pstmt = conn.prepareStatement(sql2);
+					pstmt.setString(1, id);
 					int result = pstmt.executeUpdate();
-					System.out.println("로그아웃 되었습니다!");
+					if(result == 1) {
+						System.out.println("로그아웃 되었습니다!");
+					}
+					
 					ManagerMain.successLogin = true;
 					return true;
 				}
