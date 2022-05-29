@@ -20,7 +20,14 @@ public class Stamp {
 		if(Customer.loginCustomerNo == 0) {
 			System.out.println("비정상적인 접근입니다. 로그인 후 이용해주시길 바랍니다.");
 			CustomerHub.plaitLoginJoin();
-		}
+			
+		} else if(Customer.inspectQuit.equals("Y")) {
+			 System.out.println("비정상적인 접근입니다. 고객님께선 탈퇴회원입니다.");
+			 System.out.println("해당 서비스를 이용하기 위해서 회원가입 후 로그인 후 사용 부탁드립니다.");
+			 System.out.println("감사합니다.");
+			 Customer.sleepThread();
+			 CustomerHub.plaitLoginJoin();
+		 }
 		
 		Customer.sleepThread2();
 		

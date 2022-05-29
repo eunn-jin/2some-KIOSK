@@ -276,7 +276,7 @@ public class Coupon {
 				System.out.println(" 해당 쿠폰을 사용하시려면 사용, 뒤로 가기를 선택하시려면 뒤로가기를 입력해주세요. ");
 				System.out.print("문자 입력 :");
 				
-				String inputStr = common.util.InputUtil.sc.nextLine();
+				String inputStr = common.util.InputUtil.sc.nextLine().trim();
 				
 				if(inputStr.equals("사용")) {
 					
