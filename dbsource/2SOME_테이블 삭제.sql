@@ -13,7 +13,7 @@ DROP TABLE MENU;    -- 메뉴 테이블 삭제
 DROP TABLE ADDITIONAL_OPTION;   -- 추가옵션 정보 테이블 삭제
 DROP TABLE MENU_ADDITIONAL_OPTION_MAP;  --매핑 테이블 삭제
 
-DROP SEQUENCE MENU_IDX_SEQ; -- 메뉴 시퀀스 삭제
+DROP SEQUENCE MN_IDX_SEQ; -- 메뉴 시퀀스 삭제
 DROP SEQUENCE ADI_OPT_IDX_SEQ;  -- 추가옵션 시퀀스 삭제
 
 -------------- 쿠폰관련 삭제 --------------------
@@ -26,3 +26,4 @@ DROP TABLE CUSTOMER;
 
 ----------- 관리자 삭제 -------------
 DROP TABLE MANAGER;
+DROP SEQUENCE MANAGER_NO_SEQ;
