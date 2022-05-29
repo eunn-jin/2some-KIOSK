@@ -30,9 +30,9 @@ public static void accessCouponHub() {
 		System.out.println("사용하시려는 기능의 번호를 입력하시기를 바랍니다.");
 		
 		System.out.print("번호입력 : ");
-		int a = InputUtil.inputInt();
+		int inputInt = InputUtil.inputInt();
 		
-		switch(a) {
+		switch(inputInt) {
 		
 		case 1 : System.out.println("할인쿠폰조회를 선택하셨습니다.");  Coupon.showCouponInfo(); break;
 		case 2 : System.out.println("할인쿠폰사용을 선택하셨습니다.");  Coupon.useCoupon(); break;
