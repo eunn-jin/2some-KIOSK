@@ -26,45 +26,22 @@ public static void showCart() {
 		
 		System.out.println("");
 		System.out.println(" ================== 주문 내역 ================== ");
+		System.out.print(" |" + String.format("%12s", "메뉴명 |"));
+		System.out.print(String.format("%10s", "추가옵션 |"));
+		System.out.print(String.format("%5s", "수량 |"));
+		System.out.println(String.format("%13s", "가격 |"));
+		System.out.println(" --------------------------------------------- ");
 		
-		
-			String sql = "SELECT LPAD(MN_NAME,10,' ') MNAME , PRICE , ITEM_NUM , ITEM_PRICE"
-					+ " FROM MENU M "
-					+ "JOIN ORDER_ITEM O "
-					+ "ON M.MN_IDX = O.MN_IDX";
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				pstmt = conn.prepareStatement(sql);
-				rs = pstmt.executeQuery();
-				
-				System.out.print(" |" + String.format("%12s", "메뉴명 |"));
-				System.out.print(String.format("%10s", "추가옵션 |"));
-				System.out.print(String.format("%5s", "수량 |"));
-				System.out.println(String.format("%13s", "가격 |"));
-				System.out.println(" --------------------------------------------- ");
-				
-				while(rs.next()) {
-					String mname = rs.getString("MNAME");
-					int qty = rs.getInt("ITEM_NUM");
-					int price = rs.getInt("PRICE");
-					
-					
-					System.out.print(String.format("%12s", mname));
-					System.out.print(String.format("%15d", qty) + " 개");
-					System.out.println(String.format("%10d", price) + " 원");
-					
-					
-				}
-			} catch (SQLException e) {
-				System.out.println("에러 작작좀;;");
-			}finally {
-				OracleDB.close(conn);
-				OracleDB.close(pstmt);
-				OracleDB.close(rs);
-			}
+		int sum = 0;
+		for(Product p : UserMain.orderlist) {
+			System.out.print(String.format("%12s", p.name));
+			System.out.print(String.format("%15d", p.item_num) + " 개");
+			System.out.println(String.format("%10d", p.item_price) + " 원");
 			
-			getSum();
+			sum += p.item_price;
+		}
+		
+		System.out.println(String.format("%35s", "합계 : ") + String.format("%,7d", sum) + " 원");
 			
 	}
 //	public static void showCart() {
@@ -76,28 +53,33 @@ public static void showCart() {
 	
 	public void getItemPrice() {
 		
-		Connection conn = OracleDB.getOracleConnection();
-		
-		String sqlPrice = "SELECT ITEM_PRICE FROM ORDER_ITEM";
-		
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				pstmt = conn.prepareStatement(sqlPrice);
-				rs = pstmt.executeQuery();
-				
-				int idx = 0;
-				
-				while(rs.next()) {
-					int price = rs.getInt("ITEM_PRICE");
+//		Connection conn = OracleDB.getOracleConnection();
+//		
+//		String sqlPrice = "SELECT ITEM_PRICE FROM ORDER_ITEM";
+//		
+//			PreparedStatement pstmt = null;
+//			ResultSet rs = null;
+//			try {
+//				pstmt = conn.prepareStatement(sqlPrice);
+//				rs = pstmt.executeQuery();
+//				
+//				int idx = 0;
+//				
+//				while(rs.next()) {
+//					int price = rs.getInt("ITEM_PRICE");
 //					arr[idx] = price;
 //					idx++;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-				
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			
+//			
+		
+		UserMain.orderlist.get(1);
+
+		
+		
 	}
 
 
@@ -137,13 +119,13 @@ public static void showCart() {
 		System.out.println("");
 		System.out.println(" ============================================= ");
 		System.out.println("");
-		System.out.println("[1. 쿠폰 조회] [2. 스탬프 조회] [3. 계산] [4. 메뉴 다시 선택]");
+		System.out.println("[1. 쿠폰 사용] [2. 로그인] [3. 계산] [4. 메뉴 다시 선택]");
 		
 		int chooseNo = InputUtil.inputInt();	
 		
 		switch(chooseNo) {
-		case 1 : /*쿠폰조회 메소드*/ break;
-		case 2 : Stamp.showCustomersStamp(); break;
+		case 1 : user.coupon.CouponHub.accessCouponHub();  break;
+		case 2 : user.info.CustomerHub.plaitLoginJoin(); break;
 		case 3 : CheckOut.confirmOrder(); break;
 		case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
 			default : System.out.println("다시 입력해주세요.");
