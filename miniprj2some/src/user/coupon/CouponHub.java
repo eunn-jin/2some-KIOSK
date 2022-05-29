@@ -21,7 +21,7 @@ public static void accessCouponHub() {
 		System.out.println("");
 		System.out.println("============================");
 		System.out.println("=======[1.할인쿠폰조회]========");
-		System.out.println("=======[2.할인쿠폰등록]========");
+		System.out.println("=======[2.할인쿠폰사용]========");
 		System.out.println("=======[3. 뒤로가기 ]=========");
 		System.out.println("============================");
 		System.out.println("");
@@ -29,13 +29,13 @@ public static void accessCouponHub() {
 		Customer.sleepThread();
 		System.out.println("사용하시려는 기능의 번호를 입력하시기를 바랍니다.");
 		
+		System.out.print("번호입력 : ");
+		int inputInt = InputUtil.inputInt();
 		
-		int a = InputUtil.inputInt();
-		
-		switch(a) {
+		switch(inputInt) {
 		
 		case 1 : System.out.println("할인쿠폰조회를 선택하셨습니다.");  Coupon.showCouponInfo(); break;
-		case 2 : System.out.println("할인쿠폰등록을 선택하셨습니다.");  Coupon.useCoupon(); break;
+		case 2 : System.out.println("할인쿠폰사용을 선택하셨습니다.");  Coupon.useCoupon(); break;
 		case 3 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.showCart();break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
 		}

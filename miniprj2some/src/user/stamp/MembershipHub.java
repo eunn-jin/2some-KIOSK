@@ -37,10 +37,10 @@ public class MembershipHub {
 		
 		System.out.println("사용하시려는 기능의 번호를 입력하시기를 바랍니다.");
 		
+		System.out.print("번호입력 : ");
+		int inputInt = InputUtil.inputInt();
 		
-		int a = InputUtil.inputInt();
-		
-		switch(a) {
+		switch(inputInt) {
 		case 0 : whatIsStamp(); break;
 		case 1 : System.out.println("내 정보 조회를 선택하셨습니다."); Stamp.showCustomersStamp(); break;
 		case 2 : System.out.println("스탬프 사용을 선택하셨습니다."); Stamp.useStamp(); break;
