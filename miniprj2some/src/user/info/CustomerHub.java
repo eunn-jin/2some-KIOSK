@@ -18,7 +18,7 @@ public class CustomerHub {
 		while(bl = true) {
 		
 		System.out.println("");
-		System.out.println("현재 로그인 상태");
+		System.out.print("현재 로그인 상태");
 		if(Customer.loginCustomerNo != 0) {
 			System.out.println(":: " + Customer.customersName + "님으로 로그인 되어있습니다.");
 		} else {
@@ -37,7 +37,6 @@ public class CustomerHub {
 		System.out.println("==========================");
 		System.out.println("");
 		
-		Customer.sleepThread();
 		System.out.println("사용하시려는 기능의 번호를 입력하시기를 바랍니다.");
 		
 		System.out.print("번호입력 : ");
@@ -49,7 +48,7 @@ public class CustomerHub {
 		case 3 : System.out.println("로그아웃을 선택하셨습니다."); Customer.logout();break;
 		case 4 : System.out.println("회원탈퇴를 선택하셨습니다."); Customer.quitMember();break;
 		case 5 : System.out.println("재가입을 선택하셨습니다."); Customer.reJoin(); break;
-		case 6 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.showCart(); break;
+		case 6 : System.out.println("뒤로가기를 선택하셨습니다."); user.main.Order.choice(); break;
 		default : System.out.println("잘못된 번호입니다. 다시 입력해주세요."); bl = false; break;
 		}
 		
