@@ -19,7 +19,7 @@ public class ManagerLogin {
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
-		String sql = "SELECT PWD FROM MANAGER WHERE ID = ?";
+		String sql = "SELECT PWD FROM MANAGER WHERE ID = ? AND CONNECTION_YN = 'N'";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -69,7 +69,7 @@ public class ManagerLogin {
 		String pwd = InputUtil.sc.nextLine();
 		System.out.print("이름 :");
 		String name = InputUtil.sc.nextLine();
-		System.out.print("전화번호 :");
+		System.out.print("전화번호(-붙여야됨) :");
 		String phone = InputUtil.sc.nextLine();
 		System.out.print("이메일 :");
 		String email = InputUtil.sc.nextLine();
@@ -129,7 +129,7 @@ public class ManagerLogin {
 		ResultSet rs = null;
 		
 		try {
-			String sql = "SELECT * FROM MANAGER WHERE ID = ?";
+			String sql = "SELECT * FROM MANAGER WHERE ID = ? AND CONNECTION_YN = 'Y'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -145,7 +145,7 @@ public class ManagerLogin {
 						System.out.println("로그아웃 되었습니다!");
 					}
 					
-					ManagerMain.successLogin = true;
+					ManagerMain.successLogin = false;
 					return true;
 				}
 			}
@@ -158,7 +158,7 @@ public class ManagerLogin {
 			OracleDB.close(rs);
 		}
 		
-		ManagerMain.successLogin = false;
+		ManagerMain.successLogin = true;
 		return false;
 		
 	}
