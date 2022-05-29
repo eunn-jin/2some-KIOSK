@@ -30,7 +30,7 @@ public class Customer {
 		
 		
 		if (loginCustomerNo != 0) {
-			//만약 로그인하지 않았다면
+			//이미 로그인했다면
 			sleepThread();
 			
 			System.out.println("");
@@ -86,7 +86,6 @@ public class Customer {
 		//유효성 검사(전화번호 13글자)
 		if(phone.length() != 13) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("전화번호는 대쉬(-) 포함 13자리를 입력하여야 합니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -95,7 +94,6 @@ public class Customer {
 		//유효성 검사(전화번호 형식)
 		else if (validPhoneNumber(phone) == false ) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("010-OOOO-OOOO와 같은 형태로 작성해주시길 바랍니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -104,7 +102,6 @@ public class Customer {
 		//유효성 검사 (2~4글자 이름)
 		if(name.length() > 4 || name.length() < 2) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("고객님의 성함 2~4자리를 입력하여 주시길 바랍니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -112,7 +109,6 @@ public class Customer {
 		//유효성 검사 (이름은 한글로)
 		} else if (validName(name) == false ) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("성함은 한글이름으로 적어주시길 바랍니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -121,7 +117,6 @@ public class Customer {
 		//유효성 검사(생일은 10자)
 		if(birthDay.length() != 10) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -129,7 +124,6 @@ public class Customer {
 		//유효성 검사(대쉬 포함)	
 		} else if(validationDate(birthDay) == false) {
 			System.out.println("");
-			sleepThread();
 			System.out.println("생년월일은 yyyy/mm/dd 형식으로만 기입할 수 있습니다.");
 			System.out.println("로그인을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
@@ -191,15 +185,12 @@ public class Customer {
 				System.out.println("");
 				sleepThread();
 				System.out.println("로그인에 실패하였습니다.");
-				sleepThread2();
 				System.out.println("옳바른 정보를 기입하셨는지 확인하시고 다시 시도해 주시길 바랍니다.");
-				sleepThread2();
 				System.out.println("탈퇴하신 고객님은 재가입 후 다시 진행하여 주시길 바랍니다.");
-				sleepThread2();
 				System.out.println("감사합니다.");
-				sleepThread2();
+				sleepThread();
 				System.out.println("로그인 허브 페이지로 이동합니다...");
-				sleepThread2();
+				sleepThread();
 				CustomerHub.plaitLoginJoin();
 			}
 		} catch (SQLException e) {
@@ -215,7 +206,6 @@ public class Customer {
 		System.out.println("로그인에 실패하였습니다.");
 		System.out.println("안내된대로 옳바른 정보가 기입되었는지 확인 부탁드립니다.");
 		System.out.println("신규 고객님, 혹은 멤버쉽 탈퇴 회원인 고객님은 회원가입 후 진행해주시길 바랍니다. ");
-		sleepThread();
 		System.out.println("로그인은 3회까지 시도 할 수 있습니다.");
 		sleepThread();
 		cnt++;
@@ -241,7 +231,7 @@ public class Customer {
 			System.out.println("");
 			System.out.println("고객님은 현재 로그아웃 상태입니다.");
 			System.out.println("");
-			Customer.sleepThread2();
+			Customer.sleepThread();
 			System.out.println("로그인 허브 페이지로 이동합니다..");
 			
 			CustomerHub.plaitLoginJoin();
@@ -261,11 +251,10 @@ public class Customer {
 			System.out.println("로그아웃을 하신다면 스탬프는 반환되고 할인도 취소됩니다.");
 			System.out.println("그래도 로그아웃을 원하시면 '로그아웃'을 입력해주시길 바랍니다.");
 			System.out.print("입력 : ");
-			String inputStr = InputUtil.sc.nextLine();
+			String inputStr = InputUtil.sc.nextLine().trim();
 			
 			if(inputStr.equals("로그아웃")) {
 				System.out.println("");
-				Customer.sleepThread();
 				System.out.println("로그아웃을 진행합니다.");
 
 				
@@ -298,7 +287,6 @@ public class Customer {
 				}
 				
 				else {
-					Customer.sleepThread();
 					System.out.println("로그아웃에 실패하였습니다.");
 					System.out.println("다시 시도하시길 바랍니다.");
 					
@@ -318,7 +306,7 @@ public class Customer {
 				System.out.println("");
 				System.out.println("'로그아웃'이 아닌 다른 문자를 입력받았습니다.");
 				System.out.println("로그인 허브 페이지로 이동합니다..");
-				sleepThread2();
+				sleepThread();
 				CustomerHub.plaitLoginJoin();
 				
 			}
@@ -360,11 +348,13 @@ public class Customer {
 		System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8글자를 입력하여 주시길 바랍니다.");
 		} 
 		
+		else {
 		System.out.println("");
 		System.out.println("고객님의 회원탈퇴를 위해 성함과 대쉬(-)를 포함한 전화번호 11글자" );
 		System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8글자를 입력하여 주시길 바랍니다.");
 		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 뒤로가기를 입력하여 주시길 바랍니다.");
 		sleepThread();
+		}
 		System.out.println("");
 		
 		System.out.print("이름 : ");
@@ -456,7 +446,6 @@ public class Customer {
 				String dbQuit = rs.getString("QUIT"); 
 				
 				if(dbQuit.equals("Y")) {
-					sleepThread();
 					System.out.println("");
 					System.out.println(dbPhone + "님은 이미 탈퇴된 회원이십니다.");
 					sleepThread2();
@@ -470,10 +459,10 @@ public class Customer {
 					System.out.println("입력이 완료되었습니다.");
 					sleepThread();
 					System.out.println(dbName + "님은 현재 " + dbStamp + "개의 스탬프를 가지고 계십니다.");
-					System.out.println("회원탈퇴 시 남은 스탬프는 모두 소멸합니다.");
+					System.out.println("!!!!회원탈퇴 시 사용하신 스탬프 정보 및 남은 스탬프는 모두 소멸합니다.!!!!");
 					System.out.println("탈퇴 하시려면 '회원탈퇴'를, 나머지를 입력하시면 로그인 허브 페이지로 이동합니다.");
-					sleepThread();
-					System.out.print("입력 : ");
+					System.out.println("");
+					System.out.print("문자입력 : ");
 					String qQuit = InputUtil.sc.nextLine().trim();
 					
 					
@@ -481,7 +470,6 @@ public class Customer {
 						
 						System.out.println("");
 						System.out.println("회원탈퇴를 선택하셨습니다.");
-						sleepThread();
 						System.out.println("회원탈퇴를 진행합니다.");
 						System.out.println("");
 						
@@ -541,7 +529,6 @@ public class Customer {
 				}
 			} else {
 				System.out.println("");
-				sleepThread();
 				System.out.println("입력받은 정보가 옳바르지 않습니다.");
 				System.out.println("옳바른 정보를 입력하셨는지 확인하시고 다시 시도하시길 바랍니다.");
 				System.out.println("로그인 허브 페이지로 이동합니다...");
@@ -596,13 +583,13 @@ public class Customer {
 		System.out.println("======================");
 		System.out.println("========회원가입========");
 		
-		sleepThread();
+		System.out.println("");
 		System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리");
 		System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8자리(yyyy/mm/dd)를 차례대로 입력해주시길 바랍니다.");
 		System.out.println("뒤로가기를 원하시는 고객님께선 이름에 '뒤로가기'를 입력하여 주시길 바랍니다.");
 		System.out.println("재가입을 원하시는 고객님께선 이름에 '재가입'을 입력하여 주시길 바랍니다.");
 		System.out.println("");
-		sleepThread2();
+		sleepThread();
 		
 		while(bl) {
 		System.out.print("이름 : ");
@@ -652,6 +639,7 @@ public class Customer {
 			System.out.println("회원가입을 다시 진행하여 주시길 바랍니다.");
 			sleepThread();
 			CustomerHub.plaitLoginJoin();
+			
 		} else if (validName(name) == false ) {
 			System.out.println("");
 			System.out.println("성함은 한글이름으로 적어주시길 바랍니다.");
@@ -699,21 +687,20 @@ public class Customer {
 					
 					if(dbQuit.equals("Y")) {
 						
-						sleepThread2();
+						sleepThread();
 						System.out.println("");
 						System.out.println(dbName + "님은 이미 멤버쉽을 탈퇴하셨습니다.");
 						System.out.println("회원가입은 신규 가입 고객님들을 위한 항목입니다.");
 						System.out.println("탈퇴 후 재가입하시는 고객님들은 로그인 허브 페이지에서 재가입을 진행하여 주시길 바랍니다.");
 						System.out.println("감사합니다.");
-						sleepThread2();
+						sleepThread();
 						System.out.println("로그인 허브 페이지로 이동합니다...");
-						sleepThread2();
+						sleepThread();
 						
 						CustomerHub.plaitLoginJoin();
 						
 					} else {
 						System.out.println(dbName + "님은 이미 저희 2SOME 멤버쉽 회원입니다.");
-						sleepThread2();
 						System.out.println("로그인 허브 페이지로 이동합니다..");
 						
 						CustomerHub.plaitLoginJoin();
@@ -753,14 +740,13 @@ public class Customer {
 				OracleDB.close(rs);
 			}
 			
-			sleepThread();
 			System.out.println("회원가입에 실패하였습니다. 계속 시도하시려면 1번, 바로 결제하시려면 2번을 선택해주세요.");
 			sleepThread();
 			System.out.println("1 : 계속 시도, 2 : 바로 결제");
 			
 			
 			
-			String inputInt = InputUtil.sc.nextLine();
+			String inputInt = InputUtil.sc.nextLine().trim();
 			boolean blValidNo = validNo(inputInt);
 			if(blValidNo == false) {
 				System.out.println("잘못된 번호입니다. 다시 시도하시길 바랍니다.");
@@ -773,7 +759,6 @@ public class Customer {
 				}
 			else if (inputInt.equals("2")) {
 				System.out.println("바로 결제를 선택하셨습니다.");
-				sleepThread();
 				System.out.println("결제 페이지로 이동합니다.");
 				
 				//결제 페이지로 이동
@@ -786,7 +771,6 @@ public class Customer {
 			}
 			
 			System.out.println("회원가입에 3회 실패하였습니다.");
-			sleepThread();
 			System.out.println("결제 페이지로 이동합니다.");
 			//결제 페이지 이동
 			
@@ -816,7 +800,6 @@ public class Customer {
 			
 			MembershipHub.plaitCustomersStamp();
 		}
-			sleepThread();
 			System.out.println("고객님의 성함과 대쉬(-)를 포함한 전화번호 11자리");
 			System.out.println("그리고 슬래쉬(/)를 포함한 생년월일 8자리(yyyy/mm/dd)를 차례대로 입력해주시길 바랍니다.");
 			System.out.println("뒤로가기를 원하시는 고객님께선 이름에 '뒤로가기'를 입력하여 주시길 바랍니다.");
@@ -934,7 +917,6 @@ public class Customer {
 					sleepThread2();
 					System.out.println("");
 					System.out.println("감사합니다.");
-					sleepThread();
 					System.out.println("");
 					System.out.println("로그인 허브로 이동합니다.");
 					sleepThread();
@@ -956,7 +938,7 @@ public class Customer {
 					 System.out.println("추가적으로, 재가입은 신규 고객님을 위한 항목이 아닙니다.");
 					 System.out.println("기존 탈퇴 고객님이 아닌 신규 고객님께선 회원가입을 선택해주시길 바랍니다.");
 					 System.out.println("");
-					 sleepThread2();
+					 sleepThread();
 					 System.out.println("로그인 허브 페이지로 이동합니다...");
 					 sleepThread();
 					 CustomerHub.plaitLoginJoin();

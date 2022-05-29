@@ -22,7 +22,7 @@ public class CustomerHub {
 		if(Customer.loginCustomerNo != 0) {
 			System.out.println(":: " + Customer.customersName + "님으로 로그인 되어있습니다.");
 		} else {
-			System.out.println("로그아웃");
+			System.out.println(":: 로그아웃");
 		}
 		
 		Customer.sleepThread();

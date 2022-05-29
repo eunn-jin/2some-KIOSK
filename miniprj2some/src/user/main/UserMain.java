@@ -28,7 +28,7 @@ public class UserMain {
 			
 			switch(n) {
 				case 1 : new CategoryMenu().showCategory(); break;
-				case 2 : new Purchase().testShowCart(); break;
+				case 2 : Order.showCart(); break;
 				case 3 : new Purchase().testMain(); break;//결제하기 메소드의 return이 true 이면 list초기화 break;
 				case 0 : isExit = true; break;
 				default : System.out.println("번호를 잘못 입력하셨습니다.");
