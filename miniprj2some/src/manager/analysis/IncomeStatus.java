@@ -20,7 +20,8 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 			switch(n) {
 				case 1: getDayIncome(); getList(); break;
 				case 2: getMonthIncome(); getList(); break;
-				case 3: getPeriodIncome(); getList(); break;
+				case 3: getYearIncome(); getList(); break;
+				case 4: getPeriodIncome(); getList(); break;
 				case 0: loopflag = false; break;
 				default: System.out.println("잘못입력하셨습니다. 정확한 번호를 입력하세요.\n");
 			}
@@ -35,7 +36,7 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
-				+ "WHERE ORDER_DATE = ?";
+				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') = TO_DATE(?)";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -54,20 +55,52 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 	}
 	
 	public void getMonthIncome() {
-		System.out.println("\n원하시는 월을 입력하세요. (ex. MM)");
-		int month = InputUtil.inputInt();
+		System.out.println("\n원하시는 월을 입력하세요. (ex. YYYY/MM)");
+		String str = InputUtil.inputStr();
+		
+		String[] day = str.split("/");
+		
+		int year = Integer.parseInt(day[0]);
+		int month = Integer.parseInt(day[1]);
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
 		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
-				+ "WHERE EXTRACT(MONTH FROM ORDER_DATE) = ?";
+				+ "WHERE EXTRACT(YEAR FROM ORDER_DATE) = ? AND EXTRACT(MONTH FROM ORDER_DATE) = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
         try {
         	pstmt = conn.prepareStatement(sql);
-        	pstmt.setInt(1, month);
+        	pstmt.setInt(1, year);
+        	pstmt.setInt(2, month);
+			rs = pstmt.executeQuery();
+			Outputform(rs);
+		} catch (SQLException e) {
+			System.out.println("입력이 잘못되었습니다.\n");
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
+		}
+	}
+	
+	public void getYearIncome() {
+		System.out.println("\n원하시는 년을 입력하세요. (ex. YYYY)");
+		int year = InputUtil.inputInt();
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
+				+ "FROM ORDER_GROUP "
+				+ "WHERE EXTRACT(YEAR FROM ORDER_DATE) = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+        try {
+        	pstmt = conn.prepareStatement(sql);
+        	pstmt.setInt(1, year);
 			rs = pstmt.executeQuery();
 			Outputform(rs);
 		} catch (SQLException e) {
@@ -90,7 +123,7 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		
 		String sql = "SELECT TOTAL_PRICE + USE_POINT + DISCOUNT_PRICE PRICE "
 				+ "FROM ORDER_GROUP "
-				+ "WHERE ORDER_DATE BETWEEN TO_DATE(?) AND TO_DATE(?)";
+				+ "WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') BETWEEN TO_DATE(?) AND TO_DATE(?)";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -125,7 +158,8 @@ public class IncomeStatus {	//기간 별 매출 현황 조회
 		System.out.println("===== 확인하고 싶은 기간을 선택하시오 =====");
 		System.out.println("1. 일간");
 		System.out.println("2. 월간");
-		System.out.println("3. 기간 지정");
+		System.out.println("3. 년간");
+		System.out.println("4. 기간 지정");
 		System.out.println("0. 이전 화면으로 돌아가기");
 	}
 	

@@ -161,7 +161,7 @@ public class CategoryMenu {
 			System.out.println("해당 제품을 구입하시겠습니까? (Y/ N)");
 			String check = InputUtil.inputStr();
 			
-			if("Y".equals(check)) {
+			if("Y".equalsIgnoreCase(check)) {
 				// 선택한 메뉴가 DRINK일 경우에만 옵션 메서드 호출, 이 외(FOOD, GOODS)에는 바로 장바구니로!
 				if (categoryNum == 1) {
 					showOption(menuNum, price, mnName);

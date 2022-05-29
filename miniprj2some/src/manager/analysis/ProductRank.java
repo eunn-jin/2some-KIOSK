@@ -20,7 +20,8 @@ public class ProductRank {	// 누적 상품 판매 순위
 			switch(n) {
 				case 1: getDayRank(); getList(); break;
 				case 2: getMonthRank(); getList(); break;
-				case 3: getPeriodRank(); getList(); break;
+				case 3: getYearRank(); getList(); break;
+				case 4: getPeriodRank(); getList(); break;
 				case 0: loopflag = false; break;
 				default: System.out.println("잘못입력하셨습니다. 정확한 번호를 입력하세요.\n");
 			}
@@ -36,7 +37,7 @@ public class ProductRank {	// 누적 상품 판매 순위
 		String sql = "SELECT MN_NAME, NUM "
 				+ "FROM (SELECT MN_IDX, SUM(ITEM_NUM) NUM "
 				+ "FROM ORDER_ITEM "
-				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE ORDER_DATE = TO_DATE(?)) "
+				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') = TO_DATE(?)) "
 				+ "GROUP BY MN_IDX) T JOIN MENU "
 				+ "ON T.MN_IDX = MENU.MN_IDX "
 				+ "ORDER BY NUM DESC";
@@ -58,15 +59,20 @@ public class ProductRank {	// 누적 상품 판매 순위
 	}
 	
 	public void getMonthRank() {
-		System.out.println("\n원하시는 월을 입력하세요. (ex. MM)");
-		int month = InputUtil.inputInt();
+		System.out.println("\n원하시는 월을 입력하세요. (ex. YYYY/MM)");
+		String str = InputUtil.inputStr();
+		
+		String[] day = str.split("/");
+		
+		int year = Integer.parseInt(day[0]);
+		int month = Integer.parseInt(day[1]);
 		
 		Connection conn = OracleDB.getOracleConnection();
 		
 		String sql = "SELECT MN_NAME, NUM "
 				+ "FROM (SELECT MN_IDX, SUM(ITEM_NUM) NUM "
 				+ "FROM ORDER_ITEM "
-				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE EXTRACT(MONTH FROM ORDER_DATE) = ?) "
+				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE EXTRACT(YEAR FROM ORDER_DATE) = ? AND EXTRACT(MONTH FROM ORDER_DATE) = ?) "
 				+ "GROUP BY MN_IDX) T JOIN MENU "
 				+ "ON T.MN_IDX = MENU.MN_IDX "
 				+ "ORDER BY NUM DESC";
@@ -75,7 +81,38 @@ public class ProductRank {	// 누적 상품 판매 순위
 		
         try {
         	pstmt = conn.prepareStatement(sql);
-        	pstmt.setInt(1, month);
+        	pstmt.setInt(1, year);
+        	pstmt.setInt(2, month);
+			rs = pstmt.executeQuery();
+			Outputform(rs);
+		} catch (SQLException e) {
+			System.out.println("입력이 잘못되었습니다.\n");
+		} finally {
+			OracleDB.close(conn);
+			OracleDB.close(pstmt);
+			OracleDB.close(rs);
+		}
+	}
+	
+	public void getYearRank() {
+		System.out.println("\n원하시는 년을 입력하세요. (ex. YYYY)");
+		int year = InputUtil.inputInt();
+		
+		Connection conn = OracleDB.getOracleConnection();
+		
+		String sql = "SELECT MN_NAME, NUM "
+				+ "FROM (SELECT MN_IDX, SUM(ITEM_NUM) NUM "
+				+ "FROM ORDER_ITEM "
+				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE EXTRACT(YEAR FROM ORDER_DATE) = ?) "
+				+ "GROUP BY MN_IDX) T JOIN MENU "
+				+ "ON T.MN_IDX = MENU.MN_IDX "
+				+ "ORDER BY NUM DESC";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+        try {
+        	pstmt = conn.prepareStatement(sql);
+        	pstmt.setInt(1, year);
 			rs = pstmt.executeQuery();
 			Outputform(rs);
 		} catch (SQLException e) {
@@ -99,7 +136,7 @@ public class ProductRank {	// 누적 상품 판매 순위
 		String sql = "SELECT MN_NAME, NUM "
 				+ "FROM (SELECT MN_IDX, SUM(ITEM_NUM) NUM "
 				+ "FROM ORDER_ITEM "
-				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE ORDER_DATE BETWEEN TO_DATE(?) AND TO_DATE(?)) "
+				+ "WHERE ORDER_ITEM.GROUP_NO IN (SELECT GROUP_NO FROM ORDER_GROUP WHERE TO_CHAR(ORDER_DATE, 'YY/MM/DD') BETWEEN TO_DATE(?) AND TO_DATE(?)) "
 				+ "GROUP BY MN_IDX) T JOIN MENU "
 				+ "ON T.MN_IDX = MENU.MN_IDX "
 				+ "ORDER BY NUM DESC";
@@ -143,7 +180,8 @@ public class ProductRank {	// 누적 상품 판매 순위
 		System.out.println("===== 확인하고 싶은 기간을 선택하시오 =====");
 		System.out.println("1. 일간");
 		System.out.println("2. 월간");
-		System.out.println("3. 기간 지정");
+		System.out.println("3. 년간");
+		System.out.println("4. 기간 지정");
 		System.out.println("0. 이전 화면으로 돌아가기");
 	}
 }
