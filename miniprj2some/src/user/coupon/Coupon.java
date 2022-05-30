@@ -155,7 +155,7 @@ public class Coupon {
 		
 	}
 	
-	public static void useCoupon() {
+	public static boolean useCoupon() {
 		
 		Customer.sleepThread();
 		System.out.println("");
@@ -173,7 +173,8 @@ public class Coupon {
 			System.out.println("");
 			System.out.println("장바구니 페이지로 이동합니다.");
 			Customer.sleepThread();
-			user.main.Order.showCart();
+
+			return true;
 		}
 		
 		System.out.println("사용하실 쿠폰의 쿠폰번호와 유효기간을 입력하시면 조회 후 사용 가능합니다.");
@@ -191,7 +192,7 @@ public class Coupon {
 			System.out.println("쿠폰 메인페이지로 이동합니다.");
 			Customer.sleepThread();
 			System.out.println("");
-			return;
+			return false;
 		} 
 		
 		System.out.print("유효기간 : ");
@@ -204,13 +205,12 @@ public class Coupon {
 			System.out.println("유효기간은 슬래쉬(/)를 포함하여 8글자 (yyyy/mm/dd) 형식으로 입력 바랍니다.");
 			System.out.println("다시 시도해 주시길 바랍니다.");
 			Customer.sleepThread();
-			return;
+			return false;
 		}
 		
 		
 		Connection conn = common.db.OracleDB.getOracleConnection();
-		
-		
+				
 		String sql = "SELECT * FROM COUPON C "
 				+ "INNER JOIN COU_VAR V "
 				+ "ON C.VARNO = V.VARNO "
@@ -250,7 +250,7 @@ public class Coupon {
 					Customer.sleepThread();
 					System.out.println("쿠폰 페이지로 돌아갑니다.");
 					Customer.sleepThread();
-					return;
+					return false;
 				}
 				
 				System.out.println("");
@@ -321,14 +321,15 @@ public class Coupon {
 								System.out.println("마이 멤버쉽 페이지로 이동합니다..");
 								Customer.sleepThread();
 								user.stamp.MembershipHub.plaitCustomersStamp();
-							
+								
+								return true;
 							} else {
 							System.out.println("");
 							System.out.println("로그인 허브 페이지로 이동합니다.");
 							Customer.sleepThread();
 							
 							user.info.CustomerHub.plaitLoginJoin();
-							return;
+							return true;
 							}
 						} else if (qlogin == 2) {
 						
@@ -337,15 +338,15 @@ public class Coupon {
 							System.out.println("결제 페이지로 이동합니다.");
 							
 							user.main.CheckOut.confirmOrder();
-							return;
+							return true;
 						} else {
 							System.out.println("쿠폰 페이지로 이동합니다.");
-							return;
+							return false;
 						}
 					}	else {
 						System.out.println("할인적용이 실패하였습니다.");
 						System.out.println("다시 시도하시길 바랍니다.");
-						return;
+						return false;
 					}
 					
 					
@@ -354,32 +355,33 @@ public class Coupon {
 					System.out.println("뒤로가기를 선택하셨습니다.");
 					System.out.println("쿠폰 페이지로 이동합니다.");
 					Customer.sleepThread();
-					return;
+					return false;
 					
 				} else {
 					System.out.println("잘못된 문자를 입력하셨습니다.");
 					System.out.println("다시 한 번 시도하시길 바랍니다.");
-					return;
+					return false;
 				}
 			} else {
 				System.out.println("");
 				System.out.println("입력된 쿠폰을 찾을 수 없습니다.");
 				System.out.println("잘 입력되었는지 확인 후 다시 시도해주시길 바랍니다.");
 				Customer.sleepThread();
-				return;
+				return false;
 			}
 			}	catch (SQLException e) {
 				System.out.println("");
 				System.out.println("서버와의 접속이 실패하였습니다.");
 				System.out.println("입력된 정보가 맞는 정보인지 확인하신 후 다시 시도하시길 바랍니다.");
 				Customer.sleepThread();
-				return;
+				return false;
 				
 			} finally {
 				OracleDB.close(conn);
 				OracleDB.close(pstmt);
 				OracleDB.close(rs);
 			}
+		
 	}
 }
 		
