@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import common.db.OracleDB;
 import common.util.InputUtil;
+import user.coupon.Coupon;
 import user.info.Customer;
 import user.stamp.Stamp;
 
@@ -18,47 +19,45 @@ public class CheckOut {
 //	-결제할 금액 입력받고 결제완료 메세지 띄우기
 //	-메뉴판보기 페이지로 돌아가기
 	
+	public static int getSum() {
+		int sum = 0;
+		for(Product p : UserMain.orderlist) {
+//			System.out.print(String.format("%12s", p.name));
+//			System.out.print(String.format("%15d", p.item_num) + " 개");
+//			System.out.println(String.format("%10d", p.item_price*p.item_num) + " 원");
+			
+			sum += (p.item_price*p.item_num);
+		}
+		return sum;
+	}
+	
 	public static void confirmOrder() {
 		
 		System.out.println("");
 		System.out.println("");
 		System.out.println(" ================== 결제 확인 ================== ");
 		System.out.println("");
-		System.out.println("");
 
-		
-		int sum = Order.showCart();
-		
-//		Connection conn = OracleDB.getOracleConnection();
-//		int tPrice = 0;
-//		String sql = "SELECT LPAD(ITEM_PRICE,10,' ') AS PRICE FROM ORDER_ITEM";
-//		
-//		try {
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
-//			ResultSet rs = pstmt.executeQuery();
-				
-//				System.out.println(String.format("%30s", "총 가격") + " : ");
-//			
-////			if(rs.next()) {
-////				tPrice = rs.getInt("PRICE");
-//				
-//				
-//				System.out.println(String.format("%,7d", tPrice) + " 원");
-//				System.out.println(" ");
-//			}
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		showSum();
 		showDiscount();
 		
 		System.out.println(" ------------------------------------------- ");
 		System.out.print(String.format("%30s", "최종 결제금액") + " : ");
 		
-		System.out.println(String.format("%,7d", sum - getCouval()) + " 원");
+		System.out.println(String.format("%,7d", getSum() - (getCouval()+getStampValue())) + " 원");
 		System.out.println(" ");
 		 
-		proceed(sum);
+		proceed(getSum());
+		
+	}
+	
+	public static void showSum() {
+		
+		System.out.println(" ");
+		System.out.print(String.format("%30s", "합계 금액") + " : ");
+		
+		System.out.println(String.format("%,7d", getSum()) + " 원");
+		System.out.println(" ");
 		
 	}
 	
@@ -85,7 +84,12 @@ public class CheckOut {
 			OracleDB.close(pstmt);
 			OracleDB.close(rs);
 		}
-		return cVal;
+		if(Coupon.usingCoupon == 1) {
+			return cVal;
+		}else {
+			return 0;
+		}
+		
 	}
 	
 	public static int getStampValue() {
@@ -100,8 +104,14 @@ public class CheckOut {
 	
 	public static int showDiscount() {
 		
+		
+		
 		System.out.print(String.format("%30s", "(쿠폰 할인)") + " : ");
-		System.out.println(String.format("%,7d", getCouval()) + " 원");
+		if(Coupon.usingCoupon == 1) {
+			System.out.println(String.format("%,7d", getCouval()) + " 원");
+		}else {
+			System.out.println(String.format("%,7d", 0) + " 원");
+		}
 		
 		System.out.print(String.format("%30s", "(스탬프 할인)") + " : ");
 		System.out.println(String.format("%,7d", getStampValue()) + " 원");
@@ -112,30 +122,6 @@ public class CheckOut {
 		
 	}
 	
-//	public static int getTotalPrice() {
-//		
-//		Connection conn = OracleDB.getOracleConnection();
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		int totalPrice = 0;
-//		String sql = "SELECT ITEM_PRICE FROM ORDER_ITEM";
-//		try {
-//			pstmt = conn.prepareStatement(sql);
-//			rs = pstmt.executeQuery();
-//			
-//			if(rs.next()) {
-//				totalPrice = rs.getInt("ITEM_PRICE");
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			OracleDB.close(conn);
-//			OracleDB.close(pstmt);
-//			OracleDB.close(rs);
-//		}
-//		return totalPrice;
-//		
-//	}
 	
 	public static void proceed(int sum) {
 		
@@ -147,7 +133,7 @@ public class CheckOut {
 				System.out.println("계산하시려면 결제금액을 입력해주세요.");
 			
 				int tPrice = InputUtil.inputInt();
-				int getTotalPrice = sum-getCouval();
+				int getTotalPrice = getSum() - (getCouval()+getStampValue());
 				if(tPrice == (getTotalPrice)) {
 					System.out.println("계산이 완료되었습니다.");
 					collectStamp();
