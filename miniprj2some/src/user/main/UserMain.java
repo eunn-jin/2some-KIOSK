@@ -1,12 +1,9 @@
 package user.main;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
-import user.purchase.Purchase;
 
 public class UserMain {
 	

@@ -1,16 +1,8 @@
 package user.main;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import common.db.OracleDB;
 import common.util.InputUtil;
 import user.menu.CategoryMenu;
-import user.purchase.Purchase;
-import user.stamp.Stamp;
+
 
 public class Order {
 	
@@ -21,8 +13,6 @@ public class Order {
 //	4. '결제하기'로 넘어가면, '주문'테이블에 데이터 추가입력
 	
 public static void showCart() {
-	
-		Connection conn = OracleDB.getOracleConnection();
 		
 		System.out.println("");
 		System.out.println(" ================== 주문 내역 ================== ");
@@ -56,10 +46,10 @@ public static void showCart() {
 		int chooseNo = InputUtil.inputInt();	
 		
 		switch(chooseNo) {
-		case 1 : user.coupon.CouponHub.accessCouponHub();  break;
-		case 2 : user.info.CustomerHub.plaitLoginJoin(); break;
-		case 3 : CheckOut.confirmOrder(); break;
-		case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
+			case 1 : user.coupon.CouponHub.accessCouponHub();  break;
+			case 2 : user.info.CustomerHub.plaitLoginJoin(); break;
+			case 3 : CheckOut.confirmOrder(); break;
+			case 4 : CategoryMenu cMenu = new CategoryMenu(); cMenu.showCategory(); break;
 			default : System.out.println("다시 입력해주세요.");
 		}
 		
