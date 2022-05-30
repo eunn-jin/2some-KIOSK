@@ -139,6 +139,7 @@ public class CheckOut {
 					collectStamp();
 					inputOrder(getTotalPrice);
 					orderListClear();
+					UserMain.userMain();
 				}else {
 					System.out.println("다시 입력해주세요");
 				}
